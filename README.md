@@ -7,7 +7,7 @@ Erdos--Renyi) model for random networks.
 
 See details in the arXiv paper: https://arxiv.org/abs/2107.00153
 
-[Documentation:] https://github.com/nineisprime/PAPER
+[Documentation]: https://nineisprime.github.io/PAPER/
 
 Installation
 -------------
@@ -24,7 +24,8 @@ Usage
 	>>> mcmc_out = gibbsSampling.gibbsToConv(graf, DP=False, method="full",
                        K=1, tol=0.1)
 					   
-See example.py for interpreting the inference output. 
+See example.py for interpreting the inference output. Some sample
+network datasets are provided.
 
 Notes
 ------
@@ -33,4 +34,5 @@ Notes
   used.
 * The algorithm
   performs roughly 1 outer Gibbs iteration in 1 second on a graph with
-  10,000 edges. The number of iterations to convergence depends on the input graph.
+  10,000 edges. The number of iterations to convergence depends on the
+  input graph.
