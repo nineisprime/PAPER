@@ -17,7 +17,7 @@ graf = createNoisyGraph(n=100, m=200, alpha=0, beta=1, K=1)[0]
 
 
 ## Run Gibbs sampler
-mcmc_out = gibbsSampling.gibbsToConv(graf, DP=False, method="full",
+mcmc_out = gibbsToConv(graf, DP=False, method="full",
                                      K=1, tol=0.1)
 
 

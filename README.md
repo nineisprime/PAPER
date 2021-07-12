@@ -14,7 +14,7 @@ See details in the arXiv paper: https://arxiv.org/abs/2107.00153
 Installation
 -------------
 
-	$ pip install PAPER
+	$ pip install paper-network
 
 
 Usage
@@ -23,8 +23,7 @@ Usage
 	>>> from PAPER.gibbsSampling import gibbsToConv
 	>>> from PAPER.tree_tools import createNoisyGraph
 	>>> graf = createNoisyGraph(n=100, m=200, alpha=0, beta=1, K=1)[0]
-	>>> mcmc_out = gibbsSampling.gibbsToConv(graf, DP=False, method="full",
-                       K=1, tol=0.1)
+	>>> mcmc_out = gibbsToConv(graf, DP=False, method="full", K=1, tol=0.1)
 					   
 See example.py for interpreting the inference output. Some sample
 network datasets are provided.

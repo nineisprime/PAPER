@@ -1,0 +1,6 @@
+include *.py
+include *.txt
+recursive-include docs *.html
+recursive-include docs *.yml
+recursive-include paperexp *.py
+recursive-include tests *.py
