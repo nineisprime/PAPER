@@ -1,0 +1,1403 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>PAPER.grafting API documentation</title>
+<meta name="description" content="Created on Sat Apr 24 13:44:30 2021 …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>PAPER.grafting</code></h1>
+</header>
+<section id="section-intro">
+<p>Created on Sat Apr 24 13:44:30 2021</p>
+<p>@author: minx</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+&#34;&#34;&#34;
+Created on Sat Apr 24 13:44:30 2021
+
+@author: minx
+&#34;&#34;&#34;
+
+from PAPER.tree_tools import *
+import PAPER.gibbsSampling as gibbsSampling
+
+from igraph import *
+import numpy as np
+from random import choices
+from PAPER.estimateAlpha import *
+
+
+
+def gibbsGraft(graf, Burn=30, M=50, gap=1, alpha=0, beta=1, K=1,
+               display=True, size_thresh=0.01, birth_thresh=.8,
+               initroots=None):
+    &#34;&#34;&#34;
+    Collapsed grafting sampler for the fixed K setting.
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    Burn : int, optional
+        Num of burn in iterations. The default is 30.
+    M : int, optional
+        Num of regular iterations. The default is 50.
+    gap : int, optional
+        Num of samples to skip when recording results. 
+        The default is 1.
+    alpha : float, optional
+        Parameter. The default is 0.
+    beta : float, optional
+        Parameter. The default is 1.
+    K : int, optional
+        Num of roots/clusters. The default is 1.
+    display : boolean, optional
+        Detailed display. The default is True.
+    size_thresh : float, optional
+        Thresh for keeping a cluster-tree. The default is 0.01.
+    birth_thresh : float, optional
+        Thresh for creating new distinct cluster-tree 
+        in output. The default is 0.8.
+    initroots : list, optional
+        Initialization for set of roots. The default is None.
+
+    Returns
+    -------
+    0. nparray of length n of posterior root prob
+    1. dict giving posterior root prob for each distinct cluster-tree
+    2. nparray matrix of node-tree co-occurrences
+    3. final set of roots (used for initialization)
+
+    &#34;&#34;&#34;
+    
+    
+    n = len(graf.vs)
+    
+    if (initroots is None):
+        wilsonTree(graf)
+        v = choices(range(n))[0]
+    
+        countSubtreeSizes(graf, v)
+    
+        tree2root = [v]
+
+        ## cuts wilson tree into K pieces in an easy way    
+        if (K &gt; 1):
+            initpi = gibbsSampling.sampleOrdering(graf, tree2root, alpha, beta)
+            gibbsSampling.nodewiseSamplePA(graf, initpi, alpha, beta, K)
+            tree2root = initpi[0:K]
+
+    else:
+        tree2root = initroots
+    
+    sizes = getTreeSizes(graf, tree2root)
+    
+    for k in range(K):
+        countSubtreeSizes(graf, tree2root[k])
+    
+    node_tree_coo = np.zeros((n, 0))
+    freq = {}
+    if (K == 1):
+        freq[0] = [0] * n
+        bigK = 1
+    else:   
+        bigK = 0
+    
+    for i in range(Burn + M):
+        treedegs = getAllTreeDeg(graf)  
+        assert sum(treedegs) == 2*(n-K)
+        
+        for k in range(K):
+            tree2root[k] = sampleRoot(graf, tree2root[k], alpha, beta, 
+                                      single_root=(K==1), degs=treedegs)
+            countSubtreeSizes(graf, tree2root[k])
+        
+        
+        for ii in range(n):
+            if (ii in tree2root):
+                continue
+           
+            graftSubtreePA(graf, ii, tree2root, alpha, beta, degs=treedegs)
+
+        ## Display and debug
+        sizes = getTreeSizes(graf, tree2root)
+        sizes_sorted = -np.sort( - np.array(sizes))
+        sizes_args = np.argsort(- np.array(sizes) ) 
+        
+        if (display):
+            print(&#34;iter {0}   sizes {1}&#34;.format(i, sizes_sorted))    
+            for v in range(n):
+                if (v in tree2root):
+                    assert graf.vs[v][&#34;pa&#34;] == None
+                else:
+                    assert graf.vs[v][&#34;pa&#34;] != None    
+        
+        tree2root_sorted = [0] * len(tree2root)       
+        for k in range(len(tree2root)):
+            tree2root_sorted[k] = tree2root[sizes_args[k]]
+            
+        
+        &#34;&#34;&#34; record results &#34;&#34;&#34;
+        
+        if (i &gt;= Burn and i % gap ==0):
+            if (K == 1):
+                freq[0] = freq[0] + countAllHist(graf, tree2root[0])[0]
+            else:   
+
+                node_tree_coo = gibbsSampling.updateInferResults(graf, freq, tree2root,
+                                                   alpha=alpha, beta=beta, size_thresh=size_thresh,
+                                                   birth_thresh=birth_thresh, 
+                                                   node_tree_coo=node_tree_coo)
+            
+    allfreqs = np.array([0] * n)
+
+    for k in range(len(freq)):
+        allfreqs = allfreqs + freq[k]
+        freq[k] = freq[k]/sum(freq[k])
+     
+    allfreqs = allfreqs/sum(allfreqs)
+    return((allfreqs, freq, node_tree_coo, tree2root))
+
+
+
+
+def gibbsGraftDP(graf, Burn=30, M=50, gap=1, alpha=0, beta=1, alpha0=5, 
+                 display=True, size_thresh=0.01, 
+                 birth_thresh=0.8, initroots=None):
+    &#34;&#34;&#34;
+    Collapsed grafting sampler for the random K setting.
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    Burn : int, optional
+        Num of burn in iterations. The default is 30.
+    M : int, optional
+        Num of regular iterations. The default is 50.
+    gap : int, optional
+        Num of samples to skip when recording results. 
+        The default is 1.
+    alpha : float, optional
+        Parameter. The default is 0.
+    beta : float, optional
+        Parameter. The default is 1.
+    alpha0 : float, optional
+        Parameter. The default is 5.
+    display : boolean, optional
+        Detailed display. The default is True.
+    size_thresh : float, optional
+        Thresh for keeping a cluster-tree. The default is 0.01.
+    birth_thresh : float, optional
+        Thresh for creating new distinct cluster-tree 
+        in output. The default is 0.8.
+    initroots : list, optional
+        root initialization. The default is None.
+
+    Returns
+    -------
+    0. nparray of length n of posterior root prob
+    1. dict giving posterior root prob for each distinct cluster-tree
+    2. list of all Ks
+    3. final alpha0 (used for initialization)
+    4. final set of roots (used for initialization)
+
+    &#34;&#34;&#34;
+    
+    n = len(graf.vs)
+    display=True
+    if (initroots is None):
+        wilsonTree(graf)
+        v = choices(range(n))[0]
+        
+        countSubtreeSizes(graf, v)
+    
+        tree2root = [v]
+    else:
+        tree2root = initroots
+    
+  
+    allK = []
+   
+    
+    if (display):
+        print(&#34;Starting gibbsGraftDP ...&#34;)
+    
+    freq = {}
+    bigK = 0
+    
+    
+    for i in range(Burn + M):
+        
+        treedegs = getAllTreeDeg(graf)
+        
+        for k in range(len(tree2root)):
+            tree2root[k] = sampleRoot(graf, tree2root[k], alpha, beta, degs=treedegs)
+            countSubtreeSizes(graf, tree2root[k])
+        
+        
+        for ii in range(n):
+            if (ii in tree2root and len(tree2root) == 1):
+                continue
+            tree2root = graftSubtreeDP(graf, ii, tree2root, alpha, beta, alpha0, 
+                                       degs=treedegs)[1]
+        
+        K = len(tree2root)
+        alpha0tilde = drawAlpha0tilde(K, n, alpha0/(alpha+2*beta))
+        alpha0 = alpha0tilde*(alpha+2*beta)    
+    
+        sizes = getTreeSizes(graf, tree2root)
+        sizes_sorted = -np.sort( - np.array(sizes))
+        sizes_args = np.argsort( - np.array(sizes))
+    
+        if (display):
+            print(&#34;iter {0}  a0 {1}  K {2}  sizes {3}&#34;.format(i, round(alpha0, 3), 
+                                                          K, sizes_sorted[0:6]))    
+        for v in range(n):
+            if (v in tree2root):
+                assert graf.vs[v][&#34;pa&#34;] == None
+            else:
+                assert graf.vs[v][&#34;pa&#34;] != None    
+        
+        
+        &#34;&#34;&#34; record results:
+        update variable freq, bigK, allK    
+        &#34;&#34;&#34;
+        if (i &gt;= Burn and i % gap == 0):
+            
+            allK.append(len(tree2root))
+            
+            gibbsSampling.updateInferResults(graf, freq, tree2root,
+                               alpha=alpha, beta=beta,
+                               size_thresh=size_thresh,
+                               birth_thresh=birth_thresh)   
+
+    
+    
+    allfreqs = np.array([0] * n)        
+    for k in range(len(freq)):
+        allfreqs = allfreqs + freq[k]
+        freq[k] = freq[k]/sum(freq[k])
+    
+    allfreqs = allfreqs/sum(allfreqs)
+    return((allfreqs, freq, allK, alpha0, tree2root))
+
+
+    
+def sampleRoot(graf, v, alpha, beta, single_root=False, degs=None):
+    &#34;&#34;&#34;
+    Generates a new root for the single tree containing node v.
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    v : int
+        Node id representing the tree.
+    alpha : float
+        Parameter.
+    beta : float
+        Parameter.
+    single_root : boolean, optional
+        True iff K==1. The default is False.
+    degs : list, optional
+        list of all the tree degrees. The default is None.
+
+    Returns
+    -------
+    0. index of new root
+
+    &#34;&#34;&#34;
+    n = len(graf.vs)
+    
+    if (graf.vs[v][&#34;subtree_size&#34;] == 1):
+        return(v)
+    
+    normalized_h = countAllHist(graf, v)[0]
+    
+    if (degs is None):
+        degs = getAllTreeDeg(graf)
+    
+    deg_adj = (beta*degs + beta + alpha)*(beta*degs + alpha)
+    
+    if (not single_root):
+        tmp_p = normalized_h*deg_adj
+    else:
+        tmp_p = normalized_h
+    
+    
+    newroot = choices(range(n), tmp_p)[0]
+    return(newroot)
+    
+
+
+
+
+def graftSubtreeDP(graf, u, tree2root, alpha, beta, alpha0, degs=None):
+    &#34;&#34;&#34;
+    Generates a new parent for node u, potentially 
+    making u a new root node. Only for the random K setting.
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    u : int
+        Current node id.
+    tree2root : list
+        list of all roots.
+    alpha : float
+        Parameter. 
+    beta : float
+        Parameter. 
+    alpha0 : float
+        Parameter
+    degs : list, optional
+        List of all tree degrees. The default is None.
+
+    Returns
+    -------
+    0. node index of new parent of u; -1 if u becomes a new root
+    1. new list of roots
+
+    &#34;&#34;&#34;
+    n = len(graf.vs)
+    m = len(graf.es)
+    n2 = n*(n-1)/2
+    K = len(tree2root)
+    
+    u_edge_ixs = graf.incident(u)
+    old_pa = graf.vs[u][&#34;pa&#34;]
+    uisroot = (old_pa == None)
+    
+    u_size = graf.vs[u][&#34;subtree_size&#34;]
+    
+    wts = []
+    pas = []   
+    
+    for eid in u_edge_ixs:
+        my_e = graf.es[eid]
+        
+        utilde = otherNode(my_e, u)
+        
+        ants = getAncestors(graf, utilde, u)
+        if (ants == -1):
+            continue
+        
+        if (degs is None):
+            utildedeg = treeDegree(graf, utilde)
+        else:
+            utildedeg = degs[utilde]
+
+        if (old_pa == utilde):
+            ants_big_sizes = np.array(graf.vs[ants][&#34;subtree_size&#34;])
+            ants_sm_sizes = ants_big_sizes - u_size
+            if (utilde in tree2root):
+                deg_adj = beta*(utildedeg+1) + alpha
+            else:
+                deg_adj = beta*(utildedeg-1) + alpha
+        
+        else:
+            ants_sm_sizes = np.array(graf.vs[ants][&#34;subtree_size&#34;])
+            ants_big_sizes = ants_sm_sizes + u_size
+            if (utilde in tree2root):
+                deg_adj = beta*(utildedeg+2) + alpha
+            else:
+                deg_adj = beta*(utildedeg) + alpha
+        
+        my_wt = deg_adj * \
+            np.exp(np.sum(np.log(ants_sm_sizes) - np.log(ants_big_sizes)))
+            
+        pas.append(utilde)
+        wts.append(my_wt)
+    
+    &#34;&#34;&#34; add option for u to become root &#34;&#34;&#34;
+    my_wt = alpha0 * (m-n+K+1 -uisroot)/(n2-n+K+1 -uisroot)
+        
+    if (degs is None):
+        udeg = treeDegree(graf, u)
+    else:
+        udeg = degs[u]
+    
+    my_wt = my_wt * (beta*udeg +beta*uisroot +alpha)/(beta+alpha) 
+    
+    wts.append(my_wt)
+    pas.append(-1)
+    
+    &#34;&#34;&#34; choose the new parent &#34;&#34;&#34;
+    new_pa = choices(pas, wts)[0]
+    
+    if (new_pa == -1): 
+        new_pa = None
+    
+    &#34;&#34;&#34; make adjustments &#34;&#34;&#34;    
+    if (new_pa == old_pa):
+        return((old_pa, tree2root))
+    else:
+        
+        graf.vs[u][&#34;pa&#34;] = new_pa
+        
+        if (old_pa != None):
+            old_edge_ix = graf.get_eids( [(u, old_pa)] )[0]
+            graf.es[old_edge_ix][&#34;tree&#34;] = 0
+        
+            old_ants = getAncestors(graf, old_pa, u)
+            for w in old_ants:
+                graf.vs[w][&#34;subtree_size&#34;] = graf.vs[w][&#34;subtree_size&#34;] - u_size
+                assert graf.vs[w][&#34;subtree_size&#34;] &gt; 0
+        else:
+            tree2root.remove(u)
+            
+        if (new_pa != None):
+            new_edge_ix = graf.get_eids( [(u, new_pa)] )[0]
+            graf.es[new_edge_ix][&#34;tree&#34;] = 1
+        
+            new_ants = getAncestors(graf, new_pa, u)
+            for w in new_ants:
+                graf.vs[w][&#34;subtree_size&#34;] = graf.vs[w][&#34;subtree_size&#34;] + u_size
+        else:
+            tree2root.append(u)
+        
+        if (degs is not None):
+            if (old_pa != None):
+                degs[old_pa] = degs[old_pa] - 1
+            else:
+                degs[u] = degs[u] + 1
+                
+            if (new_pa != None):
+                degs[new_pa] = degs[new_pa] + 1
+            else:
+                degs[u] = degs[u] - 1
+        
+        return((new_pa, tree2root))
+        
+    
+    
+def graftSubtreePA(graf, u, tree2root, alpha, beta, degs=None):
+    &#34;&#34;&#34;
+    Generates a new parent for node u. 
+    Only for the fixed K setting
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    u : int
+        Current node id.
+    tree2root : list
+        list of all roots.
+    alpha : float
+        Parameter. 
+    beta : float
+        Parameter. 
+    degs : list, optional
+        List of all tree degrees. The default is None.
+
+    Returns
+    -------
+    node index of new parent of u; -1 if u becomes a new root
+
+    &#34;&#34;&#34;
+    assert not (u in tree2root)
+
+    multi_root = (len(tree2root) &gt; 1)
+    
+    u_size = graf.vs[u][&#34;subtree_size&#34;]
+    
+    pas = []
+    wts = []
+    u_edge_ixs = graf.incident(u)
+    
+    old_pa = graf.vs[u][&#34;pa&#34;]
+    
+    if (old_pa == None):
+        print(&#34;culprit {0}&#34;.format(u))
+    assert old_pa != None
+    
+    for eid in u_edge_ixs:
+        my_e = graf.es[eid]
+        utilde = otherNode(my_e, u)
+        
+        ants = getAncestors(graf, utilde, u)
+        if (ants == -1):
+            continue
+
+        if (degs is None):
+            utildedeg = treeDegree(graf, utilde)
+        else:
+            utildedeg = degs[utilde]
+        
+        &#34;&#34;&#34; if utilde is root, do not compute subtree sizes&#34;&#34;&#34;
+        if (len(ants) == 1):
+            assert graf.vs[utilde][&#34;pa&#34;] == None
+            my_wt = 1
+            
+            deg_adj = beta*(utildedeg-(utilde == old_pa)+ \
+                             2*multi_root) + alpha
+            
+            wts.append(my_wt*deg_adj)
+            pas.append(utilde)
+            continue
+        
+        &#34;&#34;&#34; if utilde is not root, compute subtree size without
+            root node &#34;&#34;&#34;
+        ants.pop(-1)
+        if (old_pa == utilde):
+            ants_big_sizes = np.array(graf.vs[ants][&#34;subtree_size&#34;])
+            ants_sm_sizes = ants_big_sizes - u_size  
+            deg_adj = beta*(utildedeg-1) + alpha
+            
+        else:
+            ants_sm_sizes = np.array(graf.vs[ants][&#34;subtree_size&#34;])
+            ants_big_sizes = ants_sm_sizes + u_size
+            deg_adj = beta*utildedeg + alpha
+    
+        my_wt = deg_adj * \
+            np.exp(np.sum(np.log(ants_sm_sizes) - np.log(ants_big_sizes)))
+    
+        pas.append(utilde)
+        wts.append(my_wt)
+        
+    &#34;&#34;&#34; draw a new parent &#34;&#34;&#34;
+    new_pa = choices(pas, weights=wts)[0]
+    
+    if (new_pa == old_pa):
+        return(old_pa)
+    else:
+        graf.vs[u][&#34;pa&#34;] = new_pa
+        old_edge_ix = graf.get_eids( [(u, old_pa)] )[0]
+        graf.es[old_edge_ix][&#34;tree&#34;] = False
+    
+        new_edge_ix = graf.get_eids( [(u, new_pa)] )[0]
+        graf.es[new_edge_ix][&#34;tree&#34;] = True
+    
+        if (degs is not None):
+            degs[old_pa] = degs[old_pa] - 1
+            degs[new_pa] = degs[new_pa] + 1
+    
+    
+        new_ants = getAncestors(graf, new_pa, u)
+        for ix in new_ants:
+            graf.vs[ix][&#34;subtree_size&#34;] = graf.vs[ix][&#34;subtree_size&#34;] + u_size
+                
+        
+        old_ants = getAncestors(graf, old_pa, u)
+        for ix in old_ants:
+            graf.vs[ix][&#34;subtree_size&#34;] = graf.vs[ix][&#34;subtree_size&#34;] - u_size
+            assert graf.vs[ix][&#34;subtree_size&#34;] &gt; 0
+            
+        return(new_pa)        
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    </code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="PAPER.grafting.gibbsGraft"><code class="name flex">
+<span>def <span class="ident">gibbsGraft</span></span>(<span>graf, Burn=30, M=50, gap=1, alpha=0, beta=1, K=1, display=True, size_thresh=0.01, birth_thresh=0.8, initroots=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Collapsed grafting sampler for the fixed K setting.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>graf</code></strong> :&ensp;<code>igraph object</code></dt>
+<dd>Input graph.</dd>
+<dt><strong><code>Burn</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Num of burn in iterations. The default is 30.</dd>
+<dt><strong><code>M</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Num of regular iterations. The default is 50.</dd>
+<dt><strong><code>gap</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Num of samples to skip when recording results.
+The default is 1.</dd>
+<dt><strong><code>alpha</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Parameter. The default is 0.</dd>
+<dt><strong><code>beta</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Parameter. The default is 1.</dd>
+<dt><strong><code>K</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Num of roots/clusters. The default is 1.</dd>
+<dt><strong><code>display</code></strong> :&ensp;<code>boolean</code>, optional</dt>
+<dd>Detailed display. The default is True.</dd>
+<dt><strong><code>size_thresh</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Thresh for keeping a cluster-tree. The default is 0.01.</dd>
+<dt><strong><code>birth_thresh</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Thresh for creating new distinct cluster-tree
+in output. The default is 0.8.</dd>
+<dt><strong><code>initroots</code></strong> :&ensp;<code>list</code>, optional</dt>
+<dd>Initialization for set of roots. The default is None.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>0. nparray</code> of <code>length n</code> of <code>posterior root prob</code></dt>
+<dd>&nbsp;</dd>
+<dt><code>1. dict giving posterior root prob for each distinct cluster-tree</code></dt>
+<dd>&nbsp;</dd>
+<dt><code>2. nparray matrix</code> of <code>node-tree co-occurrences</code></dt>
+<dd>&nbsp;</dd>
+<dt><code>3. final set</code> of <code>roots (used for initialization)</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def gibbsGraft(graf, Burn=30, M=50, gap=1, alpha=0, beta=1, K=1,
+               display=True, size_thresh=0.01, birth_thresh=.8,
+               initroots=None):
+    &#34;&#34;&#34;
+    Collapsed grafting sampler for the fixed K setting.
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    Burn : int, optional
+        Num of burn in iterations. The default is 30.
+    M : int, optional
+        Num of regular iterations. The default is 50.
+    gap : int, optional
+        Num of samples to skip when recording results. 
+        The default is 1.
+    alpha : float, optional
+        Parameter. The default is 0.
+    beta : float, optional
+        Parameter. The default is 1.
+    K : int, optional
+        Num of roots/clusters. The default is 1.
+    display : boolean, optional
+        Detailed display. The default is True.
+    size_thresh : float, optional
+        Thresh for keeping a cluster-tree. The default is 0.01.
+    birth_thresh : float, optional
+        Thresh for creating new distinct cluster-tree 
+        in output. The default is 0.8.
+    initroots : list, optional
+        Initialization for set of roots. The default is None.
+
+    Returns
+    -------
+    0. nparray of length n of posterior root prob
+    1. dict giving posterior root prob for each distinct cluster-tree
+    2. nparray matrix of node-tree co-occurrences
+    3. final set of roots (used for initialization)
+
+    &#34;&#34;&#34;
+    
+    
+    n = len(graf.vs)
+    
+    if (initroots is None):
+        wilsonTree(graf)
+        v = choices(range(n))[0]
+    
+        countSubtreeSizes(graf, v)
+    
+        tree2root = [v]
+
+        ## cuts wilson tree into K pieces in an easy way    
+        if (K &gt; 1):
+            initpi = gibbsSampling.sampleOrdering(graf, tree2root, alpha, beta)
+            gibbsSampling.nodewiseSamplePA(graf, initpi, alpha, beta, K)
+            tree2root = initpi[0:K]
+
+    else:
+        tree2root = initroots
+    
+    sizes = getTreeSizes(graf, tree2root)
+    
+    for k in range(K):
+        countSubtreeSizes(graf, tree2root[k])
+    
+    node_tree_coo = np.zeros((n, 0))
+    freq = {}
+    if (K == 1):
+        freq[0] = [0] * n
+        bigK = 1
+    else:   
+        bigK = 0
+    
+    for i in range(Burn + M):
+        treedegs = getAllTreeDeg(graf)  
+        assert sum(treedegs) == 2*(n-K)
+        
+        for k in range(K):
+            tree2root[k] = sampleRoot(graf, tree2root[k], alpha, beta, 
+                                      single_root=(K==1), degs=treedegs)
+            countSubtreeSizes(graf, tree2root[k])
+        
+        
+        for ii in range(n):
+            if (ii in tree2root):
+                continue
+           
+            graftSubtreePA(graf, ii, tree2root, alpha, beta, degs=treedegs)
+
+        ## Display and debug
+        sizes = getTreeSizes(graf, tree2root)
+        sizes_sorted = -np.sort( - np.array(sizes))
+        sizes_args = np.argsort(- np.array(sizes) ) 
+        
+        if (display):
+            print(&#34;iter {0}   sizes {1}&#34;.format(i, sizes_sorted))    
+            for v in range(n):
+                if (v in tree2root):
+                    assert graf.vs[v][&#34;pa&#34;] == None
+                else:
+                    assert graf.vs[v][&#34;pa&#34;] != None    
+        
+        tree2root_sorted = [0] * len(tree2root)       
+        for k in range(len(tree2root)):
+            tree2root_sorted[k] = tree2root[sizes_args[k]]
+            
+        
+        &#34;&#34;&#34; record results &#34;&#34;&#34;
+        
+        if (i &gt;= Burn and i % gap ==0):
+            if (K == 1):
+                freq[0] = freq[0] + countAllHist(graf, tree2root[0])[0]
+            else:   
+
+                node_tree_coo = gibbsSampling.updateInferResults(graf, freq, tree2root,
+                                                   alpha=alpha, beta=beta, size_thresh=size_thresh,
+                                                   birth_thresh=birth_thresh, 
+                                                   node_tree_coo=node_tree_coo)
+            
+    allfreqs = np.array([0] * n)
+
+    for k in range(len(freq)):
+        allfreqs = allfreqs + freq[k]
+        freq[k] = freq[k]/sum(freq[k])
+     
+    allfreqs = allfreqs/sum(allfreqs)
+    return((allfreqs, freq, node_tree_coo, tree2root))</code></pre>
+</details>
+</dd>
+<dt id="PAPER.grafting.gibbsGraftDP"><code class="name flex">
+<span>def <span class="ident">gibbsGraftDP</span></span>(<span>graf, Burn=30, M=50, gap=1, alpha=0, beta=1, alpha0=5, display=True, size_thresh=0.01, birth_thresh=0.8, initroots=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Collapsed grafting sampler for the random K setting.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>graf</code></strong> :&ensp;<code>igraph object</code></dt>
+<dd>Input graph.</dd>
+<dt><strong><code>Burn</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Num of burn in iterations. The default is 30.</dd>
+<dt><strong><code>M</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Num of regular iterations. The default is 50.</dd>
+<dt><strong><code>gap</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Num of samples to skip when recording results.
+The default is 1.</dd>
+<dt><strong><code>alpha</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Parameter. The default is 0.</dd>
+<dt><strong><code>beta</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Parameter. The default is 1.</dd>
+<dt><strong><code>alpha0</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Parameter. The default is 5.</dd>
+<dt><strong><code>display</code></strong> :&ensp;<code>boolean</code>, optional</dt>
+<dd>Detailed display. The default is True.</dd>
+<dt><strong><code>size_thresh</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Thresh for keeping a cluster-tree. The default is 0.01.</dd>
+<dt><strong><code>birth_thresh</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Thresh for creating new distinct cluster-tree
+in output. The default is 0.8.</dd>
+<dt><strong><code>initroots</code></strong> :&ensp;<code>list</code>, optional</dt>
+<dd>root initialization. The default is None.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>0. nparray</code> of <code>length n</code> of <code>posterior root prob</code></dt>
+<dd>&nbsp;</dd>
+<dt><code>1. dict giving posterior root prob for each distinct cluster-tree</code></dt>
+<dd>&nbsp;</dd>
+<dt><code>2. list</code> of <code>all Ks</code></dt>
+<dd>&nbsp;</dd>
+<dt><code>3. final alpha0 (used for initialization)</code></dt>
+<dd>&nbsp;</dd>
+<dt><code>4. final set</code> of <code>roots (used for initialization)</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def gibbsGraftDP(graf, Burn=30, M=50, gap=1, alpha=0, beta=1, alpha0=5, 
+                 display=True, size_thresh=0.01, 
+                 birth_thresh=0.8, initroots=None):
+    &#34;&#34;&#34;
+    Collapsed grafting sampler for the random K setting.
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    Burn : int, optional
+        Num of burn in iterations. The default is 30.
+    M : int, optional
+        Num of regular iterations. The default is 50.
+    gap : int, optional
+        Num of samples to skip when recording results. 
+        The default is 1.
+    alpha : float, optional
+        Parameter. The default is 0.
+    beta : float, optional
+        Parameter. The default is 1.
+    alpha0 : float, optional
+        Parameter. The default is 5.
+    display : boolean, optional
+        Detailed display. The default is True.
+    size_thresh : float, optional
+        Thresh for keeping a cluster-tree. The default is 0.01.
+    birth_thresh : float, optional
+        Thresh for creating new distinct cluster-tree 
+        in output. The default is 0.8.
+    initroots : list, optional
+        root initialization. The default is None.
+
+    Returns
+    -------
+    0. nparray of length n of posterior root prob
+    1. dict giving posterior root prob for each distinct cluster-tree
+    2. list of all Ks
+    3. final alpha0 (used for initialization)
+    4. final set of roots (used for initialization)
+
+    &#34;&#34;&#34;
+    
+    n = len(graf.vs)
+    display=True
+    if (initroots is None):
+        wilsonTree(graf)
+        v = choices(range(n))[0]
+        
+        countSubtreeSizes(graf, v)
+    
+        tree2root = [v]
+    else:
+        tree2root = initroots
+    
+  
+    allK = []
+   
+    
+    if (display):
+        print(&#34;Starting gibbsGraftDP ...&#34;)
+    
+    freq = {}
+    bigK = 0
+    
+    
+    for i in range(Burn + M):
+        
+        treedegs = getAllTreeDeg(graf)
+        
+        for k in range(len(tree2root)):
+            tree2root[k] = sampleRoot(graf, tree2root[k], alpha, beta, degs=treedegs)
+            countSubtreeSizes(graf, tree2root[k])
+        
+        
+        for ii in range(n):
+            if (ii in tree2root and len(tree2root) == 1):
+                continue
+            tree2root = graftSubtreeDP(graf, ii, tree2root, alpha, beta, alpha0, 
+                                       degs=treedegs)[1]
+        
+        K = len(tree2root)
+        alpha0tilde = drawAlpha0tilde(K, n, alpha0/(alpha+2*beta))
+        alpha0 = alpha0tilde*(alpha+2*beta)    
+    
+        sizes = getTreeSizes(graf, tree2root)
+        sizes_sorted = -np.sort( - np.array(sizes))
+        sizes_args = np.argsort( - np.array(sizes))
+    
+        if (display):
+            print(&#34;iter {0}  a0 {1}  K {2}  sizes {3}&#34;.format(i, round(alpha0, 3), 
+                                                          K, sizes_sorted[0:6]))    
+        for v in range(n):
+            if (v in tree2root):
+                assert graf.vs[v][&#34;pa&#34;] == None
+            else:
+                assert graf.vs[v][&#34;pa&#34;] != None    
+        
+        
+        &#34;&#34;&#34; record results:
+        update variable freq, bigK, allK    
+        &#34;&#34;&#34;
+        if (i &gt;= Burn and i % gap == 0):
+            
+            allK.append(len(tree2root))
+            
+            gibbsSampling.updateInferResults(graf, freq, tree2root,
+                               alpha=alpha, beta=beta,
+                               size_thresh=size_thresh,
+                               birth_thresh=birth_thresh)   
+
+    
+    
+    allfreqs = np.array([0] * n)        
+    for k in range(len(freq)):
+        allfreqs = allfreqs + freq[k]
+        freq[k] = freq[k]/sum(freq[k])
+    
+    allfreqs = allfreqs/sum(allfreqs)
+    return((allfreqs, freq, allK, alpha0, tree2root))</code></pre>
+</details>
+</dd>
+<dt id="PAPER.grafting.graftSubtreeDP"><code class="name flex">
+<span>def <span class="ident">graftSubtreeDP</span></span>(<span>graf, u, tree2root, alpha, beta, alpha0, degs=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generates a new parent for node u, potentially
+making u a new root node. Only for the random K setting.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>graf</code></strong> :&ensp;<code>igraph object</code></dt>
+<dd>Input graph.</dd>
+<dt><strong><code>u</code></strong> :&ensp;<code>int</code></dt>
+<dd>Current node id.</dd>
+<dt><strong><code>tree2root</code></strong> :&ensp;<code>list</code></dt>
+<dd>list of all roots.</dd>
+<dt><strong><code>alpha</code></strong> :&ensp;<code>float</code></dt>
+<dd>Parameter.</dd>
+<dt><strong><code>beta</code></strong> :&ensp;<code>float</code></dt>
+<dd>Parameter.</dd>
+<dt><strong><code>alpha0</code></strong> :&ensp;<code>float</code></dt>
+<dd>Parameter</dd>
+<dt><strong><code>degs</code></strong> :&ensp;<code>list</code>, optional</dt>
+<dd>List of all tree degrees. The default is None.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>0. node index</code> of <code>new parent</code> of <code>u; -1 if u becomes a new root</code></dt>
+<dd>&nbsp;</dd>
+<dt><code>1. new list</code> of <code>roots</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def graftSubtreeDP(graf, u, tree2root, alpha, beta, alpha0, degs=None):
+    &#34;&#34;&#34;
+    Generates a new parent for node u, potentially 
+    making u a new root node. Only for the random K setting.
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    u : int
+        Current node id.
+    tree2root : list
+        list of all roots.
+    alpha : float
+        Parameter. 
+    beta : float
+        Parameter. 
+    alpha0 : float
+        Parameter
+    degs : list, optional
+        List of all tree degrees. The default is None.
+
+    Returns
+    -------
+    0. node index of new parent of u; -1 if u becomes a new root
+    1. new list of roots
+
+    &#34;&#34;&#34;
+    n = len(graf.vs)
+    m = len(graf.es)
+    n2 = n*(n-1)/2
+    K = len(tree2root)
+    
+    u_edge_ixs = graf.incident(u)
+    old_pa = graf.vs[u][&#34;pa&#34;]
+    uisroot = (old_pa == None)
+    
+    u_size = graf.vs[u][&#34;subtree_size&#34;]
+    
+    wts = []
+    pas = []   
+    
+    for eid in u_edge_ixs:
+        my_e = graf.es[eid]
+        
+        utilde = otherNode(my_e, u)
+        
+        ants = getAncestors(graf, utilde, u)
+        if (ants == -1):
+            continue
+        
+        if (degs is None):
+            utildedeg = treeDegree(graf, utilde)
+        else:
+            utildedeg = degs[utilde]
+
+        if (old_pa == utilde):
+            ants_big_sizes = np.array(graf.vs[ants][&#34;subtree_size&#34;])
+            ants_sm_sizes = ants_big_sizes - u_size
+            if (utilde in tree2root):
+                deg_adj = beta*(utildedeg+1) + alpha
+            else:
+                deg_adj = beta*(utildedeg-1) + alpha
+        
+        else:
+            ants_sm_sizes = np.array(graf.vs[ants][&#34;subtree_size&#34;])
+            ants_big_sizes = ants_sm_sizes + u_size
+            if (utilde in tree2root):
+                deg_adj = beta*(utildedeg+2) + alpha
+            else:
+                deg_adj = beta*(utildedeg) + alpha
+        
+        my_wt = deg_adj * \
+            np.exp(np.sum(np.log(ants_sm_sizes) - np.log(ants_big_sizes)))
+            
+        pas.append(utilde)
+        wts.append(my_wt)
+    
+    &#34;&#34;&#34; add option for u to become root &#34;&#34;&#34;
+    my_wt = alpha0 * (m-n+K+1 -uisroot)/(n2-n+K+1 -uisroot)
+        
+    if (degs is None):
+        udeg = treeDegree(graf, u)
+    else:
+        udeg = degs[u]
+    
+    my_wt = my_wt * (beta*udeg +beta*uisroot +alpha)/(beta+alpha) 
+    
+    wts.append(my_wt)
+    pas.append(-1)
+    
+    &#34;&#34;&#34; choose the new parent &#34;&#34;&#34;
+    new_pa = choices(pas, wts)[0]
+    
+    if (new_pa == -1): 
+        new_pa = None
+    
+    &#34;&#34;&#34; make adjustments &#34;&#34;&#34;    
+    if (new_pa == old_pa):
+        return((old_pa, tree2root))
+    else:
+        
+        graf.vs[u][&#34;pa&#34;] = new_pa
+        
+        if (old_pa != None):
+            old_edge_ix = graf.get_eids( [(u, old_pa)] )[0]
+            graf.es[old_edge_ix][&#34;tree&#34;] = 0
+        
+            old_ants = getAncestors(graf, old_pa, u)
+            for w in old_ants:
+                graf.vs[w][&#34;subtree_size&#34;] = graf.vs[w][&#34;subtree_size&#34;] - u_size
+                assert graf.vs[w][&#34;subtree_size&#34;] &gt; 0
+        else:
+            tree2root.remove(u)
+            
+        if (new_pa != None):
+            new_edge_ix = graf.get_eids( [(u, new_pa)] )[0]
+            graf.es[new_edge_ix][&#34;tree&#34;] = 1
+        
+            new_ants = getAncestors(graf, new_pa, u)
+            for w in new_ants:
+                graf.vs[w][&#34;subtree_size&#34;] = graf.vs[w][&#34;subtree_size&#34;] + u_size
+        else:
+            tree2root.append(u)
+        
+        if (degs is not None):
+            if (old_pa != None):
+                degs[old_pa] = degs[old_pa] - 1
+            else:
+                degs[u] = degs[u] + 1
+                
+            if (new_pa != None):
+                degs[new_pa] = degs[new_pa] + 1
+            else:
+                degs[u] = degs[u] - 1
+        
+        return((new_pa, tree2root))</code></pre>
+</details>
+</dd>
+<dt id="PAPER.grafting.graftSubtreePA"><code class="name flex">
+<span>def <span class="ident">graftSubtreePA</span></span>(<span>graf, u, tree2root, alpha, beta, degs=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generates a new parent for node u.
+Only for the fixed K setting</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>graf</code></strong> :&ensp;<code>igraph object</code></dt>
+<dd>Input graph.</dd>
+<dt><strong><code>u</code></strong> :&ensp;<code>int</code></dt>
+<dd>Current node id.</dd>
+<dt><strong><code>tree2root</code></strong> :&ensp;<code>list</code></dt>
+<dd>list of all roots.</dd>
+<dt><strong><code>alpha</code></strong> :&ensp;<code>float</code></dt>
+<dd>Parameter.</dd>
+<dt><strong><code>beta</code></strong> :&ensp;<code>float</code></dt>
+<dd>Parameter.</dd>
+<dt><strong><code>degs</code></strong> :&ensp;<code>list</code>, optional</dt>
+<dd>List of all tree degrees. The default is None.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>node index</code> of <code>new parent</code> of <code>u; -1 if u becomes a new root</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def graftSubtreePA(graf, u, tree2root, alpha, beta, degs=None):
+    &#34;&#34;&#34;
+    Generates a new parent for node u. 
+    Only for the fixed K setting
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    u : int
+        Current node id.
+    tree2root : list
+        list of all roots.
+    alpha : float
+        Parameter. 
+    beta : float
+        Parameter. 
+    degs : list, optional
+        List of all tree degrees. The default is None.
+
+    Returns
+    -------
+    node index of new parent of u; -1 if u becomes a new root
+
+    &#34;&#34;&#34;
+    assert not (u in tree2root)
+
+    multi_root = (len(tree2root) &gt; 1)
+    
+    u_size = graf.vs[u][&#34;subtree_size&#34;]
+    
+    pas = []
+    wts = []
+    u_edge_ixs = graf.incident(u)
+    
+    old_pa = graf.vs[u][&#34;pa&#34;]
+    
+    if (old_pa == None):
+        print(&#34;culprit {0}&#34;.format(u))
+    assert old_pa != None
+    
+    for eid in u_edge_ixs:
+        my_e = graf.es[eid]
+        utilde = otherNode(my_e, u)
+        
+        ants = getAncestors(graf, utilde, u)
+        if (ants == -1):
+            continue
+
+        if (degs is None):
+            utildedeg = treeDegree(graf, utilde)
+        else:
+            utildedeg = degs[utilde]
+        
+        &#34;&#34;&#34; if utilde is root, do not compute subtree sizes&#34;&#34;&#34;
+        if (len(ants) == 1):
+            assert graf.vs[utilde][&#34;pa&#34;] == None
+            my_wt = 1
+            
+            deg_adj = beta*(utildedeg-(utilde == old_pa)+ \
+                             2*multi_root) + alpha
+            
+            wts.append(my_wt*deg_adj)
+            pas.append(utilde)
+            continue
+        
+        &#34;&#34;&#34; if utilde is not root, compute subtree size without
+            root node &#34;&#34;&#34;
+        ants.pop(-1)
+        if (old_pa == utilde):
+            ants_big_sizes = np.array(graf.vs[ants][&#34;subtree_size&#34;])
+            ants_sm_sizes = ants_big_sizes - u_size  
+            deg_adj = beta*(utildedeg-1) + alpha
+            
+        else:
+            ants_sm_sizes = np.array(graf.vs[ants][&#34;subtree_size&#34;])
+            ants_big_sizes = ants_sm_sizes + u_size
+            deg_adj = beta*utildedeg + alpha
+    
+        my_wt = deg_adj * \
+            np.exp(np.sum(np.log(ants_sm_sizes) - np.log(ants_big_sizes)))
+    
+        pas.append(utilde)
+        wts.append(my_wt)
+        
+    &#34;&#34;&#34; draw a new parent &#34;&#34;&#34;
+    new_pa = choices(pas, weights=wts)[0]
+    
+    if (new_pa == old_pa):
+        return(old_pa)
+    else:
+        graf.vs[u][&#34;pa&#34;] = new_pa
+        old_edge_ix = graf.get_eids( [(u, old_pa)] )[0]
+        graf.es[old_edge_ix][&#34;tree&#34;] = False
+    
+        new_edge_ix = graf.get_eids( [(u, new_pa)] )[0]
+        graf.es[new_edge_ix][&#34;tree&#34;] = True
+    
+        if (degs is not None):
+            degs[old_pa] = degs[old_pa] - 1
+            degs[new_pa] = degs[new_pa] + 1
+    
+    
+        new_ants = getAncestors(graf, new_pa, u)
+        for ix in new_ants:
+            graf.vs[ix][&#34;subtree_size&#34;] = graf.vs[ix][&#34;subtree_size&#34;] + u_size
+                
+        
+        old_ants = getAncestors(graf, old_pa, u)
+        for ix in old_ants:
+            graf.vs[ix][&#34;subtree_size&#34;] = graf.vs[ix][&#34;subtree_size&#34;] - u_size
+            assert graf.vs[ix][&#34;subtree_size&#34;] &gt; 0
+            
+        return(new_pa)        </code></pre>
+</details>
+</dd>
+<dt id="PAPER.grafting.sampleRoot"><code class="name flex">
+<span>def <span class="ident">sampleRoot</span></span>(<span>graf, v, alpha, beta, single_root=False, degs=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generates a new root for the single tree containing node v.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>graf</code></strong> :&ensp;<code>igraph object</code></dt>
+<dd>Input graph.</dd>
+<dt><strong><code>v</code></strong> :&ensp;<code>int</code></dt>
+<dd>Node id representing the tree.</dd>
+<dt><strong><code>alpha</code></strong> :&ensp;<code>float</code></dt>
+<dd>Parameter.</dd>
+<dt><strong><code>beta</code></strong> :&ensp;<code>float</code></dt>
+<dd>Parameter.</dd>
+<dt><strong><code>single_root</code></strong> :&ensp;<code>boolean</code>, optional</dt>
+<dd>True iff K==1. The default is False.</dd>
+<dt><strong><code>degs</code></strong> :&ensp;<code>list</code>, optional</dt>
+<dd>list of all the tree degrees. The default is None.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>0. index</code> of <code>new root</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sampleRoot(graf, v, alpha, beta, single_root=False, degs=None):
+    &#34;&#34;&#34;
+    Generates a new root for the single tree containing node v.
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    v : int
+        Node id representing the tree.
+    alpha : float
+        Parameter.
+    beta : float
+        Parameter.
+    single_root : boolean, optional
+        True iff K==1. The default is False.
+    degs : list, optional
+        list of all the tree degrees. The default is None.
+
+    Returns
+    -------
+    0. index of new root
+
+    &#34;&#34;&#34;
+    n = len(graf.vs)
+    
+    if (graf.vs[v][&#34;subtree_size&#34;] == 1):
+        return(v)
+    
+    normalized_h = countAllHist(graf, v)[0]
+    
+    if (degs is None):
+        degs = getAllTreeDeg(graf)
+    
+    deg_adj = (beta*degs + beta + alpha)*(beta*degs + alpha)
+    
+    if (not single_root):
+        tmp_p = normalized_h*deg_adj
+    else:
+        tmp_p = normalized_h
+    
+    
+    newroot = choices(range(n), tmp_p)[0]
+    return(newroot)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="PAPER" href="index.html">PAPER</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="PAPER.grafting.gibbsGraft" href="#PAPER.grafting.gibbsGraft">gibbsGraft</a></code></li>
+<li><code><a title="PAPER.grafting.gibbsGraftDP" href="#PAPER.grafting.gibbsGraftDP">gibbsGraftDP</a></code></li>
+<li><code><a title="PAPER.grafting.graftSubtreeDP" href="#PAPER.grafting.graftSubtreeDP">graftSubtreeDP</a></code></li>
+<li><code><a title="PAPER.grafting.graftSubtreePA" href="#PAPER.grafting.graftSubtreePA">graftSubtreePA</a></code></li>
+<li><code><a title="PAPER.grafting.sampleRoot" href="#PAPER.grafting.sampleRoot">sampleRoot</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

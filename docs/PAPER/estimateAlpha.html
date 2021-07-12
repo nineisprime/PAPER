@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>PAPER.estimateAlpha API documentation</title>
+<meta name="description" content="Created on Sat Apr 24 13:45:51 2021 …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>PAPER.estimateAlpha</code></h1>
+</header>
+<section id="section-intro">
+<p>Created on Sat Apr 24 13:45:51 2021</p>
+<p>@author: minx</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+&#34;&#34;&#34;
+Created on Sat Apr 24 13:45:51 2021
+
+@author: minx
+&#34;&#34;&#34;
+
+
+from PAPER.tree_tools import *
+from igraph import *
+import numpy as np
+from random import choices
+
+import time
+
+
+      
+def estimateAlphaEM(graf, K=1, maxiter=40, alpha_init=1, display=True):
+    &#34;&#34;&#34;
+    Assumes beta=1, estimates alpha via approximate EM algorithm. Assumes
+    PAPER model for input graph. Warning: very slow when maximum degree is
+    over 10,000. 
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    K : int, optional
+        Number of clusters. The default is 1.
+    maxiter : int, optional
+        Maximum number of EM iterations. The default is 40.
+    alpha_init : float, optional
+        Initial value of alpha. The default is 1.
+    display : boolean, optional
+        The default is True.
+
+    Returns
+    -------
+    float: estimated alpha.
+
+    &#34;&#34;&#34;
+    m = len(graf.es)
+    n = len(graf.vs)
+    
+    degseq = graf.degree()
+    max_deg = max(degseq)
+    
+    thetahat = (m - (n-K)) / ( n*(n-1)/2 - (n-K) )
+    
+    #alpha_init = 1
+    alphap = alpha_init
+
+    for i in range(maxiter):
+        ## condprob[k, s] = P( D_T(v) = s | D_G(v) = k)
+        condprob = np.zeros((max_deg+1, max_deg+1))
+        ## cumprob[k, s] = P( D_T(v) &gt; s | D_G(v) = k)
+        cumprob = np.zeros((max_deg+1, max_deg+1))
+        
+        for k in range(1, max_deg+1):
+            
+            if (k &gt; 5*n*thetahat):
+                
+                condprob[k, k] = 1
+                for s in range(k-1, 0, -1):
+                    ## Bin_{n-s, theta}(k-s) / Bin_{n-(s+1), theta}(k-(s+1)) 
+                    ## PA_alpha(s) / PA_alpha(s+1)
+                    condprob[k, s] = condprob[k, s+1] * (n-s)*thetahat \
+                                        * (1/(k-s))  \
+                                        * (s+3+2*alphap)/(s+alphap)                                         
+            
+            else:
+                
+                condprob[k, 1] = 1
+                for s in range(2, k+1):
+                    ## Bin_{n-s, theta}(k-s) / Bin_{n-(s-1), theta}(k-(s-1)) 
+                    ## PA_alpha(s) / PA_alpha(s-1)
+                    condprob[k, s] = condprob[k, s-1] / ( (n-(s-1))*thetahat) \
+                                        * (k-(s-1))  \
+                                        * ((s-1)+alphap)/((s-1)+3+2*alphap)
+                               
+            
+            
+            ## normalize
+            condprob[k, ] = condprob[k, ]/sum(condprob[k, ])
+     
+            ## compute cumulative conditional
+            cumprob[k, k] = 0
+            for s in range(k-1, 0, -1):
+                cumprob[k, s] = cumprob[k, s+1] + condprob[k, s+1]
+            
+            #for s in range(1, k):
+            #    cumprob[k, s] = sum( condprob[k, (s+1):(k+1)] )
+ 
+        
+        Mterm = [0] * max_deg       
+        for j in range(max_deg):
+            for ii in range(n):   
+                Mterm[j] = Mterm[j] + cumprob[degseq[ii], j+1]
+        
+        Mterm = np.array(Mterm)
+        Mterm = Mterm * n / sum(Mterm)
+        
+        ##print(Mterm)
+        
+        ## update alpha
+        
+        
+        alpha_next = optimizeAlpha(Mterm, n, alphap)
+    
+        if (display):   
+            print(&#34;Optimizing...&#34;)
+            print((i, alpha_next, thetahat))
+    
+        if (abs(alpha_next - alphap) &lt; 1e-4):
+            if (display):
+                print(&#34;EM converged.&#34;)
+            break
+        
+        alphap = alpha_next    
+    
+    return(alphap)
+
+
+&#34;&#34;&#34;    
+
+
+&#34;&#34;&#34;  
+def optimizeAlpha(Mterm, n, alphainit=1):
+    &#34;&#34;&#34;
+    Use radient descent with line search to compute
+
+        max_alpha sum_j log(j + alpha) M[j] - sum_k log(2 (k-2) + (k-1)alpha )
+
+    Parameters
+    ----------
+    Mterm : nparray
+        M in optimization objective.
+    n : int
+        Num of nodes.
+    alphainit : float, optional
+        initial value. The default is 1.
+
+    Returns
+    -------
+    alpha : float, argmax.
+
+    &#34;&#34;&#34;
+    
+    max_deg = len(Mterm)
+    
+    maxiter = 50
+    
+    alpha = alphainit
+    ##alpha_next = alpha
+    
+    ls_a = 0.1
+    ls_b = 0.5
+    stepsize = 1
+    
+    ks = np.array( range(3, n+1) )
+    js = np.array( range(1, max_deg+1))
+    
+    
+    for i in range(maxiter):
+        
+        grad1 = sum(1/(js + alpha) * Mterm)
+        grad1 = grad1 - sum( (ks - 1)/(2*(ks - 2) + (ks - 1)*alpha) )
+        
+        if (abs(grad1) &lt; 1e-4):
+            break
+        if (alpha &lt; 1e-4 and grad1 &lt; 1e-4):
+            break
+        
+        for ii in range(maxiter):
+            
+            alphap = max(alpha + stepsize * grad1, 0)
+            diff = alphap - alpha
+            
+            
+            old_val = sum(np.log(js + alpha) * Mterm)  \
+                      - sum( np.log(2*(ks-2) + (ks-1)*alpha) )
+            new_val = sum(np.log(js + alphap) * Mterm) \
+                      - sum( np.log(2*(ks-2) + (ks-1)*alphap) )
+            
+            ##print((stepsize, grad1, new_val, old_val))
+            
+            if (new_val &gt; old_val + ls_a * stepsize * grad1 * diff):
+                alpha = alphap
+                break
+            else:
+                stepsize = stepsize * ls_b
+    
+    
+    return(alpha)
+
+
+
+def drawAlpha0tilde(K, n, alpha0tilde, a=1, b=0.1, M=150):
+    &#34;&#34;&#34;
+    Given K, draw alpha0 by gibbs Sampling.
+    In APA_(alpha, beta, alpha0), define alpha0tilde = alpha0/(2 beta + alpha)
+    We give alpha0tilde prior Gamma(a, b)    
+
+    Parameters
+    ----------
+    K : int
+        Num of clusters.
+    n : int
+        Num of nodes.
+    alpha0tilde : float
+        previous alpha0tilde value.
+    a : float, optional
+        prior parameter. The default is 1.
+    b : float, optional
+        prior parameter. The default is 0.1.
+    M : int, optional
+        gibbs iteration. The default is 150.
+
+    Returns
+    -------
+    float; next alpha0tilde value.
+
+    &#34;&#34;&#34;
+    
+    cur_a0 = alpha0tilde
+    a0_ls = []
+    
+    for i in range(M):
+        x = np.random.beta(cur_a0+1, n)
+        
+        Z = choices( [0,1], weights=[(a+K-1)/(n*(b-np.log(x))), 1] )[0]
+        
+        if (Z == 0):
+            cur_a0 = np.random.gamma(a+K, 1/(b-np.log(x)))
+        else:
+            cur_a0 = np.random.gamma(a+K-1, 1/(b-np.log(x)))
+            
+        a0_ls.append(cur_a0)
+        #print((x, Z, cur_a0))
+
+    return(np.mean(np.array(a0_ls)))
+
+
+
+
+def optimizeAlpha0(K, n, maxiter=50):
+    &#34;&#34;&#34;
+    Compute
+
+    max_alpha0 (K-1)log(alpha0) - sum_{i=1}^{n-1} log( alpha0 + 2i )    
+
+    Parameters
+    ----------
+    K : TYPE
+        DESCRIPTION.
+    n : TYPE
+        DESCRIPTION.
+    maxiter : TYPE, optional
+        DESCRIPTION. The default is 50.
+
+    Returns
+    -------
+    None.
+
+    &#34;&#34;&#34;
+    
+    alpha0 = 1
+    stepsize = .5
+    ls_a = 0.2
+    ls_b = 0.5
+    
+    js = np.array( range(1, n) )
+    for i in range(maxiter):
+        grad1 = (K-1)/alpha0 - sum(1/(alpha0 + 2*js))
+        
+        if (abs(grad1) &lt; 1e-4):
+            break
+        if (alpha0 &lt; 1e-4 and grad1 &lt; 1e-4):
+            break
+        
+        for ii in range(maxiter):
+            alphap = max(alpha0 + stepsize*grad1, 1e-6)
+            diff = alphap - alpha0
+            
+            
+            old_val = (K-1)*np.log(alpha0) - sum( np.log(2*js + alpha0))
+            new_val = (K-1)*np.log(alphap) - sum( np.log(2*js + alphap))
+            
+            if (new_val &gt; old_val + ls_a*stepsize*grad1*diff):
+                alpha0 = alphap
+                break
+            else:
+                stepsize = stepsize * ls_b
+        
+    return(alpha0)
+    
+    </code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="PAPER.estimateAlpha.drawAlpha0tilde"><code class="name flex">
+<span>def <span class="ident">drawAlpha0tilde</span></span>(<span>K, n, alpha0tilde, a=1, b=0.1, M=150)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Given K, draw alpha0 by gibbs Sampling.
+In APA_(alpha, beta, alpha0), define alpha0tilde = alpha0/(2 beta + alpha)
+We give alpha0tilde prior Gamma(a, b)
+</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>K</code></strong> :&ensp;<code>int</code></dt>
+<dd>Num of clusters.</dd>
+<dt><strong><code>n</code></strong> :&ensp;<code>int</code></dt>
+<dd>Num of nodes.</dd>
+<dt><strong><code>alpha0tilde</code></strong> :&ensp;<code>float</code></dt>
+<dd>previous alpha0tilde value.</dd>
+<dt><strong><code>a</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>prior parameter. The default is 1.</dd>
+<dt><strong><code>b</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>prior parameter. The default is 0.1.</dd>
+<dt><strong><code>M</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>gibbs iteration. The default is 150.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>float; next alpha0tilde value.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def drawAlpha0tilde(K, n, alpha0tilde, a=1, b=0.1, M=150):
+    &#34;&#34;&#34;
+    Given K, draw alpha0 by gibbs Sampling.
+    In APA_(alpha, beta, alpha0), define alpha0tilde = alpha0/(2 beta + alpha)
+    We give alpha0tilde prior Gamma(a, b)    
+
+    Parameters
+    ----------
+    K : int
+        Num of clusters.
+    n : int
+        Num of nodes.
+    alpha0tilde : float
+        previous alpha0tilde value.
+    a : float, optional
+        prior parameter. The default is 1.
+    b : float, optional
+        prior parameter. The default is 0.1.
+    M : int, optional
+        gibbs iteration. The default is 150.
+
+    Returns
+    -------
+    float; next alpha0tilde value.
+
+    &#34;&#34;&#34;
+    
+    cur_a0 = alpha0tilde
+    a0_ls = []
+    
+    for i in range(M):
+        x = np.random.beta(cur_a0+1, n)
+        
+        Z = choices( [0,1], weights=[(a+K-1)/(n*(b-np.log(x))), 1] )[0]
+        
+        if (Z == 0):
+            cur_a0 = np.random.gamma(a+K, 1/(b-np.log(x)))
+        else:
+            cur_a0 = np.random.gamma(a+K-1, 1/(b-np.log(x)))
+            
+        a0_ls.append(cur_a0)
+        #print((x, Z, cur_a0))
+
+    return(np.mean(np.array(a0_ls)))</code></pre>
+</details>
+</dd>
+<dt id="PAPER.estimateAlpha.estimateAlphaEM"><code class="name flex">
+<span>def <span class="ident">estimateAlphaEM</span></span>(<span>graf, K=1, maxiter=40, alpha_init=1, display=True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Assumes beta=1, estimates alpha via approximate EM algorithm. Assumes
+PAPER model for input graph. Warning: very slow when maximum degree is
+over 10,000. </p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>graf</code></strong> :&ensp;<code>igraph object</code></dt>
+<dd>Input graph.</dd>
+<dt><strong><code>K</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Number of clusters. The default is 1.</dd>
+<dt><strong><code>maxiter</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Maximum number of EM iterations. The default is 40.</dd>
+<dt><strong><code>alpha_init</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Initial value of alpha. The default is 1.</dd>
+<dt><strong><code>display</code></strong> :&ensp;<code>boolean</code>, optional</dt>
+<dd>The default is True.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>float: estimated alpha.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def estimateAlphaEM(graf, K=1, maxiter=40, alpha_init=1, display=True):
+    &#34;&#34;&#34;
+    Assumes beta=1, estimates alpha via approximate EM algorithm. Assumes
+    PAPER model for input graph. Warning: very slow when maximum degree is
+    over 10,000. 
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    K : int, optional
+        Number of clusters. The default is 1.
+    maxiter : int, optional
+        Maximum number of EM iterations. The default is 40.
+    alpha_init : float, optional
+        Initial value of alpha. The default is 1.
+    display : boolean, optional
+        The default is True.
+
+    Returns
+    -------
+    float: estimated alpha.
+
+    &#34;&#34;&#34;
+    m = len(graf.es)
+    n = len(graf.vs)
+    
+    degseq = graf.degree()
+    max_deg = max(degseq)
+    
+    thetahat = (m - (n-K)) / ( n*(n-1)/2 - (n-K) )
+    
+    #alpha_init = 1
+    alphap = alpha_init
+
+    for i in range(maxiter):
+        ## condprob[k, s] = P( D_T(v) = s | D_G(v) = k)
+        condprob = np.zeros((max_deg+1, max_deg+1))
+        ## cumprob[k, s] = P( D_T(v) &gt; s | D_G(v) = k)
+        cumprob = np.zeros((max_deg+1, max_deg+1))
+        
+        for k in range(1, max_deg+1):
+            
+            if (k &gt; 5*n*thetahat):
+                
+                condprob[k, k] = 1
+                for s in range(k-1, 0, -1):
+                    ## Bin_{n-s, theta}(k-s) / Bin_{n-(s+1), theta}(k-(s+1)) 
+                    ## PA_alpha(s) / PA_alpha(s+1)
+                    condprob[k, s] = condprob[k, s+1] * (n-s)*thetahat \
+                                        * (1/(k-s))  \
+                                        * (s+3+2*alphap)/(s+alphap)                                         
+            
+            else:
+                
+                condprob[k, 1] = 1
+                for s in range(2, k+1):
+                    ## Bin_{n-s, theta}(k-s) / Bin_{n-(s-1), theta}(k-(s-1)) 
+                    ## PA_alpha(s) / PA_alpha(s-1)
+                    condprob[k, s] = condprob[k, s-1] / ( (n-(s-1))*thetahat) \
+                                        * (k-(s-1))  \
+                                        * ((s-1)+alphap)/((s-1)+3+2*alphap)
+                               
+            
+            
+            ## normalize
+            condprob[k, ] = condprob[k, ]/sum(condprob[k, ])
+     
+            ## compute cumulative conditional
+            cumprob[k, k] = 0
+            for s in range(k-1, 0, -1):
+                cumprob[k, s] = cumprob[k, s+1] + condprob[k, s+1]
+            
+            #for s in range(1, k):
+            #    cumprob[k, s] = sum( condprob[k, (s+1):(k+1)] )
+ 
+        
+        Mterm = [0] * max_deg       
+        for j in range(max_deg):
+            for ii in range(n):   
+                Mterm[j] = Mterm[j] + cumprob[degseq[ii], j+1]
+        
+        Mterm = np.array(Mterm)
+        Mterm = Mterm * n / sum(Mterm)
+        
+        ##print(Mterm)
+        
+        ## update alpha
+        
+        
+        alpha_next = optimizeAlpha(Mterm, n, alphap)
+    
+        if (display):   
+            print(&#34;Optimizing...&#34;)
+            print((i, alpha_next, thetahat))
+    
+        if (abs(alpha_next - alphap) &lt; 1e-4):
+            if (display):
+                print(&#34;EM converged.&#34;)
+            break
+        
+        alphap = alpha_next    
+    
+    return(alphap)</code></pre>
+</details>
+</dd>
+<dt id="PAPER.estimateAlpha.optimizeAlpha"><code class="name flex">
+<span>def <span class="ident">optimizeAlpha</span></span>(<span>Mterm, n, alphainit=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Use radient descent with line search to compute</p>
+<pre><code>max_alpha sum_j log(j + alpha) M[j] - sum_k log(2 (k-2) + (k-1)alpha )
+</code></pre>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>Mterm</code></strong> :&ensp;<code>nparray</code></dt>
+<dd>M in optimization objective.</dd>
+<dt><strong><code>n</code></strong> :&ensp;<code>int</code></dt>
+<dd>Num of nodes.</dd>
+<dt><strong><code>alphainit</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>initial value. The default is 1.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>alpha : float, argmax.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def optimizeAlpha(Mterm, n, alphainit=1):
+    &#34;&#34;&#34;
+    Use radient descent with line search to compute
+
+        max_alpha sum_j log(j + alpha) M[j] - sum_k log(2 (k-2) + (k-1)alpha )
+
+    Parameters
+    ----------
+    Mterm : nparray
+        M in optimization objective.
+    n : int
+        Num of nodes.
+    alphainit : float, optional
+        initial value. The default is 1.
+
+    Returns
+    -------
+    alpha : float, argmax.
+
+    &#34;&#34;&#34;
+    
+    max_deg = len(Mterm)
+    
+    maxiter = 50
+    
+    alpha = alphainit
+    ##alpha_next = alpha
+    
+    ls_a = 0.1
+    ls_b = 0.5
+    stepsize = 1
+    
+    ks = np.array( range(3, n+1) )
+    js = np.array( range(1, max_deg+1))
+    
+    
+    for i in range(maxiter):
+        
+        grad1 = sum(1/(js + alpha) * Mterm)
+        grad1 = grad1 - sum( (ks - 1)/(2*(ks - 2) + (ks - 1)*alpha) )
+        
+        if (abs(grad1) &lt; 1e-4):
+            break
+        if (alpha &lt; 1e-4 and grad1 &lt; 1e-4):
+            break
+        
+        for ii in range(maxiter):
+            
+            alphap = max(alpha + stepsize * grad1, 0)
+            diff = alphap - alpha
+            
+            
+            old_val = sum(np.log(js + alpha) * Mterm)  \
+                      - sum( np.log(2*(ks-2) + (ks-1)*alpha) )
+            new_val = sum(np.log(js + alphap) * Mterm) \
+                      - sum( np.log(2*(ks-2) + (ks-1)*alphap) )
+            
+            ##print((stepsize, grad1, new_val, old_val))
+            
+            if (new_val &gt; old_val + ls_a * stepsize * grad1 * diff):
+                alpha = alphap
+                break
+            else:
+                stepsize = stepsize * ls_b
+    
+    
+    return(alpha)</code></pre>
+</details>
+</dd>
+<dt id="PAPER.estimateAlpha.optimizeAlpha0"><code class="name flex">
+<span>def <span class="ident">optimizeAlpha0</span></span>(<span>K, n, maxiter=50)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute</p>
+<p>max_alpha0 (K-1)log(alpha0) - sum_{i=1}^{n-1} log( alpha0 + 2i )
+</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>K</code></strong> :&ensp;<code>TYPE</code></dt>
+<dd>DESCRIPTION.</dd>
+<dt><strong><code>n</code></strong> :&ensp;<code>TYPE</code></dt>
+<dd>DESCRIPTION.</dd>
+<dt><strong><code>maxiter</code></strong> :&ensp;<code>TYPE</code>, optional</dt>
+<dd>DESCRIPTION. The default is 50.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def optimizeAlpha0(K, n, maxiter=50):
+    &#34;&#34;&#34;
+    Compute
+
+    max_alpha0 (K-1)log(alpha0) - sum_{i=1}^{n-1} log( alpha0 + 2i )    
+
+    Parameters
+    ----------
+    K : TYPE
+        DESCRIPTION.
+    n : TYPE
+        DESCRIPTION.
+    maxiter : TYPE, optional
+        DESCRIPTION. The default is 50.
+
+    Returns
+    -------
+    None.
+
+    &#34;&#34;&#34;
+    
+    alpha0 = 1
+    stepsize = .5
+    ls_a = 0.2
+    ls_b = 0.5
+    
+    js = np.array( range(1, n) )
+    for i in range(maxiter):
+        grad1 = (K-1)/alpha0 - sum(1/(alpha0 + 2*js))
+        
+        if (abs(grad1) &lt; 1e-4):
+            break
+        if (alpha0 &lt; 1e-4 and grad1 &lt; 1e-4):
+            break
+        
+        for ii in range(maxiter):
+            alphap = max(alpha0 + stepsize*grad1, 1e-6)
+            diff = alphap - alpha0
+            
+            
+            old_val = (K-1)*np.log(alpha0) - sum( np.log(2*js + alpha0))
+            new_val = (K-1)*np.log(alphap) - sum( np.log(2*js + alphap))
+            
+            if (new_val &gt; old_val + ls_a*stepsize*grad1*diff):
+                alpha0 = alphap
+                break
+            else:
+                stepsize = stepsize * ls_b
+        
+    return(alpha0)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="PAPER" href="index.html">PAPER</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="PAPER.estimateAlpha.drawAlpha0tilde" href="#PAPER.estimateAlpha.drawAlpha0tilde">drawAlpha0tilde</a></code></li>
+<li><code><a title="PAPER.estimateAlpha.estimateAlphaEM" href="#PAPER.estimateAlpha.estimateAlphaEM">estimateAlphaEM</a></code></li>
+<li><code><a title="PAPER.estimateAlpha.optimizeAlpha" href="#PAPER.estimateAlpha.optimizeAlpha">optimizeAlpha</a></code></li>
+<li><code><a title="PAPER.estimateAlpha.optimizeAlpha0" href="#PAPER.estimateAlpha.optimizeAlpha0">optimizeAlpha0</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

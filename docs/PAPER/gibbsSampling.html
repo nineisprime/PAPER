@@ -1,0 +1,2122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>PAPER.gibbsSampling API documentation</title>
+<meta name="description" content="Created on Sat Apr 24 13:43:28 2021 …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>PAPER.gibbsSampling</code></h1>
+</header>
+<section id="section-intro">
+<p>Created on Sat Apr 24 13:43:28 2021</p>
+<p>@author: minx</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+&#34;&#34;&#34;
+Created on Sat Apr 24 13:43:28 2021
+
+@author: minx
+&#34;&#34;&#34;
+
+from PAPER.tree_tools import *
+import time
+from random import choices
+from igraph import *
+import numpy as np
+import collections
+import scipy.optimize
+
+from PAPER.estimateAlpha import *
+import PAPER.grafting as grafting
+
+
+
+def gibbsToConv(graf, DP=False, K=1, 
+                alpha=0, beta=0, alpha0=50,
+                Burn=10, M=40, gap=1, 
+                MAXITER=100, tol=0.1, 
+                size_thresh=0.01, birth_thresh=0.8,
+                method=&#34;full&#34;,
+                burn_thresh = 0.95):
+    &#34;&#34;&#34;
+    Run gibbs sampler to generate posterior root probs.
+    
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    DP : boolean, optional
+        Use random K model or not. The default is False.
+    K : int, optional
+        Num of cluster-trees. Ignored if DP is True. The default is 1.
+    alpha : float, optional
+        Parameter. Set both alpha=0 and beta=0 (default) to 
+        estimate the parameters via EM. The default is 0. 
+    beta : float, optional
+        Parameter. Set both alpha=0 and beta=0 (default) to estimate
+        the parameter via EM. The default is 0.
+    alpha0 : float, optional
+        Initialization for parameter. Ignored if DP is False. The default is 50.
+    Burn : int, optional
+        Num of burn iteration. Unimportant if chain runs to 
+        convergence. The default is 10.
+    M : int, optional
+        Num of iterations per convergence check. The default is 40.
+    gap : int, optional
+        Num of samples to skip for recording results. The default is 1.
+    MAXITER : int, optional
+        Maximum number of convergence checks. The default is 100.
+    tol : float, optional
+        Convergence threshold. The default is 0.1.
+    size_thresh : float, optional
+        Thresh for keeping a cluster-tree. 
+        Ignored if K==1. The default is 0.01.
+    birth_thresh : float, optional
+        Thresh for creating new distinct cluster-tree 
+        in output. 
+        Ignored if K==1.
+        The default is 0.8.
+    method : string, optional
+        Either &#34;full&#34; or &#34;collapsed&#34;. The default is &#34;full&#34;.
+    burn_thresh : float, optional
+        Criterion for determining whether burn in is
+        complete. The default is 0.95.
+
+    Returns
+    -------
+    0. nparray of posterior root probs
+    1. first chain outputs
+    2. second chain outputs
+
+    &#34;&#34;&#34;
+    
+    n = len(graf.vs)
+    m = len(graf.es)
+    graf2 = graf.copy()
+    
+    if (alpha == 0 and beta == 0):
+        beta = 1
+        alpha = estimateAlphaEM(graf, display=False)
+        print(&#34;Estimated alpha as {0}&#34;.format(alpha))
+    else:
+        print(&#34;Using alpha {0} and beta {1}&#34;.format(alpha, beta))
+    
+    if (DP):
+        print(&#34;Using random K model&#34;)
+    else:
+        print(&#34;Using fixed K={0} model&#34;.format(K))
+        
+        
+    
+    options = {&#34;Burn&#34;: Burn, &#34;M&#34;: M, &#34;gap&#34;: gap, &#34;alpha&#34;: alpha, 
+               &#34;beta&#34;: beta, &#34;display&#34;: False, &#34;size_thresh&#34;: size_thresh,
+               &#34;birth_thresh&#34;: birth_thresh}    
+    
+    
+    if (DP and method == &#34;full&#34;):
+        gibbsFn = gibbsFullDP
+    
+    if ((not DP) and method == &#34;full&#34;):
+        gibbsFn = gibbsFull
+        
+    if (DP and method == &#34;collapsed&#34;):
+        gibbsFn = grafting.gibbsGraftDP
+    if ((not DP) and method== &#34;collapsed&#34;):
+        gibbsFn = grafting.gibbsGraft
+    
+    
+    if (not DP):
+        res = gibbsFn(graf, K=K, **options)
+        res1 = gibbsFn(graf2, K=K, **options)
+    else:
+        res = gibbsFn(graf, alpha0=alpha0, **options)
+        res1 = gibbsFn(graf2, alpha0=alpha0, **options)        
+
+
+    allfreq = np.array([0] * n)
+    allfreq1 = np.array([0] * n)
+    
+    for i in range(MAXITER):
+        
+        allfreq = allfreq + np.array(res[0])
+        allfreq1 = allfreq1 + np.array(res1[0])
+            
+        p1 = allfreq/sum(allfreq)
+        p2 = allfreq1/sum(allfreq1)
+        
+        deviation = (1/2)*sum(np.abs( p1**(1/2) - p2**(1/2) )**2)
+        print((i, deviation))
+        
+        if (deviation &lt; tol):
+            break
+        
+        if (deviation &gt; burn_thresh):
+            allfreq = np.array([0] * n)
+            allfreq1 = np.array([0] * n)
+        
+        Mp = M*(i+1)
+        
+        options[&#34;Burn&#34;] = 0
+        options[&#34;M&#34;] = Mp
+        
+        if ( (not DP) and method==&#34;full&#34;):
+            res = gibbsFn(graf, K=K, initpi=res[-1], **options)
+            res1 = gibbsFn(graf2, K=K, initpi=res1[-1], **options)
+            
+        if ( (not DP) and method==&#34;collapsed&#34;):
+            res = gibbsFn(graf, K=K, initroots=res[-1], **options)
+            res1 = gibbsFn(graf2, K=K, initroots=res1[-1], **options)
+            
+        if (DP and method==&#34;full&#34;):
+            res = gibbsFn(graf, initpi=res[-1], alpha0=res[-2], initroots=res[-3], **options)
+            res1 = gibbsFn(graf2, initpi=res1[-1], alpha0=res1[-2], initroots=res1[-3], **options)    
+            
+        if (DP and method==&#34;collapsed&#34;):
+            res = gibbsFn(graf, alpha0=res[-2], initroots=res[-1], **options)
+            res1 = gibbsFn(graf2, alpha0=res1[-2], initroots=res1[-1], **options)
+    
+    allfreq = allfreq + allfreq1
+    allfreq = allfreq/sum(allfreq)
+    
+    return((allfreq, res, res1))
+
+
+
+def gibbsFull(graf, Burn=40, M=50, gap=1, alpha=0, beta=1, K=1, 
+              display=True, size_thresh=0.01, birth_thresh=0.8,
+              initpi=None):
+    &#34;&#34;&#34;
+    Full Gibbs sampler for computing posterior root prob and 
+    node tree co-occurrence in fixed K setting. 
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    Burn : int, optional
+        Num of burn in iterations. The default is 30.
+    M : int, optional
+        Num of regular iterations. The default is 50.
+    gap : int, optional
+        Num of samples to skip when recording results. 
+        The default is 1.
+    alpha : float, optional
+        Parameter. The default is 0.
+    beta : float, optional
+        Parameter. The default is 1.
+    K : int, optional
+        Num of roots/clusters. The default is 1.
+    display : boolean, optional
+        Detailed display. The default is True.
+    size_thresh : float, optional
+        Thresh for keeping a cluster-tree. The default is 0.01.
+    birth_thresh : float, optional
+        Thresh for creating new distinct cluster-tree 
+        in output. The default is 0.8.
+    initpi : list, optional
+        Initialization for ordering. The default is None.
+
+    Returns
+    -------
+    0: nparray of posterior root probs
+    1: dictionary mapping tree k to its posterior root probs
+    2: nparray of node tree co-occurrence
+    3: final roots (used for initiailization)
+    4: final ordering (used for initialization)
+
+    &#34;&#34;&#34;
+    n = len(graf.vs)
+    m = len(graf.es)
+
+    if (initpi is None):
+        wilsonTree(graf)
+        v = choices(range(n))[0]
+    
+        countSubtreeSizes(graf, v)
+        tree2root = [v]
+        initpi = sampleOrdering(graf, tree2root, alpha, beta)
+    else:
+        tree2root = initpi[0:K]
+    
+    mypi = initpi
+    
+    
+    node_tree_coo = np.zeros((n, 0))
+    
+    freq = {}
+    if (K == 1):
+        freq[0] = [0] * n
+
+    
+    for i in range(Burn + M):
+        
+        for v in tree2root:
+            assert graf.vs[v][&#34;pa&#34;] is None        
+        
+        nodewiseSamplePA(graf, mypi, alpha=alpha, beta=beta, K=K)
+        tree2root = mypi[0:K]
+        mypi = sampleOrdering(graf, tree2root, alpha=alpha, beta=beta)
+        
+        
+        ## sort and display sizes
+        sizes = getTreeSizes(graf, tree2root)
+        sizes_sorted = -np.sort( - np.array(sizes))
+        sizes_args = np.argsort(- np.array(sizes) )
+        
+        if (display):
+            print(&#34;iter {0}  sizes {1}&#34;.format(i, sizes_sorted))
+        
+        tree2root_sorted = [0] * len(tree2root)
+        for k in range(len(tree2root)):
+            tree2root_sorted[k] = tree2root[sizes_args[k]]
+        
+        &#34;&#34;&#34; record results &#34;&#34;&#34;
+        
+        if (i &gt;= Burn and i % gap == 0):
+            if (K == 1):
+                freq[0] = freq[0] + countAllHist(graf, tree2root[0])[0]
+            else:   
+                node_tree_coo = updateInferResults(graf, freq, tree2root, 
+                                                   alpha=alpha, beta=beta, 
+                                                   size_thresh=size_thresh, 
+                                                   birth_thresh=birth_thresh, 
+                                                   node_tree_coo=node_tree_coo)
+                
+    allfreqs = np.array([0] * n)    
+    
+    for k in range(len(freq)):
+        allfreqs = allfreqs + freq[k]
+        freq[k] = freq[k]/sum(freq[k])
+        
+    allfreqs = allfreqs/sum(allfreqs)
+    
+    return((allfreqs, freq, node_tree_coo, tree2root, mypi))
+        
+
+
+def gibbsFullDP(graf, Burn=20, M=50, gap=1, alpha=0, beta=1, alpha0=50, 
+                display=True, size_thresh=0.01, 
+                birth_thresh=0.8, initpi=None, initroots=None):
+    &#34;&#34;&#34;
+    Full Gibbs sampler for computing posterior root prob 
+    in the random K setting.  
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    Burn : int, optional
+        Num of burn in iterations. The default is 30.
+    M : int, optional
+        Num of regular iterations. The default is 50.
+    gap : int, optional
+        Num of samples to skip when recording results. 
+        The default is 1.
+    alpha : float, optional
+        Parameter. The default is 0.
+    beta : float, optional
+        Parameter. The default is 1.
+    alpha0 : float, optional
+        Parameter. The default is 5.
+    display : boolean, optional
+        Detailed display. The default is True.
+    size_thresh : float, optional
+        Thresh for keeping a cluster-tree. The default is 0.01.
+    birth_thresh : float, optional
+        Thresh for creating new distinct cluster-tree 
+        in output. The default is 0.8.
+    initpi : list, optional
+        Ordering initialization. The default is None.
+    initroots : list, optional
+        Root initialization. The default is None.
+
+    Returns
+    -------
+    0. nparray of length n of posterior root prob
+    1. dict giving posterior root prob for each distinct cluster-tree
+    2. list of all Ks
+    3. final set of roots (used for initialization)
+    4. final alpha0 (used for initialization)
+    5. final ordering (used for initialization)
+
+    &#34;&#34;&#34;
+    
+    
+    n = len(graf.vs)
+    m = len(graf.es)
+    
+    if (initpi is None):
+        
+        wilsonTree(graf)
+        v = choices(range(n))[0]
+    
+        countSubtreeSizes(graf, v)
+        tree2root = [v]
+    
+        tmp = sampleOrdering(graf, tree2root, alpha, beta, DP=True)
+        initpi = tmp[0]
+        tree2root = tmp[1]
+    else:
+        tree2root = initroots
+        
+    mypi = initpi
+    
+    allK = []
+    
+    freq = {}
+    bigK = 0    
+    
+    for i in range(Burn + M):
+            
+        tree2root = nodewiseSampleDP(graf, mypi, tree2root, alpha=alpha, beta=beta, alpha0=alpha0)
+        
+        sizes = getTreeSizes(graf, tree2root)
+                
+        tmp = sampleOrdering(graf, tree2root, alpha=alpha, beta=beta, DP=True)
+        mypi = tmp[0]
+        tree2root = tmp[1]
+    
+    
+        K = len(tree2root)
+    
+        sizes_sorted = -np.sort( - np.array(sizes))
+        sizes_args = np.argsort( - np.array(sizes))
+    
+        ## Uncomment to update alpha0
+        alpha0tilde = drawAlpha0tilde(K, n, alpha0/(alpha+2*beta))
+        alpha0 = alpha0tilde*(alpha+2*beta)
+                      
+        
+        
+        if (display):
+            print(&#34;iter {0}  a0 {1}  K {2}  sizes{3}&#34;.format(i, round(alpha0, 3),
+                                                             K, sizes_sorted))
+            
+        &#34;&#34;&#34; record results &#34;&#34;&#34;
+
+        if (i &gt;= Burn and i % gap == 0):
+            allK.append(len(tree2root))
+            
+            updateInferResults(graf, freq, tree2root, 
+                               alpha=alpha, beta=beta, 
+                               size_thresh=size_thresh, 
+                               birth_thresh=birth_thresh)
+            
+            
+    allfreqs = np.array([0] * n)
+    for k in range(len(freq)):
+        allfreqs = allfreqs + freq[k]
+        freq[k] = freq[k]/sum(freq[k])     
+        
+    return((allfreqs, freq, allK, tree2root, alpha0, mypi))
+
+
+
+
+
+def nodewiseSampleDP(graf, mypi, tree2root, alpha, beta, alpha0):
+    &#34;&#34;&#34;
+    Generates new forest for a given ordering by sampling
+    a new parent for each node. Used in random K setting.
+
+    Require: graf.es has &#34;tree&#34; attribute    
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph; &#34;tree&#34; edge attribute and &#34;pa&#34; node
+        attributes are modified in place.
+    mypi : list
+        Given ordering of the nodes.
+    tree2root : list
+        Lists of the roots for each of the trees.
+    alpha : float
+        Parameter.
+    beta : float
+        Parameter.
+    alpha0 : float
+        Parameter.
+
+    Returns
+    -------
+    New list of roots
+
+    &#34;&#34;&#34;
+    n = len(graf.vs)
+    m = len(graf.es)
+    n2 = n*(n-1)/2
+    
+    ## DEBUG
+    getTreeSizes(graf, tree2root)
+    
+    
+    root_dict = {}
+    for v in tree2root:
+        root_dict[v] = 1
+        
+    
+    mypi_inv = [0] * n
+    for i in range(n):
+        mypi_inv[mypi[i]] = i    
+                
+    all_tree_degs = getAllTreeDeg(graf)        
+    assert sum(all_tree_degs) == 2*(n-len(tree2root))
+    
+    
+    edge_ls = []
+    curK = len(tree2root)
+    for i in range(n-1):
+       
+        k = i + 1
+        u = mypi[k]
+        mypa = graf.vs[u][&#34;pa&#34;]
+        uisroot = (mypa == None)
+        
+        nbs = graf.neighbors(u)
+        nbs = [w for w in nbs if mypi_inv[w] &lt; k]
+
+        tree_degs = np.array([all_tree_degs[w] for w in nbs])
+        root_adj = np.array([w in root_dict for w in nbs])
+        pa_adj = np.array([w == mypa for w in nbs])
+        
+        tmp_p = beta*tree_degs + 2*beta*root_adj - beta*pa_adj + alpha
+        
+        new_root_wt = alpha0 * (m-n+curK+1-uisroot)/(n2-n+curK+1-uisroot) * \
+            (beta*all_tree_degs[u] + beta*uisroot + alpha)/(beta+alpha)
+        
+        tmp_p = np.append(tmp_p, new_root_wt)
+        
+        &#34;&#34;&#34; draw a new parent for u&#34;&#34;&#34;
+        nbs.append(-1)
+        myw = choices(nbs, weights=tmp_p)[0]
+        
+        if (myw == -1):
+            myw = None
+        
+        if (myw == mypa):
+            if (mypa != None):
+                edge_ls.append((u, mypa))
+            
+            continue
+        
+        &#34;&#34;&#34; modifying pa, all_tree_degs &#34;&#34;&#34;
+        if (myw != None):
+            all_tree_degs[myw] = all_tree_degs[myw] + 1
+            if (not uisroot):
+                all_tree_degs[mypa] = all_tree_degs[mypa] - 1
+            else:
+                all_tree_degs[u] = all_tree_degs[u] + 1
+                root_dict.pop(u)
+                curK = curK - 1
+            
+            edge_ls.append((u, myw))
+        else:
+            ## u was not a root, became a root
+            assert mypa != None
+            root_dict[u] = 1
+            curK = curK + 1
+            all_tree_degs[u] = all_tree_degs[u] - 1
+            all_tree_degs[mypa] = all_tree_degs[mypa] - 1
+
+
+    assert len(edge_ls) == (n - curK)
+    graf.es[&#34;tree&#34;] = 0
+    graf.vs[&#34;pa&#34;] = None
+    
+    graf.es[graf.get_eids(edge_ls)][&#34;tree&#34;] = 1
+    
+    rootset = list(root_dict.keys())
+    return(rootset)
+
+
+
+
+
+def nodewiseSamplePA(graf, mypi, alpha, beta, K):
+    &#34;&#34;&#34;
+    Generates new forest for a given ordering by sampling
+    a new parent for each node. Used in fixed K setting.
+
+    Require: graf.es has &#34;tree&#34; attribute
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph; &#34;tree&#34; edge attribute and &#34;pa&#34; node
+        attributes are modified in place.
+    mypi : list
+        Given ordering of the nodes.
+    alpha : float
+        Parameter.
+    beta : float
+        Parameter.
+    K : int
+        Num of clusters.
+
+    Returns
+    -------
+    None.
+
+    &#34;&#34;&#34;
+    n  = len(graf.vs)
+    
+    mypi_inv = [0] * n
+    for i in range(n):
+        mypi_inv[mypi[i]] = i
+
+    for k in range(K):
+        countSubtreeSizes(graf, mypi[k])
+
+    all_tree_degs = [0] * n
+    for i in range(n):
+        mypa = graf.vs[i][&#34;pa&#34;]
+        if (mypa != None):
+            all_tree_degs[mypa] = all_tree_degs[mypa] + 1
+            all_tree_degs[i] = all_tree_degs[i] + 1
+        
+    edge_ls = []
+    
+    for i in range(n-K):
+        k = K+i
+        v = mypi[k]
+        
+        mypa = graf.vs[v][&#34;pa&#34;]
+        assert mypa is not None
+        ## adjust parent degree
+        all_tree_degs[mypa] = all_tree_degs[mypa] - 1
+        
+        nbs = graf.neighbors(v)
+        nbs = [w for w in nbs if mypi_inv[w] &lt; k]
+
+        tree_degs = [all_tree_degs[w] for w in nbs]
+        tree_degs = np.array(tree_degs)
+
+        root_adj = np.array([w in mypi[0:K] for w in nbs])
+        
+        if (K == 1):
+            root_adj = 0
+        
+        &#34;&#34;&#34; generate new parent for u&#34;&#34;&#34;
+        tmp_p = beta*tree_degs + 2*beta*root_adj + alpha
+        myw = choices(nbs, weights=tmp_p)[0]
+
+        edge_ls.append((v, myw))
+        ## myw may potentially be mypa
+        all_tree_degs[myw] = all_tree_degs[myw] + 1
+        
+    assert len(edge_ls) == (n - K)
+    graf.es[&#34;tree&#34;] = 0
+    graf.vs[&#34;pa&#34;] = None
+    
+    graf.es[graf.get_eids(edge_ls)][&#34;tree&#34;] = 1
+    
+    
+
+
+def sampleOrdering(graf, tree2root, alpha, beta, DP=False):
+    &#34;&#34;&#34;
+    Condition on the forest, generate a new root for each
+    tree and generate a new global ordering.
+    
+    Require: graf.vs has &#34;pa&#34; attribute; graf.es has &#34;tree&#34; attribute
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph; &#34;pa&#34; and &#34;subtree_size&#34; vertex attributes
+        modified in place.
+    tree2root : list
+        list of root nodes.
+    alpha : float
+        Parameter.
+    beta : float
+        Parameter.
+    DP : boolean, optional
+        Use random K model or not. The default is False.
+
+    Returns
+    -------
+    0. new node ordering
+    1. list of new roots (only used in random K setting)
+
+    &#34;&#34;&#34;
+    K = len(tree2root)
+    n = len(graf.vs)
+    
+    time3 = time.time()
+    
+    degs = getAllTreeDeg(graf)
+    
+    mypi = [0] * n
+    
+    tree_sizes = getTreeSizes(graf, tree2root)
+    
+    &#34;&#34;&#34; draw new roots for each subtree &#34;&#34;&#34;
+    for k in range(K):
+        if (tree_sizes[k] == 1):
+            graf.vs[tree2root[k]][&#34;subtree_size&#34;] = 1
+            mypi[k] = tree2root[k]
+            continue
+        
+        cur_root = tree2root[k]
+        normalized_h = countAllHist(graf, cur_root)[0]
+        
+        deg_adj = (beta*degs + beta + alpha) * (beta*degs + alpha)
+        if (K == 1):
+            deg_adj = 1
+        
+        tmp_p = normalized_h*deg_adj
+        mypi[k] = choices(range(n), tmp_p)[0]
+        tree2root[k] = mypi[k]
+        
+        countSubtreeSizes(graf, root=mypi[k])
+    
+    if (DP):
+        wts = [graf.vs[tree2root[k]][&#34;subtree_size&#34;] for k in range(K)]
+        assert(sum(wts) == n)
+        
+        mypi[0] = tree2root[choices(range(K), wts)[0]]
+        remain_nodes = [i for i in list(range(n)) if i != mypi[0]]
+        assert mypi[0] not in remain_nodes
+        
+        mypi[1:n] = np.random.permutation(remain_nodes)
+    else:
+        remain_nodes = [i for i in list(range(n)) if i not in mypi[0:K]]
+        mypi[K:n] = np.random.permutation(remain_nodes)
+    
+    mypi_inv = [0] * n
+    for i in range(n):
+        mypi_inv[mypi[i]] = i
+    
+    
+    
+    marked = {}
+    
+    if (DP):
+        marked[mypi[0]] = 1
+    else:
+        for k in range(K):
+            marked[mypi[k]] = 1
+    
+    for i in range(n-1):
+        
+        if (DP):
+            k = 1 + i
+        else:   
+            k = K + i
+            if (k &gt;= n):
+                break
+            
+        v = mypi[k]
+        
+        if (not DP): 
+            assert v not in tree2root
+            assert graf.vs[v][&#34;pa&#34;] != None
+        
+        if (v not in marked):
+            ancs = getAncestors(graf, v)
+            unmarked_ancs = [w for w in ancs if w not in marked]
+            
+            v_anc = unmarked_ancs[-1]            
+
+            old_pos = mypi_inv[v_anc]
+            mypi[old_pos] = v
+            mypi[k] = v_anc
+            mypi_inv[v_anc] = k
+            mypi_inv[v] = old_pos
+            
+            marked[v_anc] = 1         
+    
+    if (DP):
+        return((mypi, tree2root))    
+    else:   
+        return(mypi) 
+
+
+
+def updateInferResults(graf, freq, tree2root, 
+                       alpha, beta, size_thresh, birth_thresh,
+                       node_tree_coo=None):
+    &#34;&#34;&#34;
+    Match clustr-trees, update posterior root prob, and
+    update node-tree co-occurrence results.
+    
+    Requires graf.vs has &#34;pa&#34; attribute.
+    Requires graf.es has &#34;tree&#34; attribute.
+
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    freq : dict
+        Existing posterior root probs; maps k to the 
+        posterior root prob of tree k. Modified in place.
+    tree2root : list
+        list of root nodes.
+    alpha : float
+        Parameter.
+    beta : float
+        Parameter.
+    size_thresh : float
+        Thresh for keeping a cluster-tree. 
+    birth_thresh : float
+        Thresh for creating new distinct cluster-tree 
+    node_tree_coo : nparray, optional
+        (i,j)-th entry is num of times node i
+        appears in tree j. The default is None.
+
+    Returns
+    -------
+    nparray of new node-tree co-occurrences; replaces
+    existing node_tree_coo.
+
+    &#34;&#34;&#34;
+    n = len(graf.vs)
+    
+    sizes = getTreeSizes(graf, tree2root)
+    sizes_sorted = -np.sort( - np.array(sizes))
+    sizes_args = np.argsort( - np.array(sizes))
+
+    K = len(tree2root)
+    bigK = len(freq)
+    
+    tree2root_sorted = [0] * len(tree2root)
+    for k in range(K):
+        tree2root_sorted[k] = tree2root[sizes_args[k]]
+    
+    tmp_freq = {}
+    treedegs = getAllTreeDeg(graf)
+    
+    for k in range(K):
+        if (sizes_sorted[k] &gt; size_thresh * n):
+            tmp_freq[k] = countAllHist(graf, tree2root_sorted[k])[0]
+        else:
+            break
+        
+        if (sizes_sorted[k] &gt; 1):
+            tmp_freq[k] = tmp_freq[k] * (beta*treedegs+beta+alpha) \
+                                * (beta*treedegs + alpha)                           
+
+            tmp_freq[k] = tmp_freq[k]/sum(tmp_freq[k])
+                    
+    curbigK = len(tmp_freq)
+    
+    if (curbigK &gt; bigK):
+        for k in range(bigK, curbigK):
+            freq[k] = np.array([0] * n)
+            
+            if (node_tree_coo is not None):
+                node_tree_coo = np.column_stack((node_tree_coo, np.zeros((n,1))))
+        bigK = curbigK
+        
+    dists = np.zeros((curbigK, bigK))
+    
+    for k in range(curbigK):
+        for kk in range(bigK):
+            if (sum(freq[kk] &gt; 0)):
+                distr1 = np.array(freq[kk]/sum(freq[kk]) )                        
+                distr2 = np.array(tmp_freq[k])
+
+                dists[k, kk] = sum(np.abs(distr1 - distr2))/2
+            else:
+                dists[k, kk] = 0
+                    
+    treematch = scipy.optimize.linear_sum_assignment(dists)[1]
+                      
+    for k in range(curbigK):
+        if (dists[k, treematch[k]] &gt; birth_thresh):
+            freq[bigK] = np.array([0] * n)
+            treematch[k] = bigK
+            
+            if (node_tree_coo is not None):
+                node_tree_coo = np.column_stack((node_tree_coo, np.zeros((n, 1))))
+            bigK = bigK + 1
+    
+    for k in range(curbigK):
+        freq[treematch[k]] = freq[treematch[k]] + tmp_freq[k]
+      
+    for ii in range(n):
+        if (node_tree_coo is None):
+            break
+        
+        ants = getAncestors(graf, ii)
+        myroot = ants[-1]
+        my_k = tree2root_sorted.index(myroot)
+        if (sizes_sorted[my_k] &lt;= size_thresh * n):
+            continue
+                    
+        my_kstar = treematch[my_k]
+        node_tree_coo[ii, my_kstar] = node_tree_coo[ii, my_kstar] + 1     
+    
+    return(node_tree_coo)                    
+        
+        
+
+
+def reorderSubvector(vec1, vec2, pos_dict):
+    &#34;&#34;&#34;
+
+    Parameters
+    ----------
+    vec1 : list
+        Longer input list.
+    vec2 : list
+        Shorter input list. Required to be a sub-list of
+        vec1.
+    pos_dict : dict
+        Positions of all elements of vec2 in vec1. Modified in place.
+
+    Returns
+    -------
+    a list which contains the same elements as vec1
+    the sub-list that correspond to elements of vec2 is re-ordered
+    according to vec2.
+
+    &#34;&#34;&#34;
+    n = len(vec1)
+    m = len(vec2)
+    
+    all_pos = [0] * m
+    for i in range(m):
+        all_pos[i] = pos_dict[vec2[i]]
+    
+    all_pos.sort()
+        
+    for i in range(m):
+        vec1[all_pos[i]] = vec2[i]
+        pos_dict[vec2[i]] = all_pos[i]
+    
+    return(vec1)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="PAPER.gibbsSampling.gibbsFull"><code class="name flex">
+<span>def <span class="ident">gibbsFull</span></span>(<span>graf, Burn=40, M=50, gap=1, alpha=0, beta=1, K=1, display=True, size_thresh=0.01, birth_thresh=0.8, initpi=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Full Gibbs sampler for computing posterior root prob and
+node tree co-occurrence in fixed K setting. </p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>graf</code></strong> :&ensp;<code>igraph object</code></dt>
+<dd>Input graph.</dd>
+<dt><strong><code>Burn</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Num of burn in iterations. The default is 30.</dd>
+<dt><strong><code>M</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Num of regular iterations. The default is 50.</dd>
+<dt><strong><code>gap</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Num of samples to skip when recording results.
+The default is 1.</dd>
+<dt><strong><code>alpha</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Parameter. The default is 0.</dd>
+<dt><strong><code>beta</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Parameter. The default is 1.</dd>
+<dt><strong><code>K</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Num of roots/clusters. The default is 1.</dd>
+<dt><strong><code>display</code></strong> :&ensp;<code>boolean</code>, optional</dt>
+<dd>Detailed display. The default is True.</dd>
+<dt><strong><code>size_thresh</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Thresh for keeping a cluster-tree. The default is 0.01.</dd>
+<dt><strong><code>birth_thresh</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Thresh for creating new distinct cluster-tree
+in output. The default is 0.8.</dd>
+<dt><strong><code>initpi</code></strong> :&ensp;<code>list</code>, optional</dt>
+<dd>Initialization for ordering. The default is None.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>0</code></strong> :&ensp;<code>nparray</code> of <code>posterior root probs</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>1</code></strong> :&ensp;<code>dictionary mapping tree k to its posterior root probs</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>2</code></strong> :&ensp;<code>nparray</code> of <code>node tree co-occurrence</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>3</code></strong> :&ensp;<code>final roots (used for initiailization)</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>4</code></strong> :&ensp;<code>final ordering (used for initialization)</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def gibbsFull(graf, Burn=40, M=50, gap=1, alpha=0, beta=1, K=1, 
+              display=True, size_thresh=0.01, birth_thresh=0.8,
+              initpi=None):
+    &#34;&#34;&#34;
+    Full Gibbs sampler for computing posterior root prob and 
+    node tree co-occurrence in fixed K setting. 
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    Burn : int, optional
+        Num of burn in iterations. The default is 30.
+    M : int, optional
+        Num of regular iterations. The default is 50.
+    gap : int, optional
+        Num of samples to skip when recording results. 
+        The default is 1.
+    alpha : float, optional
+        Parameter. The default is 0.
+    beta : float, optional
+        Parameter. The default is 1.
+    K : int, optional
+        Num of roots/clusters. The default is 1.
+    display : boolean, optional
+        Detailed display. The default is True.
+    size_thresh : float, optional
+        Thresh for keeping a cluster-tree. The default is 0.01.
+    birth_thresh : float, optional
+        Thresh for creating new distinct cluster-tree 
+        in output. The default is 0.8.
+    initpi : list, optional
+        Initialization for ordering. The default is None.
+
+    Returns
+    -------
+    0: nparray of posterior root probs
+    1: dictionary mapping tree k to its posterior root probs
+    2: nparray of node tree co-occurrence
+    3: final roots (used for initiailization)
+    4: final ordering (used for initialization)
+
+    &#34;&#34;&#34;
+    n = len(graf.vs)
+    m = len(graf.es)
+
+    if (initpi is None):
+        wilsonTree(graf)
+        v = choices(range(n))[0]
+    
+        countSubtreeSizes(graf, v)
+        tree2root = [v]
+        initpi = sampleOrdering(graf, tree2root, alpha, beta)
+    else:
+        tree2root = initpi[0:K]
+    
+    mypi = initpi
+    
+    
+    node_tree_coo = np.zeros((n, 0))
+    
+    freq = {}
+    if (K == 1):
+        freq[0] = [0] * n
+
+    
+    for i in range(Burn + M):
+        
+        for v in tree2root:
+            assert graf.vs[v][&#34;pa&#34;] is None        
+        
+        nodewiseSamplePA(graf, mypi, alpha=alpha, beta=beta, K=K)
+        tree2root = mypi[0:K]
+        mypi = sampleOrdering(graf, tree2root, alpha=alpha, beta=beta)
+        
+        
+        ## sort and display sizes
+        sizes = getTreeSizes(graf, tree2root)
+        sizes_sorted = -np.sort( - np.array(sizes))
+        sizes_args = np.argsort(- np.array(sizes) )
+        
+        if (display):
+            print(&#34;iter {0}  sizes {1}&#34;.format(i, sizes_sorted))
+        
+        tree2root_sorted = [0] * len(tree2root)
+        for k in range(len(tree2root)):
+            tree2root_sorted[k] = tree2root[sizes_args[k]]
+        
+        &#34;&#34;&#34; record results &#34;&#34;&#34;
+        
+        if (i &gt;= Burn and i % gap == 0):
+            if (K == 1):
+                freq[0] = freq[0] + countAllHist(graf, tree2root[0])[0]
+            else:   
+                node_tree_coo = updateInferResults(graf, freq, tree2root, 
+                                                   alpha=alpha, beta=beta, 
+                                                   size_thresh=size_thresh, 
+                                                   birth_thresh=birth_thresh, 
+                                                   node_tree_coo=node_tree_coo)
+                
+    allfreqs = np.array([0] * n)    
+    
+    for k in range(len(freq)):
+        allfreqs = allfreqs + freq[k]
+        freq[k] = freq[k]/sum(freq[k])
+        
+    allfreqs = allfreqs/sum(allfreqs)
+    
+    return((allfreqs, freq, node_tree_coo, tree2root, mypi))</code></pre>
+</details>
+</dd>
+<dt id="PAPER.gibbsSampling.gibbsFullDP"><code class="name flex">
+<span>def <span class="ident">gibbsFullDP</span></span>(<span>graf, Burn=20, M=50, gap=1, alpha=0, beta=1, alpha0=50, display=True, size_thresh=0.01, birth_thresh=0.8, initpi=None, initroots=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Full Gibbs sampler for computing posterior root prob
+in the random K setting.
+</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>graf</code></strong> :&ensp;<code>igraph object</code></dt>
+<dd>Input graph.</dd>
+<dt><strong><code>Burn</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Num of burn in iterations. The default is 30.</dd>
+<dt><strong><code>M</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Num of regular iterations. The default is 50.</dd>
+<dt><strong><code>gap</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Num of samples to skip when recording results.
+The default is 1.</dd>
+<dt><strong><code>alpha</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Parameter. The default is 0.</dd>
+<dt><strong><code>beta</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Parameter. The default is 1.</dd>
+<dt><strong><code>alpha0</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Parameter. The default is 5.</dd>
+<dt><strong><code>display</code></strong> :&ensp;<code>boolean</code>, optional</dt>
+<dd>Detailed display. The default is True.</dd>
+<dt><strong><code>size_thresh</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Thresh for keeping a cluster-tree. The default is 0.01.</dd>
+<dt><strong><code>birth_thresh</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Thresh for creating new distinct cluster-tree
+in output. The default is 0.8.</dd>
+<dt><strong><code>initpi</code></strong> :&ensp;<code>list</code>, optional</dt>
+<dd>Ordering initialization. The default is None.</dd>
+<dt><strong><code>initroots</code></strong> :&ensp;<code>list</code>, optional</dt>
+<dd>Root initialization. The default is None.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>0. nparray</code> of <code>length n</code> of <code>posterior root prob</code></dt>
+<dd>&nbsp;</dd>
+<dt><code>1. dict giving posterior root prob for each distinct cluster-tree</code></dt>
+<dd>&nbsp;</dd>
+<dt><code>2. list</code> of <code>all Ks</code></dt>
+<dd>&nbsp;</dd>
+<dt><code>3. final set</code> of <code>roots (used for initialization)</code></dt>
+<dd>&nbsp;</dd>
+<dt><code>4. final alpha0 (used for initialization)</code></dt>
+<dd>&nbsp;</dd>
+<dt><code>5. final ordering (used for initialization)</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def gibbsFullDP(graf, Burn=20, M=50, gap=1, alpha=0, beta=1, alpha0=50, 
+                display=True, size_thresh=0.01, 
+                birth_thresh=0.8, initpi=None, initroots=None):
+    &#34;&#34;&#34;
+    Full Gibbs sampler for computing posterior root prob 
+    in the random K setting.  
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    Burn : int, optional
+        Num of burn in iterations. The default is 30.
+    M : int, optional
+        Num of regular iterations. The default is 50.
+    gap : int, optional
+        Num of samples to skip when recording results. 
+        The default is 1.
+    alpha : float, optional
+        Parameter. The default is 0.
+    beta : float, optional
+        Parameter. The default is 1.
+    alpha0 : float, optional
+        Parameter. The default is 5.
+    display : boolean, optional
+        Detailed display. The default is True.
+    size_thresh : float, optional
+        Thresh for keeping a cluster-tree. The default is 0.01.
+    birth_thresh : float, optional
+        Thresh for creating new distinct cluster-tree 
+        in output. The default is 0.8.
+    initpi : list, optional
+        Ordering initialization. The default is None.
+    initroots : list, optional
+        Root initialization. The default is None.
+
+    Returns
+    -------
+    0. nparray of length n of posterior root prob
+    1. dict giving posterior root prob for each distinct cluster-tree
+    2. list of all Ks
+    3. final set of roots (used for initialization)
+    4. final alpha0 (used for initialization)
+    5. final ordering (used for initialization)
+
+    &#34;&#34;&#34;
+    
+    
+    n = len(graf.vs)
+    m = len(graf.es)
+    
+    if (initpi is None):
+        
+        wilsonTree(graf)
+        v = choices(range(n))[0]
+    
+        countSubtreeSizes(graf, v)
+        tree2root = [v]
+    
+        tmp = sampleOrdering(graf, tree2root, alpha, beta, DP=True)
+        initpi = tmp[0]
+        tree2root = tmp[1]
+    else:
+        tree2root = initroots
+        
+    mypi = initpi
+    
+    allK = []
+    
+    freq = {}
+    bigK = 0    
+    
+    for i in range(Burn + M):
+            
+        tree2root = nodewiseSampleDP(graf, mypi, tree2root, alpha=alpha, beta=beta, alpha0=alpha0)
+        
+        sizes = getTreeSizes(graf, tree2root)
+                
+        tmp = sampleOrdering(graf, tree2root, alpha=alpha, beta=beta, DP=True)
+        mypi = tmp[0]
+        tree2root = tmp[1]
+    
+    
+        K = len(tree2root)
+    
+        sizes_sorted = -np.sort( - np.array(sizes))
+        sizes_args = np.argsort( - np.array(sizes))
+    
+        ## Uncomment to update alpha0
+        alpha0tilde = drawAlpha0tilde(K, n, alpha0/(alpha+2*beta))
+        alpha0 = alpha0tilde*(alpha+2*beta)
+                      
+        
+        
+        if (display):
+            print(&#34;iter {0}  a0 {1}  K {2}  sizes{3}&#34;.format(i, round(alpha0, 3),
+                                                             K, sizes_sorted))
+            
+        &#34;&#34;&#34; record results &#34;&#34;&#34;
+
+        if (i &gt;= Burn and i % gap == 0):
+            allK.append(len(tree2root))
+            
+            updateInferResults(graf, freq, tree2root, 
+                               alpha=alpha, beta=beta, 
+                               size_thresh=size_thresh, 
+                               birth_thresh=birth_thresh)
+            
+            
+    allfreqs = np.array([0] * n)
+    for k in range(len(freq)):
+        allfreqs = allfreqs + freq[k]
+        freq[k] = freq[k]/sum(freq[k])     
+        
+    return((allfreqs, freq, allK, tree2root, alpha0, mypi))</code></pre>
+</details>
+</dd>
+<dt id="PAPER.gibbsSampling.gibbsToConv"><code class="name flex">
+<span>def <span class="ident">gibbsToConv</span></span>(<span>graf, DP=False, K=1, alpha=0, beta=0, alpha0=50, Burn=10, M=40, gap=1, MAXITER=100, tol=0.1, size_thresh=0.01, birth_thresh=0.8, method='full', burn_thresh=0.95)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Run gibbs sampler to generate posterior root probs.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>graf</code></strong> :&ensp;<code>igraph object</code></dt>
+<dd>Input graph.</dd>
+<dt><strong><code>DP</code></strong> :&ensp;<code>boolean</code>, optional</dt>
+<dd>Use random K model or not. The default is False.</dd>
+<dt><strong><code>K</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Num of cluster-trees. Ignored if DP is True. The default is 1.</dd>
+<dt><strong><code>alpha</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Parameter. Set both alpha=0 and beta=0 (default) to
+estimate the parameters via EM. The default is 0.</dd>
+<dt><strong><code>beta</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Parameter. Set both alpha=0 and beta=0 (default) to estimate
+the parameter via EM. The default is 0.</dd>
+<dt><strong><code>alpha0</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Initialization for parameter. Ignored if DP is False. The default is 50.</dd>
+<dt><strong><code>Burn</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Num of burn iteration. Unimportant if chain runs to
+convergence. The default is 10.</dd>
+<dt><strong><code>M</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Num of iterations per convergence check. The default is 40.</dd>
+<dt><strong><code>gap</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Num of samples to skip for recording results. The default is 1.</dd>
+<dt><strong><code>MAXITER</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Maximum number of convergence checks. The default is 100.</dd>
+<dt><strong><code>tol</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Convergence threshold. The default is 0.1.</dd>
+<dt><strong><code>size_thresh</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Thresh for keeping a cluster-tree.
+Ignored if K==1. The default is 0.01.</dd>
+<dt><strong><code>birth_thresh</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Thresh for creating new distinct cluster-tree
+in output.
+Ignored if K==1.
+The default is 0.8.</dd>
+<dt><strong><code>method</code></strong> :&ensp;<code>string</code>, optional</dt>
+<dd>Either "full" or "collapsed". The default is "full".</dd>
+<dt><strong><code>burn_thresh</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>Criterion for determining whether burn in is
+complete. The default is 0.95.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>0. nparray</code> of <code>posterior root probs</code></dt>
+<dd>&nbsp;</dd>
+<dt><code>1. first chain outputs</code></dt>
+<dd>&nbsp;</dd>
+<dt><code>2. second chain outputs</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def gibbsToConv(graf, DP=False, K=1, 
+                alpha=0, beta=0, alpha0=50,
+                Burn=10, M=40, gap=1, 
+                MAXITER=100, tol=0.1, 
+                size_thresh=0.01, birth_thresh=0.8,
+                method=&#34;full&#34;,
+                burn_thresh = 0.95):
+    &#34;&#34;&#34;
+    Run gibbs sampler to generate posterior root probs.
+    
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    DP : boolean, optional
+        Use random K model or not. The default is False.
+    K : int, optional
+        Num of cluster-trees. Ignored if DP is True. The default is 1.
+    alpha : float, optional
+        Parameter. Set both alpha=0 and beta=0 (default) to 
+        estimate the parameters via EM. The default is 0. 
+    beta : float, optional
+        Parameter. Set both alpha=0 and beta=0 (default) to estimate
+        the parameter via EM. The default is 0.
+    alpha0 : float, optional
+        Initialization for parameter. Ignored if DP is False. The default is 50.
+    Burn : int, optional
+        Num of burn iteration. Unimportant if chain runs to 
+        convergence. The default is 10.
+    M : int, optional
+        Num of iterations per convergence check. The default is 40.
+    gap : int, optional
+        Num of samples to skip for recording results. The default is 1.
+    MAXITER : int, optional
+        Maximum number of convergence checks. The default is 100.
+    tol : float, optional
+        Convergence threshold. The default is 0.1.
+    size_thresh : float, optional
+        Thresh for keeping a cluster-tree. 
+        Ignored if K==1. The default is 0.01.
+    birth_thresh : float, optional
+        Thresh for creating new distinct cluster-tree 
+        in output. 
+        Ignored if K==1.
+        The default is 0.8.
+    method : string, optional
+        Either &#34;full&#34; or &#34;collapsed&#34;. The default is &#34;full&#34;.
+    burn_thresh : float, optional
+        Criterion for determining whether burn in is
+        complete. The default is 0.95.
+
+    Returns
+    -------
+    0. nparray of posterior root probs
+    1. first chain outputs
+    2. second chain outputs
+
+    &#34;&#34;&#34;
+    
+    n = len(graf.vs)
+    m = len(graf.es)
+    graf2 = graf.copy()
+    
+    if (alpha == 0 and beta == 0):
+        beta = 1
+        alpha = estimateAlphaEM(graf, display=False)
+        print(&#34;Estimated alpha as {0}&#34;.format(alpha))
+    else:
+        print(&#34;Using alpha {0} and beta {1}&#34;.format(alpha, beta))
+    
+    if (DP):
+        print(&#34;Using random K model&#34;)
+    else:
+        print(&#34;Using fixed K={0} model&#34;.format(K))
+        
+        
+    
+    options = {&#34;Burn&#34;: Burn, &#34;M&#34;: M, &#34;gap&#34;: gap, &#34;alpha&#34;: alpha, 
+               &#34;beta&#34;: beta, &#34;display&#34;: False, &#34;size_thresh&#34;: size_thresh,
+               &#34;birth_thresh&#34;: birth_thresh}    
+    
+    
+    if (DP and method == &#34;full&#34;):
+        gibbsFn = gibbsFullDP
+    
+    if ((not DP) and method == &#34;full&#34;):
+        gibbsFn = gibbsFull
+        
+    if (DP and method == &#34;collapsed&#34;):
+        gibbsFn = grafting.gibbsGraftDP
+    if ((not DP) and method== &#34;collapsed&#34;):
+        gibbsFn = grafting.gibbsGraft
+    
+    
+    if (not DP):
+        res = gibbsFn(graf, K=K, **options)
+        res1 = gibbsFn(graf2, K=K, **options)
+    else:
+        res = gibbsFn(graf, alpha0=alpha0, **options)
+        res1 = gibbsFn(graf2, alpha0=alpha0, **options)        
+
+
+    allfreq = np.array([0] * n)
+    allfreq1 = np.array([0] * n)
+    
+    for i in range(MAXITER):
+        
+        allfreq = allfreq + np.array(res[0])
+        allfreq1 = allfreq1 + np.array(res1[0])
+            
+        p1 = allfreq/sum(allfreq)
+        p2 = allfreq1/sum(allfreq1)
+        
+        deviation = (1/2)*sum(np.abs( p1**(1/2) - p2**(1/2) )**2)
+        print((i, deviation))
+        
+        if (deviation &lt; tol):
+            break
+        
+        if (deviation &gt; burn_thresh):
+            allfreq = np.array([0] * n)
+            allfreq1 = np.array([0] * n)
+        
+        Mp = M*(i+1)
+        
+        options[&#34;Burn&#34;] = 0
+        options[&#34;M&#34;] = Mp
+        
+        if ( (not DP) and method==&#34;full&#34;):
+            res = gibbsFn(graf, K=K, initpi=res[-1], **options)
+            res1 = gibbsFn(graf2, K=K, initpi=res1[-1], **options)
+            
+        if ( (not DP) and method==&#34;collapsed&#34;):
+            res = gibbsFn(graf, K=K, initroots=res[-1], **options)
+            res1 = gibbsFn(graf2, K=K, initroots=res1[-1], **options)
+            
+        if (DP and method==&#34;full&#34;):
+            res = gibbsFn(graf, initpi=res[-1], alpha0=res[-2], initroots=res[-3], **options)
+            res1 = gibbsFn(graf2, initpi=res1[-1], alpha0=res1[-2], initroots=res1[-3], **options)    
+            
+        if (DP and method==&#34;collapsed&#34;):
+            res = gibbsFn(graf, alpha0=res[-2], initroots=res[-1], **options)
+            res1 = gibbsFn(graf2, alpha0=res1[-2], initroots=res1[-1], **options)
+    
+    allfreq = allfreq + allfreq1
+    allfreq = allfreq/sum(allfreq)
+    
+    return((allfreq, res, res1))</code></pre>
+</details>
+</dd>
+<dt id="PAPER.gibbsSampling.nodewiseSampleDP"><code class="name flex">
+<span>def <span class="ident">nodewiseSampleDP</span></span>(<span>graf, mypi, tree2root, alpha, beta, alpha0)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generates new forest for a given ordering by sampling
+a new parent for each node. Used in random K setting.</p>
+<p>Require: graf.es has "tree" attribute
+</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>graf</code></strong> :&ensp;<code>igraph object</code></dt>
+<dd>Input graph; "tree" edge attribute and "pa" node
+attributes are modified in place.</dd>
+<dt><strong><code>mypi</code></strong> :&ensp;<code>list</code></dt>
+<dd>Given ordering of the nodes.</dd>
+<dt><strong><code>tree2root</code></strong> :&ensp;<code>list</code></dt>
+<dd>Lists of the roots for each of the trees.</dd>
+<dt><strong><code>alpha</code></strong> :&ensp;<code>float</code></dt>
+<dd>Parameter.</dd>
+<dt><strong><code>beta</code></strong> :&ensp;<code>float</code></dt>
+<dd>Parameter.</dd>
+<dt><strong><code>alpha0</code></strong> :&ensp;<code>float</code></dt>
+<dd>Parameter.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>New list</code> of <code>roots</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def nodewiseSampleDP(graf, mypi, tree2root, alpha, beta, alpha0):
+    &#34;&#34;&#34;
+    Generates new forest for a given ordering by sampling
+    a new parent for each node. Used in random K setting.
+
+    Require: graf.es has &#34;tree&#34; attribute    
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph; &#34;tree&#34; edge attribute and &#34;pa&#34; node
+        attributes are modified in place.
+    mypi : list
+        Given ordering of the nodes.
+    tree2root : list
+        Lists of the roots for each of the trees.
+    alpha : float
+        Parameter.
+    beta : float
+        Parameter.
+    alpha0 : float
+        Parameter.
+
+    Returns
+    -------
+    New list of roots
+
+    &#34;&#34;&#34;
+    n = len(graf.vs)
+    m = len(graf.es)
+    n2 = n*(n-1)/2
+    
+    ## DEBUG
+    getTreeSizes(graf, tree2root)
+    
+    
+    root_dict = {}
+    for v in tree2root:
+        root_dict[v] = 1
+        
+    
+    mypi_inv = [0] * n
+    for i in range(n):
+        mypi_inv[mypi[i]] = i    
+                
+    all_tree_degs = getAllTreeDeg(graf)        
+    assert sum(all_tree_degs) == 2*(n-len(tree2root))
+    
+    
+    edge_ls = []
+    curK = len(tree2root)
+    for i in range(n-1):
+       
+        k = i + 1
+        u = mypi[k]
+        mypa = graf.vs[u][&#34;pa&#34;]
+        uisroot = (mypa == None)
+        
+        nbs = graf.neighbors(u)
+        nbs = [w for w in nbs if mypi_inv[w] &lt; k]
+
+        tree_degs = np.array([all_tree_degs[w] for w in nbs])
+        root_adj = np.array([w in root_dict for w in nbs])
+        pa_adj = np.array([w == mypa for w in nbs])
+        
+        tmp_p = beta*tree_degs + 2*beta*root_adj - beta*pa_adj + alpha
+        
+        new_root_wt = alpha0 * (m-n+curK+1-uisroot)/(n2-n+curK+1-uisroot) * \
+            (beta*all_tree_degs[u] + beta*uisroot + alpha)/(beta+alpha)
+        
+        tmp_p = np.append(tmp_p, new_root_wt)
+        
+        &#34;&#34;&#34; draw a new parent for u&#34;&#34;&#34;
+        nbs.append(-1)
+        myw = choices(nbs, weights=tmp_p)[0]
+        
+        if (myw == -1):
+            myw = None
+        
+        if (myw == mypa):
+            if (mypa != None):
+                edge_ls.append((u, mypa))
+            
+            continue
+        
+        &#34;&#34;&#34; modifying pa, all_tree_degs &#34;&#34;&#34;
+        if (myw != None):
+            all_tree_degs[myw] = all_tree_degs[myw] + 1
+            if (not uisroot):
+                all_tree_degs[mypa] = all_tree_degs[mypa] - 1
+            else:
+                all_tree_degs[u] = all_tree_degs[u] + 1
+                root_dict.pop(u)
+                curK = curK - 1
+            
+            edge_ls.append((u, myw))
+        else:
+            ## u was not a root, became a root
+            assert mypa != None
+            root_dict[u] = 1
+            curK = curK + 1
+            all_tree_degs[u] = all_tree_degs[u] - 1
+            all_tree_degs[mypa] = all_tree_degs[mypa] - 1
+
+
+    assert len(edge_ls) == (n - curK)
+    graf.es[&#34;tree&#34;] = 0
+    graf.vs[&#34;pa&#34;] = None
+    
+    graf.es[graf.get_eids(edge_ls)][&#34;tree&#34;] = 1
+    
+    rootset = list(root_dict.keys())
+    return(rootset)</code></pre>
+</details>
+</dd>
+<dt id="PAPER.gibbsSampling.nodewiseSamplePA"><code class="name flex">
+<span>def <span class="ident">nodewiseSamplePA</span></span>(<span>graf, mypi, alpha, beta, K)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generates new forest for a given ordering by sampling
+a new parent for each node. Used in fixed K setting.</p>
+<p>Require: graf.es has "tree" attribute</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>graf</code></strong> :&ensp;<code>igraph object</code></dt>
+<dd>Input graph; "tree" edge attribute and "pa" node
+attributes are modified in place.</dd>
+<dt><strong><code>mypi</code></strong> :&ensp;<code>list</code></dt>
+<dd>Given ordering of the nodes.</dd>
+<dt><strong><code>alpha</code></strong> :&ensp;<code>float</code></dt>
+<dd>Parameter.</dd>
+<dt><strong><code>beta</code></strong> :&ensp;<code>float</code></dt>
+<dd>Parameter.</dd>
+<dt><strong><code>K</code></strong> :&ensp;<code>int</code></dt>
+<dd>Num of clusters.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def nodewiseSamplePA(graf, mypi, alpha, beta, K):
+    &#34;&#34;&#34;
+    Generates new forest for a given ordering by sampling
+    a new parent for each node. Used in fixed K setting.
+
+    Require: graf.es has &#34;tree&#34; attribute
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph; &#34;tree&#34; edge attribute and &#34;pa&#34; node
+        attributes are modified in place.
+    mypi : list
+        Given ordering of the nodes.
+    alpha : float
+        Parameter.
+    beta : float
+        Parameter.
+    K : int
+        Num of clusters.
+
+    Returns
+    -------
+    None.
+
+    &#34;&#34;&#34;
+    n  = len(graf.vs)
+    
+    mypi_inv = [0] * n
+    for i in range(n):
+        mypi_inv[mypi[i]] = i
+
+    for k in range(K):
+        countSubtreeSizes(graf, mypi[k])
+
+    all_tree_degs = [0] * n
+    for i in range(n):
+        mypa = graf.vs[i][&#34;pa&#34;]
+        if (mypa != None):
+            all_tree_degs[mypa] = all_tree_degs[mypa] + 1
+            all_tree_degs[i] = all_tree_degs[i] + 1
+        
+    edge_ls = []
+    
+    for i in range(n-K):
+        k = K+i
+        v = mypi[k]
+        
+        mypa = graf.vs[v][&#34;pa&#34;]
+        assert mypa is not None
+        ## adjust parent degree
+        all_tree_degs[mypa] = all_tree_degs[mypa] - 1
+        
+        nbs = graf.neighbors(v)
+        nbs = [w for w in nbs if mypi_inv[w] &lt; k]
+
+        tree_degs = [all_tree_degs[w] for w in nbs]
+        tree_degs = np.array(tree_degs)
+
+        root_adj = np.array([w in mypi[0:K] for w in nbs])
+        
+        if (K == 1):
+            root_adj = 0
+        
+        &#34;&#34;&#34; generate new parent for u&#34;&#34;&#34;
+        tmp_p = beta*tree_degs + 2*beta*root_adj + alpha
+        myw = choices(nbs, weights=tmp_p)[0]
+
+        edge_ls.append((v, myw))
+        ## myw may potentially be mypa
+        all_tree_degs[myw] = all_tree_degs[myw] + 1
+        
+    assert len(edge_ls) == (n - K)
+    graf.es[&#34;tree&#34;] = 0
+    graf.vs[&#34;pa&#34;] = None
+    
+    graf.es[graf.get_eids(edge_ls)][&#34;tree&#34;] = 1</code></pre>
+</details>
+</dd>
+<dt id="PAPER.gibbsSampling.reorderSubvector"><code class="name flex">
+<span>def <span class="ident">reorderSubvector</span></span>(<span>vec1, vec2, pos_dict)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>vec1</code></strong> :&ensp;<code>list</code></dt>
+<dd>Longer input list.</dd>
+<dt><strong><code>vec2</code></strong> :&ensp;<code>list</code></dt>
+<dd>Shorter input list. Required to be a sub-list of
+vec1.</dd>
+<dt><strong><code>pos_dict</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Positions of all elements of vec2 in vec1. Modified in place.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>a list which contains the same elements as vec1</code></dt>
+<dd>&nbsp;</dd>
+<dt><code>the sub-list that correspond to elements</code> of <code>vec2 is re-ordered</code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<p>according to vec2.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def reorderSubvector(vec1, vec2, pos_dict):
+    &#34;&#34;&#34;
+
+    Parameters
+    ----------
+    vec1 : list
+        Longer input list.
+    vec2 : list
+        Shorter input list. Required to be a sub-list of
+        vec1.
+    pos_dict : dict
+        Positions of all elements of vec2 in vec1. Modified in place.
+
+    Returns
+    -------
+    a list which contains the same elements as vec1
+    the sub-list that correspond to elements of vec2 is re-ordered
+    according to vec2.
+
+    &#34;&#34;&#34;
+    n = len(vec1)
+    m = len(vec2)
+    
+    all_pos = [0] * m
+    for i in range(m):
+        all_pos[i] = pos_dict[vec2[i]]
+    
+    all_pos.sort()
+        
+    for i in range(m):
+        vec1[all_pos[i]] = vec2[i]
+        pos_dict[vec2[i]] = all_pos[i]
+    
+    return(vec1)</code></pre>
+</details>
+</dd>
+<dt id="PAPER.gibbsSampling.sampleOrdering"><code class="name flex">
+<span>def <span class="ident">sampleOrdering</span></span>(<span>graf, tree2root, alpha, beta, DP=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Condition on the forest, generate a new root for each
+tree and generate a new global ordering.</p>
+<p>Require: graf.vs has "pa" attribute; graf.es has "tree" attribute</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>graf</code></strong> :&ensp;<code>igraph object</code></dt>
+<dd>Input graph; "pa" and "subtree_size" vertex attributes
+modified in place.</dd>
+<dt><strong><code>tree2root</code></strong> :&ensp;<code>list</code></dt>
+<dd>list of root nodes.</dd>
+<dt><strong><code>alpha</code></strong> :&ensp;<code>float</code></dt>
+<dd>Parameter.</dd>
+<dt><strong><code>beta</code></strong> :&ensp;<code>float</code></dt>
+<dd>Parameter.</dd>
+<dt><strong><code>DP</code></strong> :&ensp;<code>boolean</code>, optional</dt>
+<dd>Use random K model or not. The default is False.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>0. new node ordering</code></dt>
+<dd>&nbsp;</dd>
+<dt><code>1. list</code> of <code>new roots (only used in random K setting)</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sampleOrdering(graf, tree2root, alpha, beta, DP=False):
+    &#34;&#34;&#34;
+    Condition on the forest, generate a new root for each
+    tree and generate a new global ordering.
+    
+    Require: graf.vs has &#34;pa&#34; attribute; graf.es has &#34;tree&#34; attribute
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph; &#34;pa&#34; and &#34;subtree_size&#34; vertex attributes
+        modified in place.
+    tree2root : list
+        list of root nodes.
+    alpha : float
+        Parameter.
+    beta : float
+        Parameter.
+    DP : boolean, optional
+        Use random K model or not. The default is False.
+
+    Returns
+    -------
+    0. new node ordering
+    1. list of new roots (only used in random K setting)
+
+    &#34;&#34;&#34;
+    K = len(tree2root)
+    n = len(graf.vs)
+    
+    time3 = time.time()
+    
+    degs = getAllTreeDeg(graf)
+    
+    mypi = [0] * n
+    
+    tree_sizes = getTreeSizes(graf, tree2root)
+    
+    &#34;&#34;&#34; draw new roots for each subtree &#34;&#34;&#34;
+    for k in range(K):
+        if (tree_sizes[k] == 1):
+            graf.vs[tree2root[k]][&#34;subtree_size&#34;] = 1
+            mypi[k] = tree2root[k]
+            continue
+        
+        cur_root = tree2root[k]
+        normalized_h = countAllHist(graf, cur_root)[0]
+        
+        deg_adj = (beta*degs + beta + alpha) * (beta*degs + alpha)
+        if (K == 1):
+            deg_adj = 1
+        
+        tmp_p = normalized_h*deg_adj
+        mypi[k] = choices(range(n), tmp_p)[0]
+        tree2root[k] = mypi[k]
+        
+        countSubtreeSizes(graf, root=mypi[k])
+    
+    if (DP):
+        wts = [graf.vs[tree2root[k]][&#34;subtree_size&#34;] for k in range(K)]
+        assert(sum(wts) == n)
+        
+        mypi[0] = tree2root[choices(range(K), wts)[0]]
+        remain_nodes = [i for i in list(range(n)) if i != mypi[0]]
+        assert mypi[0] not in remain_nodes
+        
+        mypi[1:n] = np.random.permutation(remain_nodes)
+    else:
+        remain_nodes = [i for i in list(range(n)) if i not in mypi[0:K]]
+        mypi[K:n] = np.random.permutation(remain_nodes)
+    
+    mypi_inv = [0] * n
+    for i in range(n):
+        mypi_inv[mypi[i]] = i
+    
+    
+    
+    marked = {}
+    
+    if (DP):
+        marked[mypi[0]] = 1
+    else:
+        for k in range(K):
+            marked[mypi[k]] = 1
+    
+    for i in range(n-1):
+        
+        if (DP):
+            k = 1 + i
+        else:   
+            k = K + i
+            if (k &gt;= n):
+                break
+            
+        v = mypi[k]
+        
+        if (not DP): 
+            assert v not in tree2root
+            assert graf.vs[v][&#34;pa&#34;] != None
+        
+        if (v not in marked):
+            ancs = getAncestors(graf, v)
+            unmarked_ancs = [w for w in ancs if w not in marked]
+            
+            v_anc = unmarked_ancs[-1]            
+
+            old_pos = mypi_inv[v_anc]
+            mypi[old_pos] = v
+            mypi[k] = v_anc
+            mypi_inv[v_anc] = k
+            mypi_inv[v] = old_pos
+            
+            marked[v_anc] = 1         
+    
+    if (DP):
+        return((mypi, tree2root))    
+    else:   
+        return(mypi) </code></pre>
+</details>
+</dd>
+<dt id="PAPER.gibbsSampling.updateInferResults"><code class="name flex">
+<span>def <span class="ident">updateInferResults</span></span>(<span>graf, freq, tree2root, alpha, beta, size_thresh, birth_thresh, node_tree_coo=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Match clustr-trees, update posterior root prob, and
+update node-tree co-occurrence results.</p>
+<p>Requires graf.vs has "pa" attribute.
+Requires graf.es has "tree" attribute.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>graf</code></strong> :&ensp;<code>igraph object</code></dt>
+<dd>Input graph.</dd>
+<dt><strong><code>freq</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Existing posterior root probs; maps k to the
+posterior root prob of tree k. Modified in place.</dd>
+<dt><strong><code>tree2root</code></strong> :&ensp;<code>list</code></dt>
+<dd>list of root nodes.</dd>
+<dt><strong><code>alpha</code></strong> :&ensp;<code>float</code></dt>
+<dd>Parameter.</dd>
+<dt><strong><code>beta</code></strong> :&ensp;<code>float</code></dt>
+<dd>Parameter.</dd>
+<dt><strong><code>size_thresh</code></strong> :&ensp;<code>float</code></dt>
+<dd>Thresh for keeping a cluster-tree.</dd>
+<dt><strong><code>birth_thresh</code></strong> :&ensp;<code>float</code></dt>
+<dd>Thresh for creating new distinct cluster-tree</dd>
+<dt><strong><code>node_tree_coo</code></strong> :&ensp;<code>nparray</code>, optional</dt>
+<dd>(i,j)-th entry is num of times node i
+appears in tree j. The default is None.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>nparray</code> of <code>new node-tree co-occurrences; replaces</code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<p>existing node_tree_coo.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def updateInferResults(graf, freq, tree2root, 
+                       alpha, beta, size_thresh, birth_thresh,
+                       node_tree_coo=None):
+    &#34;&#34;&#34;
+    Match clustr-trees, update posterior root prob, and
+    update node-tree co-occurrence results.
+    
+    Requires graf.vs has &#34;pa&#34; attribute.
+    Requires graf.es has &#34;tree&#34; attribute.
+
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    freq : dict
+        Existing posterior root probs; maps k to the 
+        posterior root prob of tree k. Modified in place.
+    tree2root : list
+        list of root nodes.
+    alpha : float
+        Parameter.
+    beta : float
+        Parameter.
+    size_thresh : float
+        Thresh for keeping a cluster-tree. 
+    birth_thresh : float
+        Thresh for creating new distinct cluster-tree 
+    node_tree_coo : nparray, optional
+        (i,j)-th entry is num of times node i
+        appears in tree j. The default is None.
+
+    Returns
+    -------
+    nparray of new node-tree co-occurrences; replaces
+    existing node_tree_coo.
+
+    &#34;&#34;&#34;
+    n = len(graf.vs)
+    
+    sizes = getTreeSizes(graf, tree2root)
+    sizes_sorted = -np.sort( - np.array(sizes))
+    sizes_args = np.argsort( - np.array(sizes))
+
+    K = len(tree2root)
+    bigK = len(freq)
+    
+    tree2root_sorted = [0] * len(tree2root)
+    for k in range(K):
+        tree2root_sorted[k] = tree2root[sizes_args[k]]
+    
+    tmp_freq = {}
+    treedegs = getAllTreeDeg(graf)
+    
+    for k in range(K):
+        if (sizes_sorted[k] &gt; size_thresh * n):
+            tmp_freq[k] = countAllHist(graf, tree2root_sorted[k])[0]
+        else:
+            break
+        
+        if (sizes_sorted[k] &gt; 1):
+            tmp_freq[k] = tmp_freq[k] * (beta*treedegs+beta+alpha) \
+                                * (beta*treedegs + alpha)                           
+
+            tmp_freq[k] = tmp_freq[k]/sum(tmp_freq[k])
+                    
+    curbigK = len(tmp_freq)
+    
+    if (curbigK &gt; bigK):
+        for k in range(bigK, curbigK):
+            freq[k] = np.array([0] * n)
+            
+            if (node_tree_coo is not None):
+                node_tree_coo = np.column_stack((node_tree_coo, np.zeros((n,1))))
+        bigK = curbigK
+        
+    dists = np.zeros((curbigK, bigK))
+    
+    for k in range(curbigK):
+        for kk in range(bigK):
+            if (sum(freq[kk] &gt; 0)):
+                distr1 = np.array(freq[kk]/sum(freq[kk]) )                        
+                distr2 = np.array(tmp_freq[k])
+
+                dists[k, kk] = sum(np.abs(distr1 - distr2))/2
+            else:
+                dists[k, kk] = 0
+                    
+    treematch = scipy.optimize.linear_sum_assignment(dists)[1]
+                      
+    for k in range(curbigK):
+        if (dists[k, treematch[k]] &gt; birth_thresh):
+            freq[bigK] = np.array([0] * n)
+            treematch[k] = bigK
+            
+            if (node_tree_coo is not None):
+                node_tree_coo = np.column_stack((node_tree_coo, np.zeros((n, 1))))
+            bigK = bigK + 1
+    
+    for k in range(curbigK):
+        freq[treematch[k]] = freq[treematch[k]] + tmp_freq[k]
+      
+    for ii in range(n):
+        if (node_tree_coo is None):
+            break
+        
+        ants = getAncestors(graf, ii)
+        myroot = ants[-1]
+        my_k = tree2root_sorted.index(myroot)
+        if (sizes_sorted[my_k] &lt;= size_thresh * n):
+            continue
+                    
+        my_kstar = treematch[my_k]
+        node_tree_coo[ii, my_kstar] = node_tree_coo[ii, my_kstar] + 1     
+    
+    return(node_tree_coo)                    </code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="PAPER" href="index.html">PAPER</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="two-column">
+<li><code><a title="PAPER.gibbsSampling.gibbsFull" href="#PAPER.gibbsSampling.gibbsFull">gibbsFull</a></code></li>
+<li><code><a title="PAPER.gibbsSampling.gibbsFullDP" href="#PAPER.gibbsSampling.gibbsFullDP">gibbsFullDP</a></code></li>
+<li><code><a title="PAPER.gibbsSampling.gibbsToConv" href="#PAPER.gibbsSampling.gibbsToConv">gibbsToConv</a></code></li>
+<li><code><a title="PAPER.gibbsSampling.nodewiseSampleDP" href="#PAPER.gibbsSampling.nodewiseSampleDP">nodewiseSampleDP</a></code></li>
+<li><code><a title="PAPER.gibbsSampling.nodewiseSamplePA" href="#PAPER.gibbsSampling.nodewiseSamplePA">nodewiseSamplePA</a></code></li>
+<li><code><a title="PAPER.gibbsSampling.reorderSubvector" href="#PAPER.gibbsSampling.reorderSubvector">reorderSubvector</a></code></li>
+<li><code><a title="PAPER.gibbsSampling.sampleOrdering" href="#PAPER.gibbsSampling.sampleOrdering">sampleOrdering</a></code></li>
+<li><code><a title="PAPER.gibbsSampling.updateInferResults" href="#PAPER.gibbsSampling.updateInferResults">updateInferResults</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>
