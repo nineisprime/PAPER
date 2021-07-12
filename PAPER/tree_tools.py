@@ -4,19 +4,9 @@
 Created on Fri Sep 18 21:10:19 2020
 
 @author: minx
-"""
 
-import time
-from random import *
-from igraph import *
-import numpy as np
-import collections
-import scipy.optimize
-#from numpy.random import *
 
-"""
-README 
-important invariants in the code
+important invariants in the code:
 graf.vs has attribute "pa", "subtree_size"
 graf.es has attribute "tree"
 
@@ -25,8 +15,29 @@ function "countSubtreeSizes(graf, root)" require "tree" attribute
       on the edges and creates "subtree_size" and "pa"
 """
 
+import time
+from random import choices
+from igraph import *
+import numpy as np
+import collections
+import scipy.optimize
+
+
 
 def getAllTreeDeg(graf):
+    """
+    Computes tree degree of all nodes in input graph.
+
+    Parameters
+    ----------
+    graf : igraph object
+        Graph with tree attribute on edges.
+
+    Returns
+    -------
+    np array of the tree degrees of all nodes.
+
+    """
     n = len(graf.vs)
     degs = [0] * n
     for mye in graf.es:
@@ -40,6 +51,21 @@ def getAllTreeDeg(graf):
 
 
 def treeDegree(graf, v):
+    """
+    Computes tree degree of a single node v of the input graph
+
+    Parameters
+    ----------
+    graf : igraph object
+        Graph with tree attribute on edges.
+    v : int
+        node id.
+
+    Returns
+    -------
+    tree degree of v as a single integer.
+
+    """
     
     edge_ixs = graf.incident(v)
     
@@ -47,20 +73,28 @@ def treeDegree(graf, v):
     
     return(deg)
 
-    
-"""    
-ancestors of utilde, avoiding u
 
-IN: "u" a node to avoid, omit argument to always get the 
-        ancestors of utilde               
-OUT: return -1 if parents of utilde trace to u, 
-          otherwise return list of parents of utilde, including utilde, including the root      
 
-Note: root node is one whose "pa" attribute is None
-"""
+
 def getAncestors(graf, utilde, u = None):
-    
-    #assert graf.vs[utilde]["pa"] != None
+    """
+    Returns ancestors utilde, avoiding u.
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    utilde : int
+        node id.
+    u : int, optional
+        node id. The default is None.
+
+    Returns
+    -------
+    -1 if parents of utilde trace to u, 
+          otherwise return list of parents of utilde, including utilde, including the root.
+
+    """
     
     cur_node = utilde
     ants = [cur_node]
@@ -78,28 +112,49 @@ def getAncestors(graf, utilde, u = None):
         else:
             ants.append(my_pa)
             cur_node = my_pa
+ 
         
-"""
-
-
-"""            
+ 
+    
 def otherNode(my_edge, node_ix):
+    """
+    Gives other node id of a given edge and one endpoint id
+
+    Parameters
+    ----------
+    my_edge : igraph edge object
+        Input edge.
+    node_ix : int
+        One endpoint id.
+
+    Returns
+    -------
+    Node id of the other endpoint.
+
+    """
     if (my_edge.source == node_ix):
         return(my_edge.target)
     else:
         return(my_edge.source)      
 
 
-"""    
-Creates a tree from "root" node by breadth-first-search
 
-NOTE: modifies "graf", adds "tree" attribute to the edges
-
-INPUT: "graf" igraph object
-        "root" beginning of the BFS
-OUTPUT: NONE 
-"""
 def bfsTree(graf, root=0):
+    """
+    Creates a tree from a given node by breadth-first-search
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    root : int, optional
+        Start node id. The default is 0.
+
+    Returns
+    -------
+    None.
+
+    """
     n = len(graf.vs)
     
     graf.vs["marked"] = False
@@ -124,17 +179,30 @@ def bfsTree(graf, root=0):
                 graf.vs[u]["marked"] = True
                 myqueue.append(u)
                 
-"""        
-Creates a tree from "root" node by uniform sampling
-from the set of spanning trees by Wilson's algorithm
-            
-NOTE: Modifies "graf", adds "tree" attribute to the edges
 
-INPUT: "graf" igraph object
-  
-OUTPUT: NONE
-"""
 def wilsonTree(graf, root=0, display=False):
+    """
+    Creates a tree from a given node by uniform sampling
+    from the set of spanning trees by Wilson's algorithm. 
+    The starting node can be arbitrary. 
+
+    Adds "tree" attribute to input graph edges.
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    root : int, optional
+        Start node id; Does not affect output tree. The default is 0.
+    display : boolean, optional
+        Display details. The default is False.
+
+    Returns
+    -------
+    None.
+
+    """
+    
     n = len(graf.vs)
     vertex_seq = range(n)
     
@@ -194,16 +262,33 @@ def wilsonTree(graf, root=0, display=False):
             
     return
 
-"""
-INPUT: n -- number of nodes
-        m -- total number of edges of the output network
-        alpha, beta -- parameters for PA
-        K -- number of trees
 
-OUTPUT: [0] is an igraph object
-        [1] is n--dim vector, output[1][i] is the root (tree) of node i
-"""
 def createNoisyGraph(n, m, alpha=0, beta=1, K=1):
+    """
+    Generates a new graph from PAPER(alpha, beta, K, theta) model
+    with n nodes and m edges. 
+    Note: theta parameter not used since m is fixed.
+
+    Parameters
+    ----------
+    n : int
+        Num nodes.
+    m : int
+        Num edges.
+    alpha : float, optional
+        Parameter. The default is 0.
+    beta : float, optional
+        Parameter. The default is 1.
+    K : int, optional
+        Num of clusters. The default is 1.
+
+    Returns
+    -------
+    0. igraph object
+    1. list representation of the underlying tree
+       where i-th element is the root of node i
+
+    """
     
     res = createPATree(n, alpha, beta, K)
     mytree = res[0]
@@ -214,6 +299,22 @@ def createNoisyGraph(n, m, alpha=0, beta=1, K=1):
         
 
 def addRandomEdges(graf, m):
+    """
+    Add random Erdos--Renyi edges to input graph
+    until the graph has m edges.
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    m : int
+        Final num of edges.
+
+    Returns
+    -------
+    igraph object.
+
+    """
     
     n = len(graf.vs)
     assert m < n*(n-1)/2
@@ -231,15 +332,30 @@ def addRandomEdges(graf, m):
         
     return(graf)        
 
-"""
-INPUT: n -- number of nodes
-        alpha, beta -- parameters for PA
-        K -- number of trees
 
-OUTPUT: [0] is an igraph object
-        [1] is n--dim vector, output[1][i] is the root (tree) of node i
-"""
 def createPATree(n, alpha=0, beta=1, K=1):
+    """
+    Generates an APA(alpha, beta, K) forest.
+    Default parameter is LPA.
+
+    Parameters
+    ----------
+    n : int
+        Num nodes.
+    alpha : float, optional
+        Parameter. The default is 0.
+    beta : float, optional
+        Parameter. The default is 1.
+    K : int, optional
+        Num of component trees. The default is 1.
+
+    Returns
+    -------
+    0. igraph object.
+    1. list representation of the underlying forest
+       where i-th element is the root of node i
+
+    """
     mytree = Graph()
     
     mytree.add_vertices(n)
@@ -283,16 +399,31 @@ def createPATree(n, alpha=0, beta=1, K=1):
     mytree.add_edges(edge_ls)
     return((mytree, tree_vec))
 
-"""        
-REQUIRE: graf must have edge attribute "tree" 
 
-INPUT: root is a vertex ID; mytree.vs[root] should return vertex object
-OUTPUT: N/A
 
-EFFECT: creates node attribute "subtree_size" on graf
-       creates node attribute "pa" on graf
-"""
 def countSubtreeSizes(graf, root, prev=None):
+    """
+    Creates new node attribute "subtree_size" and "pa"
+    giving the subtree sizes and parent of each node viewing the 
+    input tree as being rooted at a given node.
+    
+    Require: input graph edges have "tree" attribute.
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph; creates node attribute "subtree_size" on graf
+        creates node attribute "pa" on graf
+    root : int
+        Node id of root.
+    prev : int, optional
+        Internal variable used for recursion. The default is None.
+
+    Returns
+    -------
+    None.
+
+    """
     n = len(graf.vs)
     istree = len(graf.es) == (n-1)
 
@@ -318,20 +449,28 @@ def countSubtreeSizes(graf, root, prev=None):
     return(counter)
 
 
-"""
-REQUIRE: graf has node attribute "subtree_size"
-         graf has node attribute "pa"
-
-
-INPUT: "graf" -- igraph object. 
-       "root" node as an integer. Unimportant
-       
-OUTPUT: three-tuple. First: n-dim nparray of probabilities
-              Second: denominator -- number of all histories
-              Third: largest hist(u,t) value, over u, in log-scale
-"""
 
 def countAllHist(graf, root):
+    """
+    Computes posterior root probs for a given tree. 
+    Require: graf.es has "tree" attribute; graf.vs 
+            has "subtree_size" and "pa" attributes.
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    root : int
+        Root node id. Computes posterior root prob
+        for the tree containing root. 
+
+    Returns
+    -------
+    0. nparray of posterior root probs
+    1. cardinality of all histories of input tree
+    2. largest h(u,t) value in log-scale
+
+    """
     n = len(graf.vs)
     
     countSubtreeSizes(graf, root)
@@ -386,13 +525,26 @@ def countAllHist(graf, root):
         
 
 
-"""
-INPUT: "v_ls" is a list of nodes
-OUTPUT: sub-vector of nodes in the tree
-    
-Require: edges of "graf" has a "tree" attribute
-"""
 def treeDFS(graf, start, v_ls=None):
+    """
+    Require: edges of "graf" has a "tree" attribute
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    start : int
+        Start node id.
+    v_ls : list, optional
+        List of nodes. The default is None.
+
+    Returns
+    -------
+    0. sublist of v_ls of all nodes in the tree
+       containg start node. If v_ls==None, returns
+       list of all nodes of tree containing start node.
+
+    """
     
     stak = [start]
     
@@ -415,13 +567,23 @@ def treeDFS(graf, start, v_ls=None):
     return(tmp)
 
 
-"""
-Get tree sizes
 
-
-"""
 
 def getTreeSizes(graf, tree2root):
+    """
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    tree2root : list
+        Root node of all trees.
+
+    Returns
+    -------
+    0. list of sizes of all trees
+
+    """
     n = len(graf.vs)
     all_sizes = []
     for k in range(len(tree2root)):

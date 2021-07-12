@@ -1,0 +1,1 @@
+""" Implementation of Gibbs sampler (full and collapsed) for computer posterior root probabilities and community membership probabilities under the PAPER model (preferential attachment plus Erdos--Renyi)."""

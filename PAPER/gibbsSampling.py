@@ -6,34 +6,78 @@ Created on Sat Apr 24 13:43:28 2021
 @author: minx
 """
 
-from tree_tools import *
+from PAPER.tree_tools import *
 import time
-from random import *
+from random import choices
 from igraph import *
 import numpy as np
 import collections
 import scipy.optimize
 
-
-import grafting
-from estimateAlpha import *
-
+from PAPER.estimateAlpha import *
+import PAPER.grafting as grafting
 
 
 
-"""
-Executes either gibbsTree or gibbsTreeDP to convergence
+def gibbsToConv(graf, DP=False, K=1, 
+                alpha=0, beta=0, alpha0=50,
+                Burn=10, M=40, gap=1, 
+                MAXITER=100, tol=0.1, 
+                size_thresh=0.01, birth_thresh=0.8,
+                method="full",
+                burn_thresh = 0.95):
+    """
+    Run gibbs sampler to generate posterior root probs.
+    
 
-INPUT: graf, igraph object
-        DP, boolean indicating whether to use Dirichlet process
-        tol, criterion for convergence in Hellinger distance
-        
-OUTPUT: [0]  n-dim vector, u -> P(u in S | graf)  where S is set of roots
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    DP : boolean, optional
+        Use random K model or not. The default is False.
+    K : int, optional
+        Num of cluster-trees. Ignored if DP is True. The default is 1.
+    alpha : float, optional
+        Parameter. Set both alpha=0 and beta=0 (default) to 
+        estimate the parameters via EM. The default is 0. 
+    beta : float, optional
+        Parameter. Set both alpha=0 and beta=0 (default) to estimate
+        the parameter via EM. The default is 0.
+    alpha0 : float, optional
+        Initialization for parameter. Ignored if DP is False. The default is 50.
+    Burn : int, optional
+        Num of burn iteration. Unimportant if chain runs to 
+        convergence. The default is 10.
+    M : int, optional
+        Num of iterations per convergence check. The default is 40.
+    gap : int, optional
+        Num of samples to skip for recording results. The default is 1.
+    MAXITER : int, optional
+        Maximum number of convergence checks. The default is 100.
+    tol : float, optional
+        Convergence threshold. The default is 0.1.
+    size_thresh : float, optional
+        Thresh for keeping a cluster-tree. 
+        Ignored if K==1. The default is 0.01.
+    birth_thresh : float, optional
+        Thresh for creating new distinct cluster-tree 
+        in output. 
+        Ignored if K==1.
+        The default is 0.8.
+    method : string, optional
+        Either "full" or "collapsed". The default is "full".
+    burn_thresh : float, optional
+        Criterion for determining whether burn in is
+        complete. The default is 0.95.
 
-"""
-def gibbsTreeToConv(graf, DP=False, K=1, alpha=0, beta=0, alpha0=60,
-                Burn=40, M=60, gap=1, 
-                MAXITER=300, tol=0.1, size_thresh=0.01):
+    Returns
+    -------
+    0. nparray of posterior root probs
+    1. first chain outputs
+    2. second chain outputs
+
+    """
     
     n = len(graf.vs)
     m = len(graf.es)
@@ -43,15 +87,39 @@ def gibbsTreeToConv(graf, DP=False, K=1, alpha=0, beta=0, alpha0=60,
         beta = 1
         alpha = estimateAlphaEM(graf, display=False)
         print("Estimated alpha as {0}".format(alpha))
+    else:
+        print("Using alpha {0} and beta {1}".format(alpha, beta))
+    
+    if (DP):
+        print("Using random K model")
+    else:
+        print("Using fixed K={0} model".format(K))
+        
+        
     
     options = {"Burn": Burn, "M": M, "gap": gap, "alpha": alpha, 
-               "beta": beta, "display": False, "size_thresh": size_thresh}    
+               "beta": beta, "display": False, "size_thresh": size_thresh,
+               "birth_thresh": birth_thresh}    
+    
+    
+    if (DP and method == "full"):
+        gibbsFn = gibbsFullDP
+    
+    if ((not DP) and method == "full"):
+        gibbsFn = gibbsFull
+        
+    if (DP and method == "collapsed"):
+        gibbsFn = grafting.gibbsGraftDP
+    if ((not DP) and method== "collapsed"):
+        gibbsFn = grafting.gibbsGraft
+    
+    
     if (not DP):
-        res = gibbsTree(graf, K=K, initpi=None, **options)
-        res1 = gibbsTree(graf2, K=K, initpi=None, **options)
+        res = gibbsFn(graf, K=K, **options)
+        res1 = gibbsFn(graf2, K=K, **options)
     else:
-        res = gibbsTreeDP(graf, alpha0=alpha0, initpi=None, **options)
-        res1 = gibbsTreeDP(graf2, alpha0=alpha0, initpi=None, **ptions)        
+        res = gibbsFn(graf, alpha0=alpha0, **options)
+        res1 = gibbsFn(graf2, alpha0=alpha0, **options)        
 
 
     allfreq = np.array([0] * n)
@@ -71,7 +139,7 @@ def gibbsTreeToConv(graf, DP=False, K=1, alpha=0, beta=0, alpha0=60,
         if (deviation < tol):
             break
         
-        if (deviation > .9):
+        if (deviation > burn_thresh):
             allfreq = np.array([0] * n)
             allfreq1 = np.array([0] * n)
         
@@ -80,18 +148,21 @@ def gibbsTreeToConv(graf, DP=False, K=1, alpha=0, beta=0, alpha0=60,
         options["Burn"] = 0
         options["M"] = Mp
         
-        if (not DP):
-            res = gibbsTree(graf, K=K, initpi=res[-1], **options)
+        if ( (not DP) and method=="full"):
+            res = gibbsFn(graf, K=K, initpi=res[-1], **options)
+            res1 = gibbsFn(graf2, K=K, initpi=res1[-1], **options)
             
-            res1 = gibbsTree(graf2, K=K, initpi=res1[-1], **options)
-        else:
-            res = gibbsTreeDP(graf, alpha0=res[-2], 
-                              initpi=res[-1], initroots=res[-3],
-                              **options)
+        if ( (not DP) and method=="collapsed"):
+            res = gibbsFn(graf, K=K, initroots=res[-1], **options)
+            res1 = gibbsFn(graf2, K=K, initroots=res1[-1], **options)
             
-            res1 = gibbsTreeDP(graf2, alpha0=res1[-2],
-                               initpi=res1[-1], initroots=res1[-3],
-                               **options)       
+        if (DP and method=="full"):
+            res = gibbsFn(graf, initpi=res[-1], alpha0=res[-2], initroots=res[-3], **options)
+            res1 = gibbsFn(graf2, initpi=res1[-1], alpha0=res1[-2], initroots=res1[-3], **options)    
+            
+        if (DP and method=="collapsed"):
+            res = gibbsFn(graf, alpha0=res[-2], initroots=res[-1], **options)
+            res1 = gibbsFn(graf2, alpha0=res1[-2], initroots=res1[-1], **options)
     
     allfreq = allfreq + allfreq1
     allfreq = allfreq/sum(allfreq)
@@ -100,19 +171,49 @@ def gibbsTreeToConv(graf, DP=False, K=1, alpha=0, beta=0, alpha0=60,
 
 
 
-"""
-INPUT: 
+def gibbsFull(graf, Burn=40, M=50, gap=1, alpha=0, beta=1, K=1, 
+              display=True, size_thresh=0.01, birth_thresh=0.8,
+              initpi=None):
+    """
+    Full Gibbs sampler for computing posterior root prob and 
+    node tree co-occurrence in fixed K setting. 
 
-OUTPUT: 0: allfreqs, sum of all freqs normalized
-        1: freq, if K==1, then a single vector
-                if K>1, then a dictionary mapping k to vectors
-        2: node_tree_coo, (n --by-- K) matrix
-        3: tree2root
-        4: mypi, n--dim vector
-"""
-def gibbsTree(graf, Burn=40, M=50, gap=1, alpha=0, beta=1, K=1, 
-              display=True, size_thresh=0.01, initpi=None):
-    
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    Burn : int, optional
+        Num of burn in iterations. The default is 30.
+    M : int, optional
+        Num of regular iterations. The default is 50.
+    gap : int, optional
+        Num of samples to skip when recording results. 
+        The default is 1.
+    alpha : float, optional
+        Parameter. The default is 0.
+    beta : float, optional
+        Parameter. The default is 1.
+    K : int, optional
+        Num of roots/clusters. The default is 1.
+    display : boolean, optional
+        Detailed display. The default is True.
+    size_thresh : float, optional
+        Thresh for keeping a cluster-tree. The default is 0.01.
+    birth_thresh : float, optional
+        Thresh for creating new distinct cluster-tree 
+        in output. The default is 0.8.
+    initpi : list, optional
+        Initialization for ordering. The default is None.
+
+    Returns
+    -------
+    0: nparray of posterior root probs
+    1: dictionary mapping tree k to its posterior root probs
+    2: nparray of node tree co-occurrence
+    3: final roots (used for initiailization)
+    4: final ordering (used for initialization)
+
+    """
     n = len(graf.vs)
     m = len(graf.es)
 
@@ -134,9 +235,7 @@ def gibbsTree(graf, Burn=40, M=50, gap=1, alpha=0, beta=1, K=1,
     freq = {}
     if (K == 1):
         freq[0] = [0] * n
-        bigK = 1
-    else:   
-        bigK = 0
+
     
     for i in range(Burn + M):
         
@@ -166,75 +265,15 @@ def gibbsTree(graf, Burn=40, M=50, gap=1, alpha=0, beta=1, K=1,
             if (K == 1):
                 freq[0] = freq[0] + countAllHist(graf, tree2root[0])[0]
             else:   
-
-                tmp_freq = {}
+                node_tree_coo = updateInferResults(graf, freq, tree2root, 
+                                                   alpha=alpha, beta=beta, 
+                                                   size_thresh=size_thresh, 
+                                                   birth_thresh=birth_thresh, 
+                                                   node_tree_coo=node_tree_coo)
                 
-                treedegs = getAllTreeDeg(graf)
-                
-                kk = 0
-                for k in range(K):
-                    if (sizes_sorted[k] > size_thresh * n):
-                        tmp_freq[k] = countAllHist(graf, tree2root_sorted[k])[0]
-                        
-                        if (sizes_sorted[k] > 1):
-                            tmp_freq[kk] = tmp_freq[kk] * (beta*treedegs+beta+alpha) \
-                                * (beta*treedegs + alpha)                           
-
-                            tmp_freq[kk] = tmp_freq[kk]/sum(tmp_freq[kk])
-                        
-                        kk = kk + 1
-                mybigK = kk
- 
-                if (mybigK > bigK):
-                    for k in range(bigK, mybigK):
-                        freq[k] = np.array([0] * n)
-                        node_tree_coo = np.column_stack((node_tree_coo, np.zeros((n,1))))                        
-                    bigK = mybigK
- 
-               # match each tree in the forest to existing records
-                        
-                dists = np.zeros((mybigK, bigK))
-                    
-                for k in range(mybigK):
-                    for kk in range(bigK):
-                        if (sum(freq[kk]) > 0):
-                            distr1 = freq[kk]/sum(freq[kk])
-                            distr2 = np.array(tmp_freq[k])
-                            dists[k, kk] = sum(np.abs(distr1 - distr2))/2
-                        else:
-                            dists[k, kk] = 0
-                    
-                treematch = scipy.optimize.linear_sum_assignment(dists)[1]
-                    
-                if (display):
-                    print([ round(dists[k, treematch[k]], 4) for k in range(mybigK)])
-                
-                
-                for k in range(mybigK):
-                    if (dists[k, treematch[k]] > .75):
-                        freq[bigK] = np.array([0] * n)
-                        treematch[k] = bigK
-                        node_tree_coo = np.column_stack((node_tree_coo, np.zeros((n,1))))
-                        bigK = bigK+1
-                
-                for k in range(mybigK):                    
-                    freq[treematch[k]] = freq[treematch[k]] + tmp_freq[k]
-                
-                                
-                ## compute co-occurrence between node and tree
-                for ii in range(n):
-                    ants = getAncestors(graf, ii)
-                    myroot = ants[-1]
-                    my_k = tree2root_sorted.index(myroot)
-                    if (sizes_sorted[my_k] <= size_thresh * n):
-                        continue
-                    
-                    my_kstar = treematch[my_k]
-                    node_tree_coo[ii, my_kstar] = node_tree_coo[ii, my_kstar] + 1     
-
     allfreqs = np.array([0] * n)    
     
-    for k in range(bigK):
+    for k in range(len(freq)):
         allfreqs = allfreqs + freq[k]
         freq[k] = freq[k]/sum(freq[k])
         
@@ -244,28 +283,58 @@ def gibbsTree(graf, Burn=40, M=50, gap=1, alpha=0, beta=1, K=1,
         
 
 
-"""
+def gibbsFullDP(graf, Burn=20, M=50, gap=1, alpha=0, beta=1, alpha0=50, 
+                display=True, size_thresh=0.01, 
+                birth_thresh=0.8, initpi=None, initroots=None):
+    """
+    Full Gibbs sampler for computing posterior root prob 
+    in the random K setting.  
 
-OUTPUT: 
-    0: allfreqs
-    1: allK, list of length M
-    2: tree2root
-    3: alpha0
-    4: mypi
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    Burn : int, optional
+        Num of burn in iterations. The default is 30.
+    M : int, optional
+        Num of regular iterations. The default is 50.
+    gap : int, optional
+        Num of samples to skip when recording results. 
+        The default is 1.
+    alpha : float, optional
+        Parameter. The default is 0.
+    beta : float, optional
+        Parameter. The default is 1.
+    alpha0 : float, optional
+        Parameter. The default is 5.
+    display : boolean, optional
+        Detailed display. The default is True.
+    size_thresh : float, optional
+        Thresh for keeping a cluster-tree. The default is 0.01.
+    birth_thresh : float, optional
+        Thresh for creating new distinct cluster-tree 
+        in output. The default is 0.8.
+    initpi : list, optional
+        Ordering initialization. The default is None.
+    initroots : list, optional
+        Root initialization. The default is None.
+
+    Returns
+    -------
+    0. nparray of length n of posterior root prob
+    1. dict giving posterior root prob for each distinct cluster-tree
+    2. list of all Ks
+    3. final set of roots (used for initialization)
+    4. final alpha0 (used for initialization)
+    5. final ordering (used for initialization)
+
+    """
     
-"""
-def gibbsTreeDP(graf, Burn=20, M=50, gap=1, alpha=0, beta=1, alpha0=50, 
-                display=True, size_thresh=0.01, initpi=None, initroots=None):
     
     n = len(graf.vs)
     m = len(graf.es)
     
     if (initpi is None):
-        """
-        initpi = np.random.permutation(list(range(n)))
-        tree2root = list(range(n))
-        graf.es["tree"] = 0
-        """
         
         wilsonTree(graf)
         v = choices(range(n))[0]
@@ -306,9 +375,6 @@ def gibbsTreeDP(graf, Burn=20, M=50, gap=1, alpha=0, beta=1, alpha0=50,
         alpha0tilde = drawAlpha0tilde(K, n, alpha0/(alpha+2*beta))
         alpha0 = alpha0tilde*(alpha+2*beta)
                       
-        tree2root_sorted = [0] * K
-        for k in range(K):
-            tree2root_sorted[k] = tree2root[sizes_args[k]]
         
         
         if (display):
@@ -318,84 +384,53 @@ def gibbsTreeDP(graf, Burn=20, M=50, gap=1, alpha=0, beta=1, alpha0=50,
         """ record results """
 
         if (i >= Burn and i % gap == 0):
-            allK.append(K)
+            allK.append(len(tree2root))
             
-            tmp_freq = {}
+            updateInferResults(graf, freq, tree2root, 
+                               alpha=alpha, beta=beta, 
+                               size_thresh=size_thresh, 
+                               birth_thresh=birth_thresh)
             
-            treedegs = getAllTreeDeg(graf)
             
-            kk = 0
-            for k in range(K):
-                if (sizes_sorted[k] > size_thresh * n):
-                    tmp_freq[kk] = countAllHist(graf, tree2root_sorted[k])[0]
-                    
-                    if (sizes_sorted[k] > 1):
-                        tmp_freq[kk] = tmp_freq[kk] * (beta*treedegs+beta+alpha) \
-                                * (beta*treedegs + alpha)                           
-
-                        tmp_freq[kk] = tmp_freq[kk]/sum(tmp_freq[kk])
-                    
-                    kk = kk + 1
-            mybigK = kk
-            
-            if (mybigK > bigK):
-                for k in range(bigK, mybigK):
-                    freq[k] = np.array([0] * n)
-                bigK = mybigK
-            
-            dists = np.zeros((mybigK, bigK))
-            
-            for k in range(mybigK):
-                for kk in range(bigK):
-                    if (sum(freq[kk] > 0)):
-                        
-                        distr1 = np.array(freq[kk]/sum(freq[kk]) )                        
-                        distr2 = np.array(tmp_freq[k])
-
-                        dists[k, kk] = sum(np.abs(distr1 - distr2))/2
-                    else:
-                        dists[k, kk] = 0
-                    
-            treematch = scipy.optimize.linear_sum_assignment(dists)[1]
-                    
-            print([ round(dists[k, treematch[k]], 4) for k in range(mybigK)])
-            
-            for k in range(mybigK):
-                if (dists[k, treematch[k]] > .75):
-                    freq[bigK] = np.array([0] * n)
-                    treematch[k] = bigK
-                    bigK = bigK+1
-                    
-            for k in range(mybigK):                    
-                freq[treematch[k]] = freq[treematch[k]] + tmp_freq[k]            
-        
     allfreqs = np.array([0] * n)
-    for k in range(bigK):
+    for k in range(len(freq)):
         allfreqs = allfreqs + freq[k]
-        freq[k] = freq[k]/sum(freq[k])        
-    return((allfreqs, allK, tree2root, alpha0, mypi))
+        freq[k] = freq[k]/sum(freq[k])     
+        
+    return((allfreqs, freq, allK, tree2root, alpha0, mypi))
 
 
 
 
-"""
-WARNING: resets edge attribute "tree" and node attribute "pa". Number
-        of trees may change
 
-REQUIRE: graf has edge attribute "tree"
-
-Generates forest F from P(F | mypi, graf) where F has K component trees 
-with K fixed by nodewise Gibbs sampling.
-
-INPUT: graf, igraph object
-       mypi,  n--dim list of ordering
-       tree2root,  K-dim 
-       
-       
-OUTPUT: rootset,  K-dim list of new roots for trees
-
-"""
 def nodewiseSampleDP(graf, mypi, tree2root, alpha, beta, alpha0):
+    """
+    Generates new forest for a given ordering by sampling
+    a new parent for each node. Used in random K setting.
+
+    Require: graf.es has "tree" attribute    
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph; "tree" edge attribute and "pa" node
+        attributes are modified in place.
+    mypi : list
+        Given ordering of the nodes.
+    tree2root : list
+        Lists of the roots for each of the trees.
+    alpha : float
+        Parameter.
+    beta : float
+        Parameter.
+    alpha0 : float
+        Parameter.
+
+    Returns
+    -------
+    New list of roots
+
+    """
     n = len(graf.vs)
     m = len(graf.es)
     n2 = n*(n-1)/2
@@ -413,18 +448,6 @@ def nodewiseSampleDP(graf, mypi, tree2root, alpha, beta, alpha0):
     for i in range(n):
         mypi_inv[mypi[i]] = i    
                 
-        
-    """
-    for v in tree2root:
-        countSubtreeSizes(graf, v)
-    
-    all_tree_degs = [0] * n
-    for i in range(n):
-        mypa = graf.vs[i]["pa"]
-        if (mypa != None):
-            all_tree_degs[mypa] = all_tree_degs[mypa] + 1
-            all_tree_degs[i] = all_tree_degs[i] + 1
-    """
     all_tree_degs = getAllTreeDeg(graf)        
     assert sum(all_tree_degs) == 2*(n-len(tree2root))
     
@@ -497,23 +520,33 @@ def nodewiseSampleDP(graf, mypi, tree2root, alpha, beta, alpha0):
 
 
 
-"""
-WARNING: resets edge attribute "tree" and node attribute "pa"
 
-REQUIRE: graf has edge attribute "tree"
-
-Generates forest F from P(F | mypi, graf) where F has K component trees 
-with K fixed by nodewise Gibbs sampling.
-
-INPUT: graf, igraph object
-       mypi,  n--dim list of ordering
-       
-       
-OUTPUT: None
-
-"""
 def nodewiseSamplePA(graf, mypi, alpha, beta, K):
-    
+    """
+    Generates new forest for a given ordering by sampling
+    a new parent for each node. Used in fixed K setting.
+
+    Require: graf.es has "tree" attribute
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph; "tree" edge attribute and "pa" node
+        attributes are modified in place.
+    mypi : list
+        Given ordering of the nodes.
+    alpha : float
+        Parameter.
+    beta : float
+        Parameter.
+    K : int
+        Num of clusters.
+
+    Returns
+    -------
+    None.
+
+    """
     n  = len(graf.vs)
     
     mypi_inv = [0] * n
@@ -569,18 +602,33 @@ def nodewiseSamplePA(graf, mypi, alpha, beta, K):
     
 
 
-"""
-REQUIRE: graf.vs is in the order 0,1,2,3, ..., n-1
-        graf.vs has "pa" attribute
-        graf.es has "tree" attribute
-
-INPUT: graf, igraph object 
-
-NOTE: modifies "pa" attribute on nodes
-      modifies "subtree_size" attributes on edges
-"""
 def sampleOrdering(graf, tree2root, alpha, beta, DP=False):
+    """
+    Condition on the forest, generate a new root for each
+    tree and generate a new global ordering.
     
+    Require: graf.vs has "pa" attribute; graf.es has "tree" attribute
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph; "pa" and "subtree_size" vertex attributes
+        modified in place.
+    tree2root : list
+        list of root nodes.
+    alpha : float
+        Parameter.
+    beta : float
+        Parameter.
+    DP : boolean, optional
+        Use random K model or not. The default is False.
+
+    Returns
+    -------
+    0. new node ordering
+    1. list of new roots (only used in random K setting)
+
+    """
     K = len(tree2root)
     n = len(graf.vs)
     
@@ -675,23 +723,146 @@ def sampleOrdering(graf, tree2root, alpha, beta, DP=False):
 
 
 
+def updateInferResults(graf, freq, tree2root, 
+                       alpha, beta, size_thresh, birth_thresh,
+                       node_tree_coo=None):
+    """
+    Match clustr-trees, update posterior root prob, and
+    update node-tree co-occurrence results.
+    
+    Requires graf.vs has "pa" attribute.
+    Requires graf.es has "tree" attribute.
 
 
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    freq : dict
+        Existing posterior root probs; maps k to the 
+        posterior root prob of tree k. Modified in place.
+    tree2root : list
+        list of root nodes.
+    alpha : float
+        Parameter.
+    beta : float
+        Parameter.
+    size_thresh : float
+        Thresh for keeping a cluster-tree. 
+    birth_thresh : float
+        Thresh for creating new distinct cluster-tree 
+    node_tree_coo : nparray, optional
+        (i,j)-th entry is num of times node i
+        appears in tree j. The default is None.
+
+    Returns
+    -------
+    nparray of new node-tree co-occurrences; replaces
+    existing node_tree_coo.
+
+    """
+    n = len(graf.vs)
+    
+    sizes = getTreeSizes(graf, tree2root)
+    sizes_sorted = -np.sort( - np.array(sizes))
+    sizes_args = np.argsort( - np.array(sizes))
+
+    K = len(tree2root)
+    bigK = len(freq)
+    
+    tree2root_sorted = [0] * len(tree2root)
+    for k in range(K):
+        tree2root_sorted[k] = tree2root[sizes_args[k]]
+    
+    tmp_freq = {}
+    treedegs = getAllTreeDeg(graf)
+    
+    for k in range(K):
+        if (sizes_sorted[k] > size_thresh * n):
+            tmp_freq[k] = countAllHist(graf, tree2root_sorted[k])[0]
+        else:
+            break
+        
+        if (sizes_sorted[k] > 1):
+            tmp_freq[k] = tmp_freq[k] * (beta*treedegs+beta+alpha) \
+                                * (beta*treedegs + alpha)                           
+
+            tmp_freq[k] = tmp_freq[k]/sum(tmp_freq[k])
+                    
+    curbigK = len(tmp_freq)
+    
+    if (curbigK > bigK):
+        for k in range(bigK, curbigK):
+            freq[k] = np.array([0] * n)
+            
+            if (node_tree_coo is not None):
+                node_tree_coo = np.column_stack((node_tree_coo, np.zeros((n,1))))
+        bigK = curbigK
+        
+    dists = np.zeros((curbigK, bigK))
+    
+    for k in range(curbigK):
+        for kk in range(bigK):
+            if (sum(freq[kk] > 0)):
+                distr1 = np.array(freq[kk]/sum(freq[kk]) )                        
+                distr2 = np.array(tmp_freq[k])
+
+                dists[k, kk] = sum(np.abs(distr1 - distr2))/2
+            else:
+                dists[k, kk] = 0
+                    
+    treematch = scipy.optimize.linear_sum_assignment(dists)[1]
+                      
+    for k in range(curbigK):
+        if (dists[k, treematch[k]] > birth_thresh):
+            freq[bigK] = np.array([0] * n)
+            treematch[k] = bigK
+            
+            if (node_tree_coo is not None):
+                node_tree_coo = np.column_stack((node_tree_coo, np.zeros((n, 1))))
+            bigK = bigK + 1
+    
+    for k in range(curbigK):
+        freq[treematch[k]] = freq[treematch[k]] + tmp_freq[k]
+      
+    for ii in range(n):
+        if (node_tree_coo is None):
+            break
+        
+        ants = getAncestors(graf, ii)
+        myroot = ants[-1]
+        my_k = tree2root_sorted.index(myroot)
+        if (sizes_sorted[my_k] <= size_thresh * n):
+            continue
+                    
+        my_kstar = treematch[my_k]
+        node_tree_coo[ii, my_kstar] = node_tree_coo[ii, my_kstar] + 1     
+    
+    return(node_tree_coo)                    
+        
+        
 
 
-
-
-"""    
-INPUT: "vec1" is the possibly longer vector
-        "vec2" contains elements of vec1 in a different order
-        "pos_dict" a dictionary Elem(vec1) -> [n] giving positions
-OUTPUT: a vector which contains the same elements as vec1
-        the subvector that correspond to elements of vec2 is re-ordered
-        according to vec2
-
-WARNING: modifies "vec1" and "pos_dict" in place 
-"""
 def reorderSubvector(vec1, vec2, pos_dict):
+    """
+
+    Parameters
+    ----------
+    vec1 : list
+        Longer input list.
+    vec2 : list
+        Shorter input list. Required to be a sub-list of
+        vec1.
+    pos_dict : dict
+        Positions of all elements of vec2 in vec1. Modified in place.
+
+    Returns
+    -------
+    a list which contains the same elements as vec1
+    the sub-list that correspond to elements of vec2 is re-ordered
+    according to vec2.
+
+    """
     n = len(vec1)
     m = len(vec2)
     
@@ -716,223 +887,4 @@ def reorderSubvector(vec1, vec2, pos_dict):
 
 
 
-
-
-
-
-"""
-DEPRECATED CODE below!
-
-
-===========================
-
-"""    
-
-
-
-"""
-DEPRECATED!
-
-WARNING: resets edge attribute "tree" and node attribute "pa"
-
-Generates forest F from P(F | mypi, graf) where F has K component trees 
-with K fixed.
-
-"""
-def constrainedSamplePA(graf, mypi, alpha, beta, K):
-    
-    n = len(graf.vs)
-    
-    mypi_inv = [0] * n
-    for i in range(n):
-        mypi_inv[mypi[i]] = i
-    
-    """
-    ## OG weight
-    old_score = 0
-    old_tree_degs = [0] * n
-    for i in range(n-K):
-        k = K+i
-        v = mypi[k]
-        
-        nbs = graf.neighbors(v)
-        nbs = [w for w in nbs if mypi_inv[w] < k]
-
-        tree_degs = [old_tree_degs[w] for w in nbs]
-        tree_degs = np.array(tree_degs)
-        
-        root_adj = [w in mypi[0:K] for w in nbs]
-        root_adj = np.array(root_adj)        
-            
-        if (K == 1):
-            root_adj = 0
-        
-        tmp_p = beta*tree_degs + 2*beta*root_adj + alpha
-        
-        if (i > 1):
-            old_score = old_score + np.log(sum(tmp_p))
-            if (sum(tmp_p) == 0):
-                print((i, sum(old_tree_degs)))
-            
-        tree_edges = [e for e in graf.es[graf.incident(v)] if e["tree"] ]
-        endpts = [otherNode(e, v) for e in tree_edges]
-        bothls = [u for u in endpts if mypi_inv[u] < k]
-        assert len(bothls) == 1
-        
-        old_tree_degs[bothls[0]] = old_tree_degs[bothls[0]] + 1
-        old_tree_degs[v] = old_tree_degs[v] + 1
-    ##
-    """
-    
-    
-    
-    all_tree_degs = [0] * n
-    edge_ls = []
-    
-    new_score = 0
-    
-    for i in range(n-K):
-        k = K+i
-
-        v = mypi[k]
-        
-        nbs = graf.neighbors(v)
-        nbs = [w for w in nbs if mypi_inv[w] < k]
-
-        tree_degs = [all_tree_degs[w] for w in nbs]
-        ##tree_degs = [ sum( graf.es[graf.incident(w)]["tree"] ) for w in nbs]
-        tree_degs = np.array(tree_degs)
-        
-        root_adj = [w in mypi[0:K] for w in nbs]
-        root_adj = np.array(root_adj)
-        
-        if (K == 1):
-            root_adj = 0
-        
-        tmp_p = beta*tree_degs + 2*beta*root_adj + alpha
-        
-        if (i > 1):
-            new_score = new_score + np.log(sum(tmp_p))
-        
-        myw = choices(nbs, weights=tmp_p)[0]
-        ##myw = choices(nbs)[0]
-        
-        ## add (v, myw) to the tree
-        edge_ls.append((v, myw))
-        all_tree_degs[myw] = all_tree_degs[myw] + 1
-        all_tree_degs[v] = all_tree_degs[v] + 1
-        ##graf.es[ graf.get_eids( [(v, myw)] ) ]["tree"] = 1
-    
-    assert len(edge_ls) == (n - K)
-    
-    """
-    ratio = np.exp(new_score - old_score)
-    print(ratio)
-    
-    u = random()
-    if (u > ratio):
-        constrainedSamplePA(graf, mypi, alpha, beta, K)
-    """
-    
-    graf.es["tree"] = 0
-    graf.vs["pa"] = None
-    
-    graf.es[graf.get_eids(edge_ls)]["tree"] = 1
-
-    
-
-"""
-DEPRECATED
-
-WARNING: resets edge attribute "tree" and node attribute "pa"
-
-Generates forest F from P(F | mypi, graf) where F has Dirichlet Process
-prior on the number of components
-
-
-"""
-def constrainedSampleDP(graf, mypi, alpha, beta, alpha0, MAXK=50):
-    n = len(graf.vs)
-    m = len(graf.es)
-    n2 = n*(n-1)/2
-    
-    MAXK = min(MAXK, n)
-    
-    graf.es["tree"] = 0
-    graf.vs["pa"] = None
-    
-    rootset = [mypi[0]]
-    
-    mypi_inv = [0] * n
-    for i in range(n):
-        mypi_inv[mypi[i]] = i    
-        
-    all_tree_degs = [0] * n
-    edge_ls = []
-    for i in range(n-1):
-        k = i + 1
-        v = mypi[k]
-        
-        nbs = graf.neighbors(v)
-        nbs = [w for w in nbs if mypi_inv[w] < k]
-
-        tree_degs = [all_tree_degs[w] for w in nbs]
-        ##tree_degs = [ sum( graf.es[graf.incident(w)]["tree"] ) for w in nbs]
-        tree_degs = np.array(tree_degs)
-        
-        root_adj = [w in rootset for w in nbs]
-        root_adj = np.array(root_adj)
-        
-        tmp_p = beta*tree_degs + 2*beta*root_adj + alpha
-        tmp_p = np.append(tmp_p, alpha0 * (m-n + MAXK)/(n2-n + MAXK) )
-        
-        myi = choices(range(len(nbs)+1), weights=tmp_p)[0]
-        if (myi < len(nbs)):
-            myw = nbs[myi]
-            edge_ls.append((v, myw))
-            ##graf.es[ graf.get_eids( [(v, myw)] ) ]["tree"] = 1
-            all_tree_degs[myw] = all_tree_degs[myw] + 1
-            all_tree_degs[v] = all_tree_degs[v] + 1
-        else:
-            print("")
-            print("adding root")
-            print((k, v, len(nbs)))
-            print(tmp_p)
-            print("")
-            rootset.append(v)
-        
-        
-        """
-        ## DEBUG!!!   
-        ## DEBUG!!!
-        # for root in rootset:
-        #     cur_tree = treeDFS(graf, root, range(n))
-        #     if len([x for x in cur_tree if x in rootset]) > 1:
-        #         print("BUG!")
-        #         print((k, v, myi, myw))
-        #         print(nbs)
-        #         print(rootset)
-        #         raise Exception("No!!")
-        """
-    assert len(edge_ls) == (n - len(rootset) )
-        
-    graf.es[graf.get_eids(edge_ls)]["tree"] = 1
-    
-    ## rejection sampling
-    K = len(rootset)
-    if (K > MAXK):
-        return(constrainedSampleDP(graf, mypi, alpha, beta, alpha0, MAXK=2*MAXK))
-    
-    rej_ratio = 1
-    for k in range(K-1):
-        rej_ratio = rej_ratio * (m-n+k+2)/(m-n + MAXK) * (n2-n + MAXK)/(n2-n+k+2)
-
-    U = np.random.uniform()
-    
-    ##print((K, rej_ratio))
-    
-    if (U < rej_ratio):
-        return(rootset)
-    else:
-        return(constrainedSampleDP(graf, mypi, alpha, beta, alpha0, MAXK=MAXK))
 

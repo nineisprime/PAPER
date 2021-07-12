@@ -7,24 +7,39 @@ Created on Sat Apr 24 13:45:51 2021
 """
 
 
-from tree_tools import *
+from PAPER.tree_tools import *
 from igraph import *
 import numpy as np
-from random import *
+from random import choices
 
 import time
 
-"""
-Graf is G = F + R where F is APA(alpha, beta, K) and beta=1
 
-Estimate alpha via an approximate EM procedure.
-
-OUTPUT: alpha -- scalar, estimated parameter
-
-"""
       
 def estimateAlphaEM(graf, K=1, maxiter=40, alpha_init=1, display=True):
-    
+    """
+    Assumes beta=1, estimates alpha via approximate EM algorithm. Assumes
+    PAPER model for input graph. Warning: very slow when maximum degree is
+    over 10,000. 
+
+    Parameters
+    ----------
+    graf : igraph object
+        Input graph.
+    K : int, optional
+        Number of clusters. The default is 1.
+    maxiter : int, optional
+        Maximum number of EM iterations. The default is 40.
+    alpha_init : float, optional
+        Initial value of alpha. The default is 1.
+    display : boolean, optional
+        The default is True.
+
+    Returns
+    -------
+    float: estimated alpha.
+
+    """
     m = len(graf.es)
     n = len(graf.vs)
     
@@ -108,12 +123,29 @@ def estimateAlphaEM(graf, K=1, maxiter=40, alpha_init=1, display=True):
 
 
 """    
-compute 
 
-max_alpha sum_j log(j + alpha) M[j] - sum_k log(2 (k-2) + (k-1)alpha )
 
 """  
 def optimizeAlpha(Mterm, n, alphainit=1):
+    """
+    Use radient descent with line search to compute
+
+        max_alpha sum_j log(j + alpha) M[j] - sum_k log(2 (k-2) + (k-1)alpha )
+
+    Parameters
+    ----------
+    Mterm : nparray
+        M in optimization objective.
+    n : int
+        Num of nodes.
+    alphainit : float, optional
+        initial value. The default is 1.
+
+    Returns
+    -------
+    alpha : float, argmax.
+
+    """
     
     max_deg = len(Mterm)
     
@@ -163,13 +195,33 @@ def optimizeAlpha(Mterm, n, alphainit=1):
     return(alpha)
 
 
-"""
-In APA_(alpha, beta, alpha0), define alpha0tilde = alpha0/(2 beta + alpha)
 
-We give alpha0tilde prior Gamma(a, b)
-
-"""
 def drawAlpha0tilde(K, n, alpha0tilde, a=1, b=0.1, M=150):
+    """
+    Given K, draw alpha0 by gibbs Sampling.
+    In APA_(alpha, beta, alpha0), define alpha0tilde = alpha0/(2 beta + alpha)
+    We give alpha0tilde prior Gamma(a, b)    
+
+    Parameters
+    ----------
+    K : int
+        Num of clusters.
+    n : int
+        Num of nodes.
+    alpha0tilde : float
+        previous alpha0tilde value.
+    a : float, optional
+        prior parameter. The default is 1.
+    b : float, optional
+        prior parameter. The default is 0.1.
+    M : int, optional
+        gibbs iteration. The default is 150.
+
+    Returns
+    -------
+    float; next alpha0tilde value.
+
+    """
     
     cur_a0 = alpha0tilde
     a0_ls = []
@@ -189,13 +241,29 @@ def drawAlpha0tilde(K, n, alpha0tilde, a=1, b=0.1, M=150):
 
     return(np.mean(np.array(a0_ls)))
 
-"""
-Compute
 
-max_alpha0 (K-1)log(alpha0) - sum_{i=1}^{n-1} log( alpha0 + 2i )
 
-"""
+
 def optimizeAlpha0(K, n, maxiter=50):
+    """
+    Compute
+
+    max_alpha0 (K-1)log(alpha0) - sum_{i=1}^{n-1} log( alpha0 + 2i )    
+
+    Parameters
+    ----------
+    K : TYPE
+        DESCRIPTION.
+    n : TYPE
+        DESCRIPTION.
+    maxiter : TYPE, optional
+        DESCRIPTION. The default is 50.
+
+    Returns
+    -------
+    None.
+
+    """
     
     alpha0 = 1
     stepsize = .5
