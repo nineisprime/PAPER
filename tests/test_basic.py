@@ -7,13 +7,12 @@ Created on Tue May 18 15:54:58 2021
 """
 
 
-from PAPER.tree_tools import *
+from PAPER.tree_tools import createNoisyGraph
 import numpy as np
 import pickle
-from PAPER.gibbsSampling import *
-from PAPER.grafting import *
-from PAPER.estimateAlpha import *
-
+from PAPER.gibbsSampling import gibbsToConv
+from PAPER.estimateAlpha import estimateAlphaEM
+import igraph
 
 def test_gibbs_single_root():
 
@@ -117,4 +116,14 @@ def test_random_K_roots():
                                    alpha=alpha, beta=beta, tol=0.05,
                                    birth_thresh=1)
     
-    assert sum( np.abs( res[0] - res2[0] ))/2 < 0.3    
+    assert sum( np.abs( res[0] - res2[0] ))/2 < 0.3
+
+
+def test_flu_net():
+
+    graf = igraph.read("data/flu_net.gml")
+    res = gibbsToConv(graf, Burn=20, M=40, DP=False, K=1, method="full",
+                      tol=0.05)
+
+    rootprobs = res[0]
+    assert abs(rootprobs[0] - 0.11) < 0.4

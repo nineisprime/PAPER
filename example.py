@@ -6,17 +6,20 @@ Created on Sun Jul 11 17:27:46 2021
 @author: minx
 """
 
-import PAPER.gibbsSampling as gibbsSampling
-import PAPER.tree_tools as tree_tools
-from igraph import *
+from PAPER.gibbsSampling import gibbsToConv
+from PAPER.tree_tools import createNoisyGraph
 import numpy as np
+import igraph
 
 ## Generate a PAPER graph
-graf = tree_tools.createNoisyGraph(n=100, m=200, alpha=0, beta=1, K=1)[0]
+graf = createNoisyGraph(n=100, m=200, alpha=0, beta=1, K=1)[0]
+# graf = igraph.read("data/flu_net.gml")  # alternatively, read graph from input file
+
 
 ## Run Gibbs sampler
 mcmc_out = gibbsSampling.gibbsToConv(graf, DP=False, method="full",
-                       K=1, alpha=0, beta=1, tol=0.05)
+                                     K=1, tol=0.1)
+
 
 
 ## Show nodes with top 10 posterior root prob:

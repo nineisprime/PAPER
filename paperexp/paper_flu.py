@@ -6,12 +6,11 @@ Created on Thu Nov  5 13:54:32 2020
 @author: minx
 """
 
-from tree_tools import *
+from PAPER.tree_tools import *
 import igraph
 import numpy as np
 import pickle
-from gibbsSampling import *
-from grafting import *
+from PAPER.gibbsSampling import *
 
 graf = igraph.read("data/flu_net.gml")
 
@@ -25,8 +24,8 @@ graf.simplify()
 
 """ single root analysis for flu network """
 
-res = gibbsTreeToConv(graf, DP=False, K=1, alpha=0, 
-                      beta=0, Burn=60, M=100, tol=0.01)
+res = gibbsToConv(graf, DP=False, K=1, alpha=0, 
+                      beta=0, Burn=60, M=100, tol=0.01, method="full")
 
 freq = res[0]
 freq_sorted = -np.sort(-freq)
@@ -120,8 +119,8 @@ plot(graf, out_fig, layout=tree_layout1)
 
 
 graf.es["color"] = "rgba(1,1,1,0.3)"
-gibbsTreeToConv(graf, DP=False, K=1, alpha=0, 
-                      beta=0, Burn=60, M=100, tol=0.01)
+gibbsToConv(graf, DP=False, K=1, alpha=0, 
+                      beta=0, Burn=60, M=100, tol=0.01, method="full")
 graftree = graf.copy()
 graftree.delete_edges([mye for mye in graftree.es if not mye["tree"]])
 

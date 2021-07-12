@@ -13,12 +13,16 @@ Created on Wed Oct 28 10:51:04 2020
 ## 
 ## 
 ##
+import sys
+sys.path.append('../')
+print(sys.path)
 
-from tree_tools import *
+
+from PAPER.tree_tools import *
 import numpy as np
 import pickle
-from gibbsSampling import *
-from grafting import *
+from PAPER.gibbsSampling import *
+from PAPER.grafting import *
 
 n_ls = [5000, 10000]
 alpha = 1
@@ -36,10 +40,10 @@ print(edge_ratio_ls)
 edge_ratio_ls = [1.1, 1.5, 2, 3, 4]
 """
 
-INIT = False
+INIT = True
 
 if (INIT): 
-    with open("pickles/paper_exp2b.pkl", "rb") as f:
+    with open("../pickles/paper_exp2b.pkl", "rb") as f:
         res, edge_ratio_ls, n_ls, alpha, beta, K = pickle.load(f)
 else:
     res = np.zeros(shape=(ntrials, len(n_ls), len(edge_ratio_ls), 2))
@@ -50,7 +54,7 @@ for j in range(len(edge_ratio_ls)):
     for i in range(len(n_ls)):    
         for it in range(ntrials):
 
-            if (j < 4 or i == 0):
+            if (j != 4 or i != 1):
                 continue
 
             if (res[it, i, j, 1] != 0):
@@ -65,8 +69,8 @@ for j in range(len(edge_ratio_ls)):
         
             graf = createNoisyGraph(n, m, alpha=alpha, beta=beta, K=K)[0]
         
-            mcmc_res = gibbsTreeToConv(graf, Burn=20, M=30, DP=False,
-                                       K=1, alpha=0, beta=0, tol=0.1, MAXITER=60)
+            mcmc_res = gibbsToConv(graf, Burn=20, M=30, DP=False,
+                                       K=1, alpha=0, beta=0, tol=0.1, MAXITER=60, method="full")
         
             freq = mcmc_res[0]
             sort_ix = np.argsort(-freq)
@@ -87,7 +91,7 @@ for j in range(len(edge_ratio_ls)):
             res[it, i, j, 0] = (0 in conf_set)
             res[it, i, j, 1] = len(conf_set)
 
-            with open("pickles/paper_exp2b.pkl", 'wb') as f:
+            with open("../pickles/paper_exp2b.pkl", 'wb') as f:
                 pickle.dump([res, edge_ratio_ls, n_ls, alpha, beta, K], f)
 
 #    with open("pickles/paper_exp1.pkl", 'wb') as f:

@@ -10,7 +10,7 @@ import pickle
 import numpy as np
 
 
-with open("pickles/paper_exp2c.pkl", "rb") as f:
+with open("pickles/paper_exp2.pkl", "rb") as f:
     res = pickle.load(f)
     
 res = res[0]
@@ -26,20 +26,20 @@ np.apply_along_axis(np.mean, 0, res)
 #foo = res[0:200, 0, 0, :]
 
 #file_ls = ["a"]
-file_ls = ["a", "b", "c", "d", "e", "f"]
-res = np.zeros(shape=(300, 2, 3, 2))
+file_ls = ["", "a", "b"]
+res = np.zeros(shape=(20, 2, 6, 2))
 #file_ls = ["a", "b", "c", "d", "e"]
 #res = np.zeros(shape=(300, 2, 3, 2))
 
 ix = 0
 for i in range(len(file_ls)):
     
-    with open("pickles/paper_exp4" + file_ls[i] + ".pkl", "rb") as f:
-        res2, a, b, e = pickle.load(f)
+    with open("pickles/paper_exp2" + file_ls[i] + ".pkl", "rb") as f:
+        res2, a, b, c, d, e = pickle.load(f)
 
-    for j in range(300):
-        if (res2[j, 1, 0, 1] > 0):
-            res[ix, :, :, :] = res2[j, :, :, :]
+    for j in range(20):
+        if (res2[j, 1, 4, 1] > 0):
+            res[ix, 1, 4, :] = res2[j, 1, 4, :]
             ix = ix+1
         else:
             break

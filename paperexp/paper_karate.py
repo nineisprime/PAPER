@@ -16,12 +16,12 @@ To illustrate tree edges:
 
 """
 
-from tree_tools import *
+from PAPER.tree_tools import *
 import igraph
 import numpy as np
 import pickle
-from gibbsSampling import *
-from grafting import *
+from PAPER.gibbsSampling import *
+from PAPER.grafting import *
 
 graf = igraph.read("data/karate.gml")
 
@@ -41,7 +41,7 @@ for u in comm1:
 """ analysis for K=1 roots """
 K=1
 
-res = gibbsTreeToConv(graf, DP=False, K=K, alpha=0, 
+res = gibbsToConv(graf, DP=False, K=K, alpha=0, method="full",
                       beta=0, Burn=60, M=100, tol=0.005)
 
 freq = res[0]
@@ -53,7 +53,7 @@ sorted_ixs = np.argsort(-freq)
 """ analysis for K=2 roots """
 K=2
 
-allres = gibbsTreeToConv(graf, DP=False, K=K, alpha=0, 
+allres = gibbsToConv(graf, DP=False, K=K, alpha=0, method="full",
                       beta=0, Burn=60, M=100, tol=0.001)
 
 freq = allres[0]

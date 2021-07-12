@@ -8,11 +8,11 @@ Created on Tue May 18 15:54:58 2021
 
 
 
-from tree_tools import *
+from PAPER.tree_tools import *
 import numpy as np
 import pickle
-from gibbsSampling import *
-from grafting import *
+from PAPER.gibbsSampling import *
+from PAPER.grafting import *
 
 n = 3000
 K = 1
@@ -51,8 +51,8 @@ for it in range(ntrials):
         
         graf = createNoisyGraph(n, m, alpha=alpha, beta=beta, K=K)[0]
         
-        mcmc_res = gibbsTreeToConv(graf, Burn=20, M=60, DP=False,
-                                   K=1, alpha=0, beta=0, tol=0.1)
+        mcmc_res = gibbsToConv(graf, Burn=20, M=60, DP=False, method="full",
+                                   K=1, tol=0.1)
         
         freq = mcmc_res[0]
         sort_ix = np.argsort(-freq)

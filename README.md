@@ -7,6 +7,8 @@ Erdos--Renyi) model for random networks.
 
 See details in the arXiv paper: https://arxiv.org/abs/2107.00153
 
+[Documentation]
+
 [Documentation]: https://nineisprime.github.io/PAPER/
 
 Installation
