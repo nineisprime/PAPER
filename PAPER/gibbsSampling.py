@@ -33,7 +33,8 @@ def gibbsToConv(graf, DP=False, K=1,
     Parameters
     ----------
     graf : igraph object
-        Input graph.
+        Input graph. Converted to undirected graph with 
+        no multi-edges. 
     DP : boolean, optional
         Use random K model or not. The default is False.
     K : int, optional
@@ -78,6 +79,15 @@ def gibbsToConv(graf, DP=False, K=1,
     2. second chain outputs
 
     """
+    
+    graf.to_undirected()
+    graf.simplify()
+    foo = graf.clusters().giant()
+    if (len(foo.vs) < len(graf.vs)):
+        print('Warning: input graph disconnected. \
+              Taking largest connected component as the input graph. \
+              Node ID may change as a result.')
+        graf = foo
     
     n = len(graf.vs)
     m = len(graf.es)
@@ -368,7 +378,6 @@ def gibbsFullDP(graf, Burn=20, M=50, gap=1, alpha=0, beta=1, alpha0=50,
     
         K = len(tree2root)
     
-        sizes_sorted = -np.sort( - np.array(sizes))
         sizes_args = np.argsort( - np.array(sizes))
     
         ## Uncomment to update alpha0
@@ -384,7 +393,7 @@ def gibbsFullDP(graf, Burn=20, M=50, gap=1, alpha=0, beta=1, alpha0=50,
         """ record results """
 
         if (i >= Burn and i % gap == 0):
-            allK.append(len(tree2root))
+            allK.append(sum(size_sorted > (size_thresh * n)))
             
             updateInferResults(graf, freq, tree2root, 
                                alpha=alpha, beta=beta, 
@@ -395,7 +404,7 @@ def gibbsFullDP(graf, Burn=20, M=50, gap=1, alpha=0, beta=1, alpha0=50,
     allfreqs = np.array([0] * n)
     for k in range(len(freq)):
         allfreqs = allfreqs + freq[k]
-        freq[k] = freq[k]/sum(freq[k])     
+        #freq[k] = freq[k]/sum(freq[k])     
         
     return((allfreqs, freq, allK, tree2root, alpha0, mypi))
 
@@ -807,7 +816,8 @@ def updateInferResults(graf, freq, tree2root,
                 distr1 = np.array(freq[kk]/sum(freq[kk]) )                        
                 distr2 = np.array(tmp_freq[k])
 
-                dists[k, kk] = sum(np.abs(distr1 - distr2))/2
+                dists[k, kk] = sum( (np.sqrt(distr1) - np.sqrt(distr2))**2 )/2
+                #dists[k, kk] = sum(np.abs(distr1 - distr2))/2
             else:
                 dists[k, kk] = 0
                     

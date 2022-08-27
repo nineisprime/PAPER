@@ -253,7 +253,7 @@ def gibbsGraftDP(graf, Burn=30, M=50, gap=1, alpha=0, beta=1, alpha0=5,
         """
         if (i >= Burn and i % gap == 0):
             
-            allK.append(len(tree2root))
+            allK.append( sum(sizes_sorted > (size_thresh * n)) )
             
             gibbsSampling.updateInferResults(graf, freq, tree2root,
                                alpha=alpha, beta=beta,
@@ -262,13 +262,15 @@ def gibbsGraftDP(graf, Burn=30, M=50, gap=1, alpha=0, beta=1, alpha0=5,
 
     
     
-    allfreqs = np.array([0] * n)        
+    allfreqs = np.array([0] * n)
+    tree_count = np.array( [0] * len(freq) )
     for k in range(len(freq)):
         allfreqs = allfreqs + freq[k]
+        tree_count[k] = sum(freq[k])
         freq[k] = freq[k]/sum(freq[k])
     
     allfreqs = allfreqs/sum(allfreqs)
-    return((allfreqs, freq, allK, alpha0, tree2root))
+    return((allfreqs, freq, allK, alpha0, tree2root, tree_count))
 
 
     

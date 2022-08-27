@@ -39,8 +39,10 @@ uniform attachment setting
 with open("pickles/paper_exp2.pkl", "rb") as f:
     res, edge_ratio_ls, n_ls, alpha, beta, K = pickle.load(f)
         
-edge_ratio_ls = edge_ratio_ls[0:4]
-res = res[:, :, 0:4, :]
+L = 5    
+    
+edge_ratio_ls = edge_ratio_ls[0:L]
+res = res[:, :, 0:L, :]
     
 meanarr = np.apply_along_axis(np.mean, 0, res)
 sdarr = np.apply_along_axis(np.std, 0, res)

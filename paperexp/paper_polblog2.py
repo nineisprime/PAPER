@@ -9,9 +9,9 @@ Created on Fri Jun  4 21:12:04 2021
 
 
 import igraph
-from tree_tools import *
-from gibbsSampling import *
-from grafting import *
+from PAPER.tree_tools import *
+from PAPER.gibbsSampling import *
+from PAPER.grafting import *
 
 import pickle
 
@@ -30,7 +30,7 @@ m = len(foo.es)
 
 graf = foo
 
-mcmc_res = gibbsGraftToConv(graf, Burn=50, M=200, DP=True,
+mcmc_res = gibbsToConv(graf, Burn=50, M=200, DP=True, method="collapsed",
                                    alpha=0, beta=0, size_thresh=0, tol=0.1)
 
 Kdistr[0] = np.concatenate([np.array(mcmc_res[1][2]),
@@ -50,7 +50,7 @@ n = len(bar.vs)
 m = len(bar.es)
 graf = bar
 
-mcmc_res = gibbsGraftToConv(graf, Burn=50, M=50, DP=True,
+mcmc_res = gibbsToConv(graf, Burn=50, M=50, DP=True, method="collapsed",
                                    alpha=0, beta=0, size_thresh=0.01, tol=0.1)
 
 Kdistr[1] = np.concatenate([np.array(mcmc_res[1][2]),
@@ -67,10 +67,10 @@ matplotlib.rc('font', size=13)
 
 fig, axs = plt.subplots(1, 2, sharey=False)
 
-axs[0].set_xticks(ticks=[2, 5, 10, 20])
-axs[1].set_xticks(ticks=[2, 5, 10, 20])
-axs[0].hist(Kdistr[1], bins=nb, ec='black', density=True)
-axs[1].hist(Kdistr[0], bins=nb, ec='black', density=True)
+axs[0].set_xticks(ticks=[1, 2, 3, 4, 5])
+axs[1].set_xticks(ticks=[1, 2, 3, 4, 5])
+axs[0].hist(Kdistr[0], bins=nb, ec='black', density=True)
+axs[1].hist(Kdistr[1], bins=nb, ec='black', density=True)
 
 axs[0].set_title("Karate")
 axs[1].set_title("Blog")
