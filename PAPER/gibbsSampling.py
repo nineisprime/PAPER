@@ -16,16 +16,21 @@ import scipy.optimize
 
 from PAPER.estimateAlpha import *
 import PAPER.grafting as grafting
+import PAPER.seqnoise as seqnoise
 
 
-
-def gibbsToConv(graf, DP=False, K=1, 
-                alpha=0, beta=0, alpha0=50,
+def gibbsToConv(graf, DP=False, 
+                K=1, 
+                alpha=0, beta=0, 
+                alpha0=50,
+                talpha=None, tbeta=None, theta=None, eta=None,
                 Burn=10, M=40, gap=1, 
-                MAXITER=100, tol=0.1, 
+                MAXITER=100, 
+                tol=0.1, 
                 size_thresh=0.01, birth_thresh=0.8,
+                burn_thresh = 0.95,
                 method="full",
-                burn_thresh = 0.95):
+                seq=False):
     """
     Run gibbs sampler to generate posterior root probs.
     
@@ -93,7 +98,7 @@ def gibbsToConv(graf, DP=False, K=1,
     m = len(graf.es)
     graf2 = graf.copy()
     
-    if (alpha == 0 and beta == 0):
+    if (alpha == 0 and beta == 0 and not seq):
         beta = 1
         alpha = estimateAlphaEM(graf, display=False)
         print("Estimated alpha as {0}".format(alpha))
@@ -105,16 +110,25 @@ def gibbsToConv(graf, DP=False, K=1,
     else:
         print("Using fixed K={0} model".format(K))
         
-        
+    if (seq):
+        print("Using sequential noise model")
     
-    options = {"Burn": Burn, "M": M, "gap": gap, "alpha": alpha, 
-               "beta": beta, "display": False, "size_thresh": size_thresh,
-               "birth_thresh": birth_thresh}    
+    options = {"Burn": Burn, "M": M, 
+               "gap": gap, 
+               "alpha": alpha, 
+               "beta": beta, 
+               "talpha" : talpha, "tbeta" : tbeta,
+               "theta" : theta,
+               "eta" : eta,
+               "size_thresh": size_thresh,
+               "birth_thresh": birth_thresh,
+               "display": False
+               }    
+    
     
     
     if (DP and method == "full"):
         gibbsFn = gibbsFullDP
-    
     if ((not DP) and method == "full"):
         gibbsFn = gibbsFull
         
@@ -122,6 +136,9 @@ def gibbsToConv(graf, DP=False, K=1,
         gibbsFn = grafting.gibbsGraftDP
     if ((not DP) and method== "collapsed"):
         gibbsFn = grafting.gibbsGraft
+    
+    if (seq):
+        gibbsFn = seqnoise.gibbsFullSeq
     
     
     if (not DP):
@@ -173,6 +190,11 @@ def gibbsToConv(graf, DP=False, K=1,
         if (DP and method=="collapsed"):
             res = gibbsFn(graf, alpha0=res[-2], initroots=res[-1], **options)
             res1 = gibbsFn(graf2, alpha0=res1[-2], initroots=res1[-1], **options)
+    
+        if (seq):
+            res = gibbsFn(graf, K=K, initpi=res[-1], **options)
+            res1 = gibbsFn(graf2, K=K, initpi=res1[-1], **options)
+    
     
     allfreq = allfreq + allfreq1
     allfreq = allfreq/sum(allfreq)
