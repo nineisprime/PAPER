@@ -4,6 +4,11 @@
 Created on Tue May 18 15:54:58 2021
 
 @author: minx
+
+Code for generating Table 3 in the manuscript
+
+"Root and community inference on ..."
+
 """
 
 

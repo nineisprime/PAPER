@@ -17,17 +17,26 @@ import math
 
 def gibbsFullSeq(graf, 
                  Burn=40, M=50, 
+                 alpha=0, beta=1,
+                 theta=1, 
+                 talpha=0, tbeta=1,
+                 eta=0,
                  gap=1, 
                  K=1,
                  initpi=None, 
-                 seq=True, timed=False, display=True, **params):
+                 seq=True, timed=False, display=True, **options):
         
     st = time.time()
     n = len(graf.vs)
     m = len(graf.es)
-    
-    alpha = params["alpha"]
-    beta = params["beta"]
+
+    params = {"alpha" : alpha, 
+              "beta" : beta,
+              "theta" : theta, 
+              "talpha" : talpha, "tbeta" : tbeta,
+              "eta" : eta
+              }
+
     
     if (initpi is None):
         wilsonTree(graf)
@@ -53,15 +62,15 @@ def gibbsFullSeq(graf,
         
         # Step 2 of Gibbs: Sampling the tree
         nodewiseSampleSeq(graf, pi=mypi, pi_inv=mypi_inv, 
-                         K=K, **params)
+                         K=K, **params, **options)
         
         tree2root = mypi[0:K]
         #print("MH")
 
         # Step 1 of Gibbs: Metropolis hastings by sampling non-root
         start = time.time() 
-        MHOrdering(graf, pi=mypi, pi_inv=mypi_inv, M=n,
-                   display=timed, **params)
+        MHOrdering(graf, pi=mypi, pi_inv=mypi_inv, M=n, **params,
+                   display=timed, **options)
         end = time.time()
 
 
@@ -70,7 +79,8 @@ def gibbsFullSeq(graf,
         
         # Step 3 of Gibbs: sample root
         sampleRootSeq(graf, pi=mypi, pi_inv=mypi_inv, freq=freq,  
-                      k0=15, M0=10, **params)
+                      **params, 
+                      k0=15, M0=10, **options)
         
         if (np.random.rand() > 0.99 and timed):
             print("mcmc iter: %d  time: %.4f" % (i, time.time() - st1))
@@ -88,7 +98,7 @@ def nodewiseSampleSeq(graf, pi, pi_inv, K,
                      tbeta=1, talpha=0, 
                      eta=0,
                      debug_flag = False,
-                     **params):
+                     **options):
     """
     Generates new forest for a given ordering by sampling
     a new parent for each node. Used in fixed K setting.
@@ -325,8 +335,13 @@ def nodewiseSampleSeq(graf, pi, pi_inv, K,
 
 # CHANGES BELOW: generalized noise function
 # dependency of theta through acceptance probability only  
-def MHOrdering(graf, pi, pi_inv, M=50, gap=1, 
-               display=False, **params):
+def MHOrdering(graf, pi, pi_inv, 
+               M=50, gap=1, 
+               alpha=0, beta=1,
+               theta=0,
+               talpha=0, tbeta=1,
+               eta=0,
+               display=False, **options):
     """
     Condition on the forest, generate a new global ordering
     by swapping a pair of non-root nodes at each step with 
@@ -335,10 +350,6 @@ def MHOrdering(graf, pi, pi_inv, M=50, gap=1,
     Require: graf.vs has "pa" attribute; graf.es has "tree" attribute
 
     """    
-    
-    theta = params["theta"]
-    talpha = params["talpha"]
-    tbeta = params["tbeta"]
     
     n = len(graf.vs)
 
@@ -363,16 +374,18 @@ def MHOrdering(graf, pi, pi_inv, M=50, gap=1,
 
 
 # dependency of theta through calcRootSeqLogProb only
-def sampleRootSeq(graf, pi, pi_inv, freq, k0=15, M0=10, **params):
+def sampleRootSeq(graf, pi, pi_inv, 
+                  freq, 
+                  k0=15, M0=10,
+                  talpha=0, tbeta=1,
+                  theta=1,
+                  **options):
     """
     Potentially updates the first k0 elements of pi
     
     Updates pi_inv correspondingly
     
     """
-    theta = params["theta"]
-    tbeta = params["tbeta"]
-    talpha = params["talpha"]
     
     k0 = min(len(pi), k0)
     
@@ -441,7 +454,6 @@ def sampleRootSeq(graf, pi, pi_inv, freq, k0=15, M0=10, **params):
         freq[pi[0]] = freq[pi[0]] + 1
         
         
-
 
 
 

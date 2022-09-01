@@ -21,7 +21,7 @@ import PAPER.seqnoise as seqnoise
 
 def gibbsToConv(graf, DP=False, 
                 K=1, 
-                alpha=0, beta=0, 
+                alpha=None, beta=None, 
                 alpha0=50,
                 talpha=None, tbeta=None, theta=None, eta=None,
                 Burn=10, M=40, gap=1, 
@@ -98,7 +98,7 @@ def gibbsToConv(graf, DP=False,
     m = len(graf.es)
     graf2 = graf.copy()
     
-    if (alpha == 0 and beta == 0 and not seq):
+    if (alpha == None and beta == None and not seq):
         beta = 1
         alpha = estimateAlphaEM(graf, display=False)
         print("Estimated alpha as {0}".format(alpha))
@@ -113,13 +113,16 @@ def gibbsToConv(graf, DP=False,
     if (seq):
         print("Using sequential noise model")
     
+    
+    params = {"alpha" : alpha,
+              "beta" : beta,
+              "talpha" : talpha, "tbeta" : tbeta,
+              "theta" : theta,
+              "eta" : eta
+              }
+    
     options = {"Burn": Burn, "M": M, 
                "gap": gap, 
-               "alpha": alpha, 
-               "beta": beta, 
-               "talpha" : talpha, "tbeta" : tbeta,
-               "theta" : theta,
-               "eta" : eta,
                "size_thresh": size_thresh,
                "birth_thresh": birth_thresh,
                "display": False
@@ -142,11 +145,11 @@ def gibbsToConv(graf, DP=False,
     
     
     if (not DP):
-        res = gibbsFn(graf, K=K, **options)
-        res1 = gibbsFn(graf2, K=K, **options)
+        res = gibbsFn(graf, K=K, **params, **options)
+        res1 = gibbsFn(graf2, K=K, **params, **options)
     else:
-        res = gibbsFn(graf, alpha0=alpha0, **options)
-        res1 = gibbsFn(graf2, alpha0=alpha0, **options)        
+        res = gibbsFn(graf, alpha0=alpha0, **params, **options)
+        res1 = gibbsFn(graf2, alpha0=alpha0, **params, **options)        
 
 
     allfreq = np.array([0] * n)
@@ -176,24 +179,34 @@ def gibbsToConv(graf, DP=False,
         options["M"] = Mp
         
         if ( (not DP) and method=="full"):
-            res = gibbsFn(graf, K=K, initpi=res[-1], **options)
-            res1 = gibbsFn(graf2, K=K, initpi=res1[-1], **options)
+            res = gibbsFn(graf, K=K, initpi=res[-1], 
+                          **params, **options)
+            res1 = gibbsFn(graf2, K=K, initpi=res1[-1], 
+                           **params, **options)
             
         if ( (not DP) and method=="collapsed"):
-            res = gibbsFn(graf, K=K, initroots=res[-1], **options)
-            res1 = gibbsFn(graf2, K=K, initroots=res1[-1], **options)
+            res = gibbsFn(graf, K=K, initroots=res[-1], 
+                          **params, **options)
+            res1 = gibbsFn(graf2, K=K, initroots=res1[-1], 
+                           **params, **options)
             
         if (DP and method=="full"):
-            res = gibbsFn(graf, initpi=res[-1], alpha0=res[-2], initroots=res[-3], **options)
-            res1 = gibbsFn(graf2, initpi=res1[-1], alpha0=res1[-2], initroots=res1[-3], **options)    
+            res = gibbsFn(graf, initpi=res[-1], alpha0=res[-2], initroots=res[-3], 
+                          **params, **options)
+            res1 = gibbsFn(graf2, initpi=res1[-1], alpha0=res1[-2], initroots=res1[-3], 
+                           **params, **options)    
             
         if (DP and method=="collapsed"):
-            res = gibbsFn(graf, alpha0=res[-2], initroots=res[-1], **options)
-            res1 = gibbsFn(graf2, alpha0=res1[-2], initroots=res1[-1], **options)
+            res = gibbsFn(graf, alpha0=res[-2], initroots=res[-1], 
+                          **params, **options)
+            res1 = gibbsFn(graf2, alpha0=res1[-2], initroots=res1[-1], 
+                           **params, **options)
     
         if (seq):
-            res = gibbsFn(graf, K=K, initpi=res[-1], **options)
-            res1 = gibbsFn(graf2, K=K, initpi=res1[-1], **options)
+            res = gibbsFn(graf, K=K, initpi=res[-1], 
+                          **params, **options)
+            res1 = gibbsFn(graf2, K=K, initpi=res1[-1], 
+                           **params, **options)
     
     
     allfreq = allfreq + allfreq1
@@ -205,7 +218,7 @@ def gibbsToConv(graf, DP=False,
 
 def gibbsFull(graf, Burn=40, M=50, gap=1, alpha=0, beta=1, K=1, 
               display=True, size_thresh=0.01, birth_thresh=0.8,
-              initpi=None):
+              initpi=None, **options):
     """
     Full Gibbs sampler for computing posterior root prob and 
     node tree co-occurrence in fixed K setting. 
@@ -317,7 +330,7 @@ def gibbsFull(graf, Burn=40, M=50, gap=1, alpha=0, beta=1, K=1,
 
 def gibbsFullDP(graf, Burn=20, M=50, gap=1, alpha=0, beta=1, alpha0=50, 
                 display=True, size_thresh=0.01, 
-                birth_thresh=0.8, initpi=None, initroots=None):
+                birth_thresh=0.8, initpi=None, initroots=None, **options):
     """
     Full Gibbs sampler for computing posterior root prob 
     in the random K setting.  

@@ -4,6 +4,11 @@
 Created on Wed Oct 28 10:51:04 2020
 
 @author: minx
+
+Code for generating Figure 12 (Left) in the manuscript
+
+"Root and community inference on ..."
+
 """
 ## Uniform attachment
 ## 
