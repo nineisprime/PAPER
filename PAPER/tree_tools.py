@@ -978,7 +978,7 @@ def getTreeSizes(graf, tree2root):
     for k in range(len(tree2root)):
         cur_tree = treeDFS(graf, tree2root[k], range(n))
         all_sizes.append(len(cur_tree))
-    
+        
     assert sum(np.array(all_sizes)) == n
     
     return(all_sizes)

@@ -37,8 +37,12 @@ def gibbsFullSeq(graf,
               "eta" : eta
               }
 
+
+    if ("pi" in options):
+        mypi = options["pi"]
+        options.pop("pi", None)
+    else:
     
-    if (initpi is None):
         wilsonTree(graf)
         v = choices(range(n))[0]
     
@@ -46,14 +50,18 @@ def gibbsFullSeq(graf,
         tree2root = [v]
         
         mypi = gibbsSampling.sampleOrdering(graf, tree2root, alpha, beta)
-    else:
-        mypi = initpi
+    
     
     mypi_inv = {}
     for i in range(n):
         mypi_inv[mypi[i]] = i
     
-    freq = [0] * n
+    
+    if ("freq" in options):
+        freq = options["freq"]
+        options.pop("freq", None)
+    else:    
+        freq = np.array([0] * n, dtype="f")
 
     for i in range(Burn + M):     
 
@@ -82,11 +90,14 @@ def gibbsFullSeq(graf,
                       **params, 
                       k0=15, M0=10, **options)
         
-        if (np.random.rand() > 0.99 and timed):
+        if (np.random.rand() > 0.95 and timed):
             print("mcmc iter: %d  time: %.4f" % (i, time.time() - st1))
             
-       
-    return((freq, mypi))
+    allfreq = freq/sum(freq)
+    return({"allfreq" : allfreq,
+            "freq" : freq, 
+            "pi" : mypi,
+            "node_tree_coo" : None})
 
 
 

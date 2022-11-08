@@ -12,13 +12,13 @@ import numpy as np
 import igraph
 
 ## Generate a PAPER graph
-graf = createNoisyGraph(n=100, m=200, alpha=0, beta=1, K=1)[0]
+graf = createNoisyGraph(n=200, m=500, alpha=0, beta=1, K=2)[0]
 # graf = igraph.read("data/flu_net.gml")  # alternatively, read graph from input file
 
 
 ## Run Gibbs sampler
-mcmc_out = gibbsToConv(graf, DP=False, method="full",
-                                     K=1, tol=0.1)
+mcmc_out = gibbsToConv(graf, DP=True, method="full",
+                                      tol=0.01)
 
 
 

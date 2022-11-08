@@ -18,7 +18,7 @@ from PAPER.estimateAlpha import *
 
 def gibbsGraft(graf, Burn=30, M=50, gap=1, alpha=0, beta=1, K=1,
                display=True, size_thresh=0.01, birth_thresh=.8,
-               initroots=None):
+               initroots=None, **options):
     """
     Collapsed grafting sampler for the fixed K setting.
 
@@ -61,7 +61,9 @@ def gibbsGraft(graf, Burn=30, M=50, gap=1, alpha=0, beta=1, K=1,
     
     n = len(graf.vs)
     
-    if (initroots is None):
+    if ("tree2root" in options):
+        tree2root = options["tree2root"]
+    else:
         wilsonTree(graf)
         v = choices(range(n))[0]
     
@@ -75,21 +77,25 @@ def gibbsGraft(graf, Burn=30, M=50, gap=1, alpha=0, beta=1, K=1,
             gibbsSampling.nodewiseSamplePA(graf, initpi, alpha, beta, K)
             tree2root = initpi[0:K]
 
-    else:
-        tree2root = initroots
-    
+ 
     sizes = getTreeSizes(graf, tree2root)
     
     for k in range(K):
         countSubtreeSizes(graf, tree2root[k])
     
-    node_tree_coo = np.zeros((n, 0))
-    freq = {}
-    if (K == 1):
-        freq[0] = [0] * n
-        bigK = 1
-    else:   
-        bigK = 0
+    if ("node_tree_coo" in options):
+        node_tree_coo = options["node_tree_coo"]
+    else:
+        node_tree_coo = np.zeros((n, 0))
+    
+
+    if ("freq" in options):
+        freq = options["freq"]
+    else:
+        freq = {}
+        if (K == 1):
+            freq[0] = [0] * n
+
     
     for i in range(Burn + M):
         treedegs = getAllTreeDeg(graf)  
@@ -141,17 +147,19 @@ def gibbsGraft(graf, Burn=30, M=50, gap=1, alpha=0, beta=1, K=1,
 
     for k in range(len(freq)):
         allfreqs = allfreqs + freq[k]
-        freq[k] = freq[k]/sum(freq[k])
      
     allfreqs = allfreqs/sum(allfreqs)
-    return((allfreqs, freq, node_tree_coo, tree2root))
+    return({"allfreq" : allfreqs, 
+            "freq" : freq, 
+            "node_tree_coo" : node_tree_coo, 
+            "tree2root" : tree2root})
 
 
 
 
 def gibbsGraftDP(graf, Burn=30, M=50, gap=1, alpha=0, beta=1, alpha0=5, 
                  display=True, size_thresh=0.01, 
-                 birth_thresh=0.8, initroots=None):
+                 birth_thresh=0.8, initroots=None, **options):
     """
     Collapsed grafting sampler for the random K setting.
 
@@ -194,15 +202,17 @@ def gibbsGraftDP(graf, Burn=30, M=50, gap=1, alpha=0, beta=1, alpha0=5,
     
     n = len(graf.vs)
     display=True
-    if (initroots is None):
+    
+    
+    if ("tree2root" in options):
+        tree2root = options["tree2root"]
+    else:        
         wilsonTree(graf)
         v = choices(range(n))[0]
         
         countSubtreeSizes(graf, v)
     
         tree2root = [v]
-    else:
-        tree2root = initroots
     
   
     allK = []
@@ -211,8 +221,16 @@ def gibbsGraftDP(graf, Burn=30, M=50, gap=1, alpha=0, beta=1, alpha0=5,
     if (display):
         print("Starting gibbsGraftDP ...")
     
-    freq = {}
-    bigK = 0
+    
+    if ("freq" in options):
+        freq = options["freq"]
+    else:   
+        freq = {}
+    
+    if ("node_tree_coo" in options):
+        node_tree_coo = options["node_tree_coo"]
+    else:
+        node_tree_coo = np.zeros((n, 0))
     
     
     for i in range(Burn + M):
@@ -239,8 +257,8 @@ def gibbsGraftDP(graf, Burn=30, M=50, gap=1, alpha=0, beta=1, alpha0=5,
         sizes_args = np.argsort( - np.array(sizes))
     
         if (display):
-            print("iter {0}  a0 {1}  K {2}  sizes {3}".format(i, round(alpha0, 3), 
-                                                          K, sizes_sorted[0:6]))    
+            print("it {0}  a0 {1}  K {2}  Kstar {4}  sizes {3}".format(i, round(alpha0, 3), 
+                                                          K, sizes_sorted[0:3], len(freq)))    
         for v in range(n):
             if (v in tree2root):
                 assert graf.vs[v]["pa"] == None
@@ -255,22 +273,29 @@ def gibbsGraftDP(graf, Burn=30, M=50, gap=1, alpha=0, beta=1, alpha0=5,
             
             allK.append( sum(sizes_sorted > (size_thresh * n)) )
             
-            gibbsSampling.updateInferResults(graf, freq, tree2root,
+            node_tree_coo = gibbsSampling.updateInferResults(graf, 
+                               freq, tree2root,
                                alpha=alpha, beta=beta,
                                size_thresh=size_thresh,
-                               birth_thresh=birth_thresh)   
+                               birth_thresh=birth_thresh,
+                               node_tree_coo=node_tree_coo)   
 
     
     
-    allfreqs = np.array([0] * n)
-    tree_count = np.array( [0] * len(freq) )
+    allfreqs = np.array([0] * n, dtype="f")
+    tree_count = np.array( [0] * len(freq), dtype="f")
     for k in range(len(freq)):
         allfreqs = allfreqs + freq[k]
         tree_count[k] = sum(freq[k])
-        freq[k] = freq[k]/sum(freq[k])
     
     allfreqs = allfreqs/sum(allfreqs)
-    return((allfreqs, freq, allK, alpha0, tree2root, tree_count))
+    return({"allfreq" : allfreqs, 
+            "freq" : freq, 
+            "allK" : allK, 
+            "alpha0" : alpha0, 
+            "tree2root" : tree2root, 
+            "tree_count" : tree_count, 
+            "node_tree_coo" : node_tree_coo})
 
 
     
