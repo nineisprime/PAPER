@@ -5,13 +5,17 @@ Created on Sun Nov  8 16:57:29 2020
 
 @author: minx
 """
+import sys
+
+#sys.path.append("/Users/minx/dropbox/minx/research/network_hist/code/python")
+
 from igraph import *
 
-from tree_tools import *
+from PAPER.tree_tools import *
 import numpy as np
 import pickle
-from gibbsSampling import *
-from grafting import *
+from PAPER.gibbsSampling import *
+from PAPER.grafting import *
 
 # Generate noisy network
 # save layout according to the true tree

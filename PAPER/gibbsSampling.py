@@ -323,21 +323,29 @@ def gibbsFull(graf, Burn=40, M=50, gap=1, alpha=0, beta=1, K=1,
         if (K == 1):
             freq[0] = [0] * n
 
+    timeA = 0
+    timeB = 0
     
     for i in range(Burn + M):
         
         for v in tree2root:
             assert graf.vs[v]["pa"] is None        
         
-        
+        ##
+        start = time.time()
         nodewiseSamplePA(graf, mypi, alpha=alpha, beta=beta, K=K)
+        timeA = timeA + (time.time() - start)
                 
+        ##
+        start = time.time()
         tree2root = mypi[0:K]
         mypi = sampleOrdering(graf, tree2root, alpha=alpha, beta=beta)
+        
+    
                 
-
         ## sort and display sizes
         sizes = getTreeSizes(graf, tree2root)
+        
         
         sizes_sorted = -np.sort( - np.array(sizes))
         sizes_args = np.argsort(- np.array(sizes) )
@@ -355,20 +363,23 @@ def gibbsFull(graf, Burn=40, M=50, gap=1, alpha=0, beta=1, K=1,
             
             if (K == 1):
                 freq[0] = freq[0] + countAllHist(graf, tree2root[0])[0]
-                trace[i - Burn] = countAllHist(graf, tree2root[0])[0][trace_id]
+                #trace[i - Burn] = countAllHist(graf, tree2root[0])[0][trace_id]
             else:   
                 node_tree_coo = updateInferResults(graf, freq, tree2root, 
                                                    alpha=alpha, beta=beta, 
                                                    size_thresh=size_thresh, 
                                                    birth_thresh=birth_thresh, 
                                                    node_tree_coo=node_tree_coo)
-                
+        timeB = timeB + (time.time() - start)
+        
     allfreqs = np.array([0] * n)    
     
     for k in range(len(freq)):
         allfreqs = allfreqs + freq[k]
         
     allfreqs = allfreqs/sum(allfreqs)
+    
+    print([timeA, timeB])
     
     return( {"allfreq" : allfreqs,
             "freq" : freq, 
