@@ -8,9 +8,9 @@ Created on Thu Nov  5 13:54:32 2020
 
 
 import igraph
-from tree_tools import *
-from gibbsSampling import *
-from grafting import *
+from PAPER.tree_tools import *
+from PAPER.gibbsSampling import *
+from PAPER.grafting import *
 import pickle
 
 
@@ -28,9 +28,10 @@ m = len(graf.es)
 degs = graf.degree()
 degs_sorted = -np.sort( - np.array(degs))
 
-#res = gibbsTreeToConv(graf, K=1)
-with open("pickles/mathscinet.pkl", "rb") as f:
-    res, graf = pickle.load(f)
+res = gibbsToConv(graf, K=1)
+
+#with open("pickles/mathscinet.pkl", "rb") as f:
+#    res, graf = pickle.load(f)
 
 freq = res[0]
 freq_sorted = -np.sort(-freq)
@@ -84,7 +85,7 @@ visual_style = {}
 visual_style["layout"] = my_layout
 visual_style["edge_color"] = "gray"
 
-plot(graf_sub, out_fig, **visual_style)
+#plot(graf_sub, out_fig, **visual_style)
 
 
 #with open("pickles/mathscinet.pkl", "wb") as f:
