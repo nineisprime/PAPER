@@ -437,6 +437,13 @@ def gibbsFullDP(graf, Burn=20, M=50, gap=1, alpha=0, beta=1, alpha0=50,
 
     """
     
+    if (alpha == None and beta == None):
+        beta = 1
+        alpha = estimateAlphaEM(graf, display=False)
+        print("Estimated alpha as {0}".format(alpha))
+    else:
+        print("Using alpha {0} and beta {1}".format(alpha, beta))
+
     
     n = len(graf.vs)
     m = len(graf.es)
@@ -495,7 +502,7 @@ def gibbsFullDP(graf, Burn=20, M=50, gap=1, alpha=0, beta=1, alpha0=50,
         
         if (display):
             print("iter {0}  a0 {1}  K {2}  sizes{3}".format(i, round(alpha0, 3),
-                                                             K, sizes_sorted))
+                                                             K, sizes_sorted[0:3]))
             
         """ record results """
 
@@ -512,11 +519,13 @@ def gibbsFullDP(graf, Burn=20, M=50, gap=1, alpha=0, beta=1, alpha0=50,
     allfreqs = np.array([0] * n)
     for k in range(len(freq)):
         allfreqs = allfreqs + freq[k]
+        tree_count[k] = sum(freq[k])
         
     return({"allfreq" : allfreqs, 
             "freq" : freq, 
             "allK" : allK, 
             "tree2root" : tree2root, 
+            "tree_count" : tree_count,
             "alpha0" : alpha0, 
             "node_tree_coo" : node_tree_coo,
             "pi" : mypi})
@@ -910,8 +919,9 @@ def updateInferResults(graf, freq, tree2root,
             break
         
         if (sizes_sorted[k] > 1):
-            cur_freq[k] = cur_freq[k] * (beta*treedegs+beta+alpha) \
-                                * (beta*treedegs + alpha)                           
+            ## uncomment for exact credible root set
+            ## cur_freq[k] = cur_freq[k] * (beta*treedegs+beta+alpha) \
+            ##                    * (beta*treedegs + alpha)                           
 
             cur_freq[k] = cur_freq[k]/sum(cur_freq[k])
                     
@@ -926,18 +936,24 @@ def updateInferResults(graf, freq, tree2root,
     dists = np.zeros((K, Kstar))
     
     
-    for k in range(K):
-        for kstar in range(Kstar):
-            if (sum(freq[kstar] > 0)):
-                distr1 = np.array(freq[kstar]/sum(freq[kstar]) )                        
-                distr2 = np.array(cur_freq[k]/sum(cur_freq[k]))
+    distr1_mat = np.zeros((Kstar, n))
+    distr2_mat = np.zeros((K, n))
 
-                dists[k, kstar] = sum( (np.sqrt(distr1) - np.sqrt(distr2))**2 )/2
-            else:
-                dists[k, kstar] = 0
-                    
+    for kstar in range(Kstar):
+        if (sum(freq[kstar]) > 0):
+            my_distr = np.array(freq[kstar]) 
+            distr1_mat[kstar, :] = np.sqrt(my_distr/sum(my_distr))
+        
+    for k in range(K):
+        my_distr = np.array(cur_freq[k]) 
+        distr2_mat[k, :] = np.sqrt(my_distr/sum(my_distr))
+
+    ## compute matrix of L2 distances between all rows of distr1_mat and distr2_mat
+    dists = scipy.spatial.distance.cdist(distr2_mat, distr1_mat, 'sqeuclidean')
+    dists = dists/2
+
     treematch = scipy.optimize.linear_sum_assignment(dists)[1]
-                      
+
     for k in range(K):
         if (dists[k, treematch[k]] > birth_thresh):
             freq[Kstar] = np.array([0] * n)

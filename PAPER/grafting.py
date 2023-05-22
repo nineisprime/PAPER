@@ -58,7 +58,6 @@ def gibbsGraft(graf, Burn=30, M=50, gap=1, alpha=0, beta=1, K=1,
 
     """
     
-    
     n = len(graf.vs)
     
     if ("tree2root" in options):
@@ -201,7 +200,13 @@ def gibbsGraftDP(graf, Burn=30, M=50, gap=1, alpha=0, beta=1, alpha0=5,
     """
     
     n = len(graf.vs)
-    display=True
+
+    if (alpha == None and beta == None):
+        beta = 1
+        alpha = estimateAlphaEM(graf, display=False)
+        print("Estimated alpha as {0}".format(alpha))
+    else:
+        print("Using alpha {0} and beta {1}".format(alpha, beta))
     
     
     if ("tree2root" in options):
@@ -219,7 +224,7 @@ def gibbsGraftDP(graf, Burn=30, M=50, gap=1, alpha=0, beta=1, alpha0=5,
    
     
     if (display):
-        print("Starting gibbsGraftDP ...")
+        print("Starting gibbsGraftDP ... ... ")
     
     
     if ("freq" in options):
