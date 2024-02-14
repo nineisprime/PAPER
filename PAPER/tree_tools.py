@@ -293,9 +293,14 @@ def createNoisyGraph(n, m, alpha=0, beta=1, K=1):
     
     res = createPATree(n, alpha, beta, K)
     mytree = res[0]
+
     clust = res[1]
     
     addRandomEdges(mytree, m)
+    
+    mytree.es["type"] = "tree"
+    mytree.es[(n-K):]["type"] = "noise"
+
     return((mytree, clust))
         
 
@@ -327,9 +332,9 @@ def addRandomEdges(graf, m):
         tails = choices(range(n), k=m2)
         
         edgelist = [(heads[j], tails[j]) for j in range(m2) if heads[j] != tails[j]]
+        edgelist = [e for e in edgelist if e[1] not in graf.vs[e[0]].neighbors()]
 
         graf.add_edges(edgelist)
-        graf.simplify()
         
     return(graf)        
 

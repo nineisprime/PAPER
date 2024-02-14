@@ -379,7 +379,7 @@ def gibbsFull(graf, Burn=40, M=50, gap=1, alpha=0, beta=1, K=1,
         
     allfreqs = allfreqs/sum(allfreqs)
     
-    print([timeA, timeB])
+    ##print([timeA, timeB])
     
     return( {"allfreq" : allfreqs,
             "freq" : freq, 
@@ -517,6 +517,7 @@ def gibbsFullDP(graf, Burn=20, M=50, gap=1, alpha=0, beta=1, alpha0=50,
             
             
     allfreqs = np.array([0] * n)
+    tree_count = np.array( [0] * len(freq), dtype="f")
     for k in range(len(freq)):
         allfreqs = allfreqs + freq[k]
         tree_count[k] = sum(freq[k])
@@ -772,14 +773,12 @@ def sampleOrdering(graf, tree2root, alpha, beta, DP=False):
     for k in range(K):
         if (tree_sizes[k] == 1):
             graf.vs[tree2root[k]]["subtree_size"] = 1
-            mypi[k] = tree2root[k]
-                        
+            mypi[k] = tree2root[k]                
             continue
         
         cur_root = tree2root[k]
         normalized_h = countAllHist(graf, cur_root)[0]
         
-
         assert( sum(normalized_h > 0) == tree_sizes[k] )
         
         deg_adj = (beta*degs + beta + alpha) * (beta*degs + alpha)
@@ -787,8 +786,6 @@ def sampleOrdering(graf, tree2root, alpha, beta, DP=False):
             deg_adj = 1
         
         tmp_p = normalized_h*deg_adj
-        
-
         
         mypi[k] = choices(range(n), tmp_p)[0]
         tree2root[k] = mypi[k]
