@@ -18,7 +18,6 @@ from PAPER.estimateAlpha import *
 import PAPER.grafting as grafting
 import PAPER.seqnoise as seqnoise
 
-
 def gibbsToConv(graf, DP=False, 
                 K=1, 
                 alpha=None, beta=None, 
@@ -392,7 +391,7 @@ def gibbsFull(graf, Burn=40, M=50, gap=1, alpha=0, beta=1, K=1,
 
 def gibbsFullDP(graf, Burn=20, M=50, gap=1, alpha=0, beta=1, alpha0=50, 
                 display=True, size_thresh=0.01, 
-                birth_thresh=0.8, initpi=None, initroots=None, **options):
+                birth_thresh=0.8, initpi=None, initroots=None, PY=False, **options):
     """
     Full Gibbs sampler for computing posterior root prob 
     in the random K setting.  
@@ -436,6 +435,7 @@ def gibbsFullDP(graf, Burn=20, M=50, gap=1, alpha=0, beta=1, alpha0=50,
     5. final ordering (used for initialization)
 
     """
+    print("hello")
     
     if (alpha == None and beta == None):
         beta = 1
@@ -480,8 +480,7 @@ def gibbsFullDP(graf, Burn=20, M=50, gap=1, alpha=0, beta=1, alpha0=50,
     
     for i in range(Burn + M):
             
-        tree2root = nodewiseSampleDP(graf, mypi, tree2root, alpha=alpha, beta=beta, alpha0=alpha0)
-        
+        tree2root = nodewiseSampleDP(graf, mypi, tree2root, alpha=alpha, beta=beta, alpha0=alpha0, PY=PY)
         
         sizes = getTreeSizes(graf, tree2root)
                 
@@ -498,7 +497,9 @@ def gibbsFullDP(graf, Burn=20, M=50, gap=1, alpha=0, beta=1, alpha0=50,
         ## Uncomment to update alpha0
         alpha0tilde = drawAlpha0tilde(K, n, alpha0/(alpha+2*beta))
         alpha0 = alpha0tilde*(alpha+2*beta)
-                      
+        
+        if (PY):
+            alpha0 = 1
         
         if (display):
             print("iter {0}  a0 {1}  K {2}  sizes{3}".format(i, round(alpha0, 3),
@@ -535,7 +536,7 @@ def gibbsFullDP(graf, Burn=20, M=50, gap=1, alpha=0, beta=1, alpha0=50,
 
 
 
-def nodewiseSampleDP(graf, mypi, tree2root, alpha, beta, alpha0):
+def nodewiseSampleDP(graf, mypi, tree2root, alpha, beta, alpha0, PY=False):
     """
     Generates new forest for a given ordering by sampling
     a new parent for each node. Used in random K setting.
@@ -599,10 +600,14 @@ def nodewiseSampleDP(graf, mypi, tree2root, alpha, beta, alpha0):
         pa_adj = np.array([w == mypa for w in nbs])
         
         tmp_p = beta*tree_degs + 2*beta*root_adj - beta*pa_adj + alpha
-        
         new_root_wt = alpha0 * (m-n+curK+1-uisroot)/(n2-n+curK+1-uisroot) * \
             (beta*all_tree_degs[u] + beta*uisroot + alpha)/(beta+alpha)
         
+        ## Pitman--Yor: new node becomes root with probability (beta s_{t-1} + alpha) / ( 2*beta*(t-1) + alpha*t)
+        if (PY):
+            tmp_p = beta*tree_degs + beta*root_adj - beta*pa_adj + alpha
+            new_root_wt = (beta*curK - beta*uisroot + alpha) * (m-n+curK+1-uisroot)/(n2-n+curK+1-uisroot)
+
         tmp_p = np.append(tmp_p, new_root_wt)
         
         """ draw a new parent for u"""
@@ -689,7 +694,7 @@ def nodewiseSamplePA(graf, mypi, alpha, beta, K):
         countSubtreeSizes(graf, mypi[k])
 
     all_tree_degs = getAllTreeDeg(graf)
-        
+
     edge_ls = []
     
     for i in range(n-K):
@@ -714,6 +719,10 @@ def nodewiseSamplePA(graf, mypi, alpha, beta, K):
         
         """ generate new parent for u"""
         tmp_p = beta*tree_degs + 2*beta*root_adj + alpha
+
+        if (len(nbs) == 1):
+            tmp_p = [1]
+
         myw = choices(nbs, weights=tmp_p)[0]
 
         edge_ls.append((v, myw))

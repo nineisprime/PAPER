@@ -246,7 +246,11 @@ def wilsonTree(graf, root=0, display=False):
                 node_ls = loopErase(node_ls)
                 
                 graf.vs[node_ls]["marked"] = True
-                my_edge_ids = graf.get_eids(path=node_ls)
+
+                ## convert node_ls to list of pairs
+                pairs_ls = [(node_ls[i], node_ls[i+1]) for i in range(len(node_ls)-1)]
+
+                my_edge_ids = graf.get_eids(pairs=pairs_ls)
                 
                 graf.es[my_edge_ids]["tree"] = True
                 return
