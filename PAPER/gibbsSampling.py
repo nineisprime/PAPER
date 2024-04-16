@@ -391,7 +391,8 @@ def gibbsFull(graf, Burn=40, M=50, gap=1, alpha=0, beta=1, K=1,
 
 def gibbsFullDP(graf, Burn=20, M=50, gap=1, alpha=0, beta=1, alpha0=50, 
                 display=True, size_thresh=0.01, 
-                birth_thresh=0.8, initpi=None, initroots=None, PY=False, **options):
+                birth_thresh=0.8, shatter_thresh=1,
+                initpi=None, initroots=None, PY=False, **options):
     """
     Full Gibbs sampler for computing posterior root prob 
     in the random K setting.  
@@ -435,7 +436,6 @@ def gibbsFullDP(graf, Burn=20, M=50, gap=1, alpha=0, beta=1, alpha0=50,
     5. final ordering (used for initialization)
 
     """
-    print("hello")
     
     if (alpha == None and beta == None):
         beta = 1
@@ -481,19 +481,47 @@ def gibbsFullDP(graf, Burn=20, M=50, gap=1, alpha=0, beta=1, alpha0=50,
     for i in range(Burn + M):
             
         tree2root = nodewiseSampleDP(graf, mypi, tree2root, alpha=alpha, beta=beta, alpha0=alpha0, PY=PY)
-        
-        sizes = getTreeSizes(graf, tree2root)
-                
-        tmp = sampleOrdering(graf, tree2root, alpha=alpha, beta=beta, DP=True)
-        mypi = tmp[0]
-        tree2root = tmp[1]
-    
-    
+
         K = len(tree2root)
-    
+        sizes = getTreeSizes(graf, tree2root)
         sizes_args = np.argsort( - np.array(sizes))
         sizes_sorted = -np.sort( - np.array(sizes))
     
+        while (sizes_sorted[0] > shatter_thresh * n):
+            big_root = tree2root[sizes_args[0]]
+            ## find all direct children of big_root
+            big_root_children = [v for v in graf.neighbors(big_root) if graf.vs[v]["pa"] == big_root]
+
+            for v in big_root_children[1:]:
+                graf.vs[v]["pa"] = None
+                tree2root.append(v)
+                ## get edge between v and big_root and set "tree" to False
+                e = graf.get_eid(v, big_root)
+                graf.es[e]["tree"] = False
+
+            graf.vs[big_root_children[0]]["pa"] = None
+            graf.vs[big_root]["pa"] = big_root_children[0]
+            tree2root.append(big_root_children[0])
+            tree2root.remove(big_root)
+
+            ## count number of tree edges
+            tree_edges = sum(graf.es["tree"])
+            assert tree_edges == n - len(tree2root)
+
+            sizes = getTreeSizes(graf, tree2root)
+            sizes_args = np.argsort( - np.array(sizes))
+            sizes_sorted = -np.sort( - np.array(sizes))
+
+            if (display):
+                print(f"new K: {len(tree2root)}")
+                print(sizes)
+
+
+        tmp = sampleOrdering(graf, tree2root, alpha=alpha, beta=beta, DP=True)
+        mypi = tmp[0]
+        tree2root = tmp[1]
+
+
         ## Uncomment to update alpha0
         alpha0tilde = drawAlpha0tilde(K, n, alpha0/(alpha+2*beta))
         alpha0 = alpha0tilde*(alpha+2*beta)
@@ -503,7 +531,7 @@ def gibbsFullDP(graf, Burn=20, M=50, gap=1, alpha=0, beta=1, alpha0=50,
         
         if (display):
             print("iter {0}  a0 {1}  K {2}  sizes{3}".format(i, round(alpha0, 3),
-                                                             K, sizes_sorted[0:3]))
+                                                             K, sizes_sorted[0:4]))
             
         """ record results """
 
@@ -603,6 +631,7 @@ def nodewiseSampleDP(graf, mypi, tree2root, alpha, beta, alpha0, PY=False):
         new_root_wt = alpha0 * (m-n+curK+1-uisroot)/(n2-n+curK+1-uisroot) * \
             (beta*all_tree_degs[u] + beta*uisroot + alpha)/(beta+alpha)
         
+
         ## Pitman--Yor: new node becomes root with probability (beta s_{t-1} + alpha) / ( 2*beta*(t-1) + alpha*t)
         if (PY):
             tmp_p = beta*tree_degs + beta*root_adj - beta*pa_adj + alpha
